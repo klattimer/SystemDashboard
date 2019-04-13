@@ -33,3 +33,8 @@ Uses
 * chart.js
 * masonry
 * moment.js 
+* font awesome 
+
+![main](https://github.com/klattimer/SystemDashboard/raw/master/Screenshot/dashboard.png)
+![network](https://github.com/klattimer/SystemDashboard/raw/master/Screenshot/dashboard2.png)
+![disk](https://github.com/klattimer/SystemDashboard/raw/master/Screenshot/dashboard3.png)
