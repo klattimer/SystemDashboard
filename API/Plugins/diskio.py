@@ -24,7 +24,7 @@ class DiskIOAPI(APIPluginInterface):
         super(DiskIOAPI, self).__init__(server)
 
     def resolve_partition(self, partition):
-        device = p.device.replace('/dev/', '')
+        device = partition.device.replace('/dev/', '')
         if device == 'root':
             with open('/proc/cmdline') as cmdline:
                 cmdline_text = cmdline.read()
