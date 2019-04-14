@@ -43,10 +43,14 @@ class DiskAPI(APIPluginInterface):
             disk = ''.join(i for i in disk if not i.isdigit())
             disks.append(disk)
 
-        md = mdstat.parse()
-        for array in md['devices'].keys():
-            for disk in md['devices'][array]['disks'].keys():
-                disks.append(''.join(i for i in disk if not i.isdigit()))
+        try:
+            md = mdstat.parse()
+            for array in md['devices'].keys():
+                for disk in md['devices'][array]['disks'].keys():
+                    disks.append(''.join(i for i in disk if not i.isdigit()))
+        except:
+            md = {}
+
         disks = list(set(disks))
         disks.sort()
         temperatures = {'/dev/' + k: self.get_hdd_temp(k) for k in disks}
