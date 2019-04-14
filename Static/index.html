@@ -306,10 +306,25 @@
             <div class="widget-grid-header"><i class="fas fa-scroll"></i>Logs</div>
             <div class="widget-grid-item w4h2">
                 <div class="widget-grid-item-inner">
-                    <button class="logfile">dmesg</button>
-                    <button class="logfile">syslog</button>
-                    <button class="logfile">apache-errorlog</button>
-                    <button class="logfile">apache-accesslog</button>
+                    <div class="logselect">
+
+
+
+                        <button class="logfile" data-logfile="dmesg">dmesg</button>
+                        <button class="logfile" data-logfile="syslog">syslog</button>
+                        <button class="logfile" data-logfile="apache2/access.log">apache error log</button>
+                        <button class="logfile" data-logfile="apache2/error.log">apache access log</button>
+
+                        <button class="logfile" data-logfile="auth.log">auth log</button>
+                        <button class="logfile" data-logfile="bootstrap.log">bootstrap log</button>
+                        <button class="logfile" data-logfile="dpkg.log">dpkg log</button>
+                        <button class="logfile" data-logfile="faillog">fail log</button>
+                        <button class="logfile" data-logfile="fontconfig.log">font config log</button>
+                        <button class="logfile" data-logfile="kern.log">kernel log</button>
+                        <button class="logfile" data-logfile="mail.log">mail log</button>
+                        <button class="logfile" data-logfile="mdevents.log">mdevents</button>
+                        <button class="logfile" data-logfile="tallylog">tallylog</button>
+                    </div>
                     <div class="log-content"><pre></pre></div>
                     <button class="logend"><i class="fas fa-angle-double-down"></i></button>
                 </div>

@@ -391,29 +391,60 @@ canvas {
     color: rgba(88, 174, 255, 1);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+.logselect {
+    width:calc(20% - 20px);
+    margin-left: 20px;
+    margin-top:20px;
+    margin-bottom:20px;
+    display:inline-block;
+    vertical-align: top;
+    height: calc(100% - 40px);
+    border: 1px solid rgba(140,140,140,0.2);
+    box-sizing: border-box;
+    border-right:none;
+}
 .logfile {
     appearance: none;
     -webkit-appearance: none;
-    background: rgba(140,140,140,0.1);
-    border: 1px solid rgba(140,140,140,0.2);
-    padding: 12px 20px;
-    border-radius: 5px;
-    margin: 20px;
-    margin-right: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    background: none;
+    border: none;
+    display:block;
+    vertical-align: top;
+    width: 100%;
+    margin:0;
+    padding: 10px 14px;
+    text-align: left;
+    cursor:pointer;
+    position: relative;
 }
+
+.logfile:hover {
+    background: rgba(0,0,0,0.03);
+}
+
+.logfile:hover::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f054";
+    position: absolute;
+    right: 10px;
+}
+
 .log-content {
+    display:inline-block;
+    vertical-align: top;
     border: 1px solid rgba(140,140,140,0.2);
-    margin: 20px;
-    margin-top:0;
+    margin-right: 20px;
+    margin-top:20px;
+    margin-bottom:20px;
     padding: 12px;
     font-family: monospace;
-    height: calc(100% - 100px);
+    height: calc(100% - 40px);
     box-sizing: border-box;
     background-color: rgba(140,140,140,0.05);
     box-shadow: 4px rgba(255,255,255,1) inset;
     font-size: 12px;
     overflow: auto;
+    width:calc(80% - 20px);
 }
 .logend {
     appearance: none;

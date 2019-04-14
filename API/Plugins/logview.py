@@ -20,7 +20,7 @@ class LogAPI(APIPluginInterface):
         super(LogAPI, self).__init__(server)
 
     def file_len(self, fname):
-        offsets = {1:0}
+        offsets = {0:0}
         i = 1
         with open(fname) as f:
             line = f.readline()
