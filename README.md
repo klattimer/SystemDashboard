@@ -1,9 +1,19 @@
 System Dashboard
 --
 
-I tried using pydash to monitor my server, it wasn't very well designed, the CSS was terrible and full of javascript errors. So I spent a couple of days writing SystemDashboard, it's a fairly simple sort of thing. I'll add screenshots and video later detailing it.
+I tried using pydash (https://gitlab.com/k3oni/pydash) to monitor my server, it wasn't very well designed, the CSS was terrible and full of javascript errors. So I spent a couple of days writing SystemDashboard, it's a fairly simple sort of thing. I'll add screenshots and video later detailing it.
 
 This is an initial release, I hope that others will want to contribute to this. I've made it fairly modular but that itself is incomplete... Really just trying to get it out of the door.
+
+Installation
+---
+
+    SystemDashboard$ virtualenv -p python3 venv
+    SystemDashboard$ source venv/bin/activate
+    (venv) SystemDashboard$ pip install -r requirements.txt
+    (venv) SystemDashboard$ python app.py
+
+
 
 Features
 ---
