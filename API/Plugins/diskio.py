@@ -37,7 +37,7 @@ class DiskIOAPI(APIPluginInterface):
                     pass
                 cmdline_args[k] = v
             device = cmdline_args['root']
-            device.replace('/dev/', '')
+            device = device.replace('/dev/', '')
         return device
 
     def GET(self, **params):
