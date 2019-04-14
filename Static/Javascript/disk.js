@@ -276,31 +276,33 @@ window.APP.update_funcs.push({
             $('#disktemp').find('tbody').append(row);
         }
 
-        for (var i = 0; i < Object.keys(window.APP.page_data.disk.mdstat.devices).length; i++) {
-            var k = Object.keys(window.APP.page_data.disk.mdstat.devices)[i];
-            var array = window.APP.page_data.disk.mdstat.devices[k];
+        if (window.APP.page_data.disk.mdstat.devices !== undefined) {
+            for (var i = 0; i < Object.keys(window.APP.page_data.disk.mdstat.devices).length; i++) {
+                var k = Object.keys(window.APP.page_data.disk.mdstat.devices)[i];
+                var array = window.APP.page_data.disk.mdstat.devices[k];
 
-            var id = k+'-disk-table';
+                var id = k+'-disk-table';
 
-            $('#' + id).find('tbody').html('');
-            for (var j = 0; j < Object.keys(array.disks).length; j++) {
-                var n = Object.keys(array.disks)[j];
-                var dd = array.disks[n];
+                $('#' + id).find('tbody').html('');
+                for (var j = 0; j < Object.keys(array.disks).length; j++) {
+                    var n = Object.keys(array.disks)[j];
+                    var dd = array.disks[n];
 
-                var state = "active sync";
-                var icon = "<i class='fas fa-check-circle status-green'></i>";
-                if (dd.spare && dd.replacement) {
-                    state = "spare rebuilding";
-                    icon = "<i class='fas fa-check-circle status-orange'></i>";
-                } else if (dd.spare) {
-                    state = "spare";
-                    icon = "<i class='fas fa-pause-circle status-grey'></i>";
-                } else if (dd.faulty) {
-                    state = "faulty";
-                    icon = "<i class='fas fa-times-circle status-red'></i>";
+                    var state = "active sync";
+                    var icon = "<i class='fas fa-check-circle status-green'></i>";
+                    if (dd.spare && dd.replacement) {
+                        state = "spare rebuilding";
+                        icon = "<i class='fas fa-check-circle status-orange'></i>";
+                    } else if (dd.spare) {
+                        state = "spare";
+                        icon = "<i class='fas fa-pause-circle status-grey'></i>";
+                    } else if (dd.faulty) {
+                        state = "faulty";
+                        icon = "<i class='fas fa-times-circle status-red'></i>";
+                    }
+                    var row = "<tr><td>"+dd.number+"</td><td>"+n+"</td><td>"+state+"</td><td class='narrow'>"+icon+"</td></tr>";
+                    $('#' + id).find('tbody').append(row);
                 }
-                var row = "<tr><td>"+dd.number+"</td><td>"+n+"</td><td>"+state+"</td><td class='narrow'>"+icon+"</td></tr>";
-                $('#' + id).find('tbody').append(row);
             }
         }
     }
