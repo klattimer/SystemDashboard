@@ -23,6 +23,23 @@ class DiskIOAPI(APIPluginInterface):
     def __init__(self, server):
         super(DiskIOAPI, self).__init__(server)
 
+    def resolve_partition(self, partition):
+        device = p.device.replace('/dev/', '')
+        if device == 'root':
+            with open('/proc/cmdline') as cmdline:
+                cmdline_text = cmdline.read()
+
+            cmdline_args = {}
+            for arg in cmdline_text.split(' '):
+                try:
+                    (k, v) = arg.split('=')
+                except:
+                    pass
+                cmdline_args[k] = v
+            device = cmdline_args['root']
+            device.replace('/dev/', '')
+        return device
+
     def GET(self, **params):
         partitions = psutil.disk_partitions(all=False)
         diskrw = psutil.disk_io_counters(perdisk=True)
@@ -32,7 +49,8 @@ class DiskIOAPI(APIPluginInterface):
             "write_bytes": 0,
         }
 
-        io_disks = [p.device.replace('/dev/', '') for p in partitions if 'loop' not in p.device]
+        io_disks = [self.resolve_partition(p) for p in partitions if 'loop' not in p.device]
+
         diskrw = {k: diskrw[k] for k in io_disks}
         for k in io_disks:
             diskrw_data['read_bytes'] += diskrw[k].read_bytes
