@@ -119,47 +119,49 @@ window.APP.load.push(function (event) {
 
     window.APP.charts.rebuild_raid = [];
     chart.array_data = {};
-    for (var i = 0; i < Object.keys(window.APP.page_data.disk.mdstat.devices).length; i++) {
-        var k = Object.keys(window.APP.page_data.disk.mdstat.devices)[i];
-        var array = window.APP.page_data.disk.mdstat.devices[k];
-        if (array.resync !== null) {
+    if (window.APP.page_data.disk.mdstat.devices !== undefined) {
+        for (var i = 0; i < Object.keys(window.APP.page_data.disk.mdstat.devices).length; i++) {
+            var k = Object.keys(window.APP.page_data.disk.mdstat.devices)[i];
+            var array = window.APP.page_data.disk.mdstat.devices[k];
+            if (array.resync !== null) {
 
-            var id = k+'-rebuild-chart-area';
-            var label_id = k+'-rebuild-percent';
+                var id = k+'-rebuild-chart-area';
+                var label_id = k+'-rebuild-percent';
 
-            var html = "<div class='widget-grid-item w1h1'>" +
+                var html = "<div class='widget-grid-item w1h1'>" +
+                           "<div class='widget-grid-item-inner'>" +
+                           "<div id='"+id+"-container' class='chart-container'>" +
+                           "<canvas id='"+id+"'></canvas></div>" +
+                           "<div id='"+label_id+"' class='centre-percent'>"+array.resync.progress+"</div>" +
+                           "<div class='centre-label'>complete</div>" +
+                           "<h1><i class='far fa-hdd'></i>"+k+" Rebuild Progress</h1></div></div>";
+                $('a[name=storage] + .widget-grid-header + .widget-grid-container').append(html);
+
+                $(document.getElementById(id)).attr('width', $(document.getElementById(id)).width());
+                $(document.getElementById(id)).attr('height', $(document.getElementById(id)).height());
+
+                var ctx = document.getElementById(id).getContext('2d');
+                var chart = new Chart(ctx, rebuild_config);
+                chart.array_data = array;
+                chart.array_key = k;
+                window.APP.charts.rebuild_raid.push(chart);
+            }
+
+            var id = k+'-disk-table';
+
+            var html = "<div class='widget-grid-item w2h1'>" +
                        "<div class='widget-grid-item-inner'>" +
-                       "<div id='"+id+"-container' class='chart-container'>" +
-                       "<canvas id='"+id+"'></canvas></div>" +
-                       "<div id='"+label_id+"' class='centre-percent'>"+array.resync.progress+"</div>" +
-                       "<div class='centre-label'>complete</div>" +
-                       "<h1><i class='far fa-hdd'></i>"+k+" Rebuild Progress</h1></div></div>";
+                       "<h1><i class='fas fa-layer-group'></i>RAID "+k+" Disk Status</h1>" +
+                       "<table id='"+id+"' class='data-table'><thead><tr>" +
+                       "<th>Raid Device </th>" +
+                       "<th>Partition</th>" +
+                       "<th>Status</th>" +
+                       "<th class='narrow'></th></tr></thead>" +
+                       "<tbody></tbody></table></div></div>";
+
             $('a[name=storage] + .widget-grid-header + .widget-grid-container').append(html);
 
-            $(document.getElementById(id)).attr('width', $(document.getElementById(id)).width());
-            $(document.getElementById(id)).attr('height', $(document.getElementById(id)).height());
-
-            var ctx = document.getElementById(id).getContext('2d');
-            var chart = new Chart(ctx, rebuild_config);
-            chart.array_data = array;
-            chart.array_key = k;
-            window.APP.charts.rebuild_raid.push(chart);
         }
-
-        var id = k+'-disk-table';
-
-        var html = "<div class='widget-grid-item w2h1'>" +
-                   "<div class='widget-grid-item-inner'>" +
-                   "<h1><i class='fas fa-layer-group'></i>RAID "+k+" Disk Status</h1>" +
-                   "<table id='"+id+"' class='data-table'><thead><tr>" +
-                   "<th>Raid Device </th>" +
-                   "<th>Partition</th>" +
-                   "<th>Status</th>" +
-                   "<th class='narrow'></th></tr></thead>" +
-                   "<tbody></tbody></table></div></div>";
-
-        $('a[name=storage] + .widget-grid-header + .widget-grid-container').append(html);
-
     }
 
     labels = [];
