@@ -109,7 +109,7 @@ var diskrw_config = {
                     drawTicks: true
                 },
                 display: true,
-                stepsize: 10
+                stepsize: 10,
                 callback: function(value) {
                     return value + 's';
                 }
