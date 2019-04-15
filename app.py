@@ -13,7 +13,7 @@ from json import JSONEncoder
 import json
 from copy import copy
 import datetime
-
+import re
 
 #
 # Monkey patches for JSON Serialisation
@@ -53,10 +53,14 @@ cherrypy._json.encode = _encode
 class Root(object): pass
 
 class Server(object):
-    def __init__(self):
+    conf = {}
+    def __init__(self, conf):
+        self.conf = conf
+        ip = self.validateIP()
+        port = self.validatePort()
         cherrypy.config.update({
-            'server.socket_host': '0.0.0.0',
-            'server.socket_port': 8080,
+            'server.socket_host': ip,
+            'server.socket_port': port,
             'error_page.400': self.JSONErrorHandler,
             'error_page.404': self.JSONErrorHandler,
             'error_page.403': self.JSONErrorHandler,
@@ -77,6 +81,16 @@ class Server(object):
 
         self.__api = APIRegistry(self)
 
+    def validateIP(self):
+        if re.match(r"(([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4})", self.conf["host"]) or re.match(r"(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", self.conf["host"]):
+            return self.conf["host"]
+        return "0.0.0.0"
+    
+    def validatePort(self):
+        if re.match(r"^\d{1,5}$", str(self.conf["port"])):
+            return self.conf["port"]
+        return "8080"
+
     def JSONErrorHandler(self, status, message, traceback, version):
         response = cherrypy.response
         response.headers['Content-Type'] = 'application/json'
@@ -93,7 +107,9 @@ class Server(object):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    server = Server()
+    with open('config.json') as conf:
+        data = json.load(conf)
+        server = Server(data)
     f = open("app.pid", "w")
     f.write(str(os.getpid()))
     f.close()
