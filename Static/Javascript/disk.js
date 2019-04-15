@@ -87,21 +87,24 @@ var diskrw_config = {
                 },
                 display: true,
                 stepsize: 1000,
-                callback: function(value) {
-                    var ranges = [
-                        { divider: 1e6, suffix: 'G' },
-                        { divider: 1e6, suffix: 'M' },
-                        { divider: 1e3, suffix: 'k' }
-                    ];
-                    function formatNumber(n) {
-                        for (var i = 0; i < ranges.length; i++) {
-                           if (n >= ranges[i].divider) {
-                              return (n / ranges[i].divider).toString() + ranges[i].suffix;
-                           }
+                ticks: {
+                    stepSize: 1000,
+                    callback: function(value) {
+                        var ranges = [
+                            { divider: 1e6, suffix: 'G' },
+                            { divider: 1e6, suffix: 'M' },
+                            { divider: 1e3, suffix: 'k' }
+                        ];
+                        function formatNumber(n) {
+                            for (var i = 0; i < ranges.length; i++) {
+                               if (n >= ranges[i].divider) {
+                                  return (n / ranges[i].divider).toString() + ranges[i].suffix;
+                               }
+                            }
+                            return n;
                         }
-                        return n;
+                        return formatNumber(value) +'B/s';
                     }
-                    return formatNumber(value) +'B/s';
                 }
             }],
             xAxis: [{
@@ -109,9 +112,11 @@ var diskrw_config = {
                     drawTicks: true
                 },
                 display: true,
-                stepsize: 10,
-                callback: function(value) {
-                    return value + 's';
+                ticks: {
+                    stepsize: 10,
+                    callback: function(value) {
+                        return value + 's';
+                    }
                 }
             }]
         },
