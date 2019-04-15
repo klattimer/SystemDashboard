@@ -87,7 +87,6 @@ var diskrw_config = {
                 },
                 display: true,
                 ticks: {
-                    stepSize: 100000,
                     callback: function(value) {
                         var ranges = [
                             { divider: 1e6, suffix: 'G' },
@@ -112,7 +111,6 @@ var diskrw_config = {
                 },
                 display: true,
                 ticks: {
-                    stepsize: 10,
                     callback: function(value) {
                         return value + 's';
                     }
