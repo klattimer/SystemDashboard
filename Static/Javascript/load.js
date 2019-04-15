@@ -148,7 +148,7 @@ window.APP.load.push(function (event) {
 
     labels = [];
     for (var i = 0; i < 61; i++){
-        labels.push(-600 + (i * 10);
+        labels.push(-600 + (i * 10));
     }
     memory_config.data.labels = labels;
     var ctx = document.getElementById('memory-chart-area').getContext('2d');
