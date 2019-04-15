@@ -102,7 +102,7 @@ var radar_config = {
 window.APP.load.push(function() {
     labels = [];
     for (var i = 0; i < 61; i++){
-        labels.push(-60 + i);
+        labels.push(-600 + (i * 10));
     }
     traffic_config.data.labels = labels;
 
