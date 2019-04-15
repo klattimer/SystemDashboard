@@ -1,0 +1,47 @@
+:root {
+
+        --color-red: rgba(222,60,60,1);
+        --color-orange: rgba(240,120,16,1);
+        --color-yellow: rgba(249,206,0,1);
+        --color-green: rgba(146, 202, 62, 1);
+        --color-blue: rgba(55, 174, 216, 1);
+        --color-purple: rgba(155, 43, 119, 1);
+        --color-grey: rgba(116,130,143,1);
+        --color-pink: rgba(237, 105, 125, 1);
+
+        --foreground-color: white;
+        --background-color: rgba(232, 217, 183, 0.3);
+
+        --header-foreground-color: white;
+        --header-background-color: #565654;
+
+        --header-menu-foreground-color: white;
+        --header-menu-background-color: rgba(255,255,255,0.05);
+        --header-menu-border-color: rgba(255,255,255,0.1);
+
+        --header-menu-foreground-hover-color: white;
+        --header-menu-background-hover-color: rgba(255,255,255,0.1);
+        --header-menu-border-hover-color: rgba(255,255,255,0.15);
+
+        --menu-foreground-color: rgba(0,0,0,0.6);
+        --menu-background-color: #E0DBD2;
+        --menu-border-color: rgba(0,0,0,0.4);
+
+        --menu-foreground-hover-color: rgba(255,255,255,0.8);
+        --menu-background-hover-color: rgba(0,0,0,0.2);
+        --menu-border-hover-color: rgba(0,0,0,0.4);
+
+        --section-header-foreground-color: white;
+        --section-header-background-color: white;
+
+        --widget-header-foreground-color: white;
+        --widget-header-background-color: white;
+
+        --widget-foreground-color: white;
+        --widget-background-color: white;
+        --widget-border-color: white;
+
+        --table-odd-row-color: white;
+        --table-even-row-color: white;
+        --table-border-color: white;
+}

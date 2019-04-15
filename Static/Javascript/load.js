@@ -17,11 +17,6 @@ var cpu_config = {
             display: false
         },
         scales: {
-            xAxes: [{
-                ticks: {
-                    stepSize: 10
-                }
-            }],
             yAxes: [{
                 gridLines: {
                     drawTicks: true
