@@ -86,9 +86,8 @@ var diskrw_config = {
                     drawTicks: true
                 },
                 display: true,
-                stepsize: 1000,
                 ticks: {
-                    stepSize: 1000,
+                    stepSize: 100000,
                     callback: function(value) {
                         var ranges = [
                             { divider: 1e6, suffix: 'G' },
