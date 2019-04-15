@@ -85,7 +85,23 @@ var diskrw_config = {
                 gridLines: {
                     drawTicks: true
                 },
-                display: true
+                display: true,
+                callback: function(value) {
+                    var ranges = [
+                        { divider: 1e6, suffix: 'G' },
+                        { divider: 1e6, suffix: 'M' },
+                        { divider: 1e3, suffix: 'k' }
+                    ];
+                    function formatNumber(n) {
+                        for (var i = 0; i < ranges.length; i++) {
+                           if (n >= ranges[i].divider) {
+                              return (n / ranges[i].divider).toString() + ranges[i].suffix;
+                           }
+                        }
+                        return n;
+                    }
+                    return '$' + formatNumber(value);
+                }
             }]
         },
     }

@@ -8,26 +8,12 @@ class APIPluginInterface(object):
     exposed = True
     api_path = None
     api_config = {}
+    scripts = []
+    styles = []
 
     def __init__(self, server):
         self._server = server
         super(APIPluginInterface, self).__init__()
-
-    @property
-    def db(self):
-        try:
-            return cherrypy.request.db
-        except:
-            logging.error("SQLAlchemy Requested but not present on plugin")
-        return None
-
-    @property
-    def mongo(self):
-        try:
-            return cherrypy.request.mongo
-        except:
-            logging.error("Mongo Requested but not present on plugin")
-        return None
 
 
 class APIRegistry(object):
