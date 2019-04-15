@@ -31,7 +31,10 @@ var cpu_config = {
                     beginAtZero: true,
                     max: 100,
                     min: 0,
-                    stepSize: 25
+                    stepSize: 25,
+                    callback: function(value) {
+                        return value + '%';
+                    }
                 }
             }]
         },
@@ -60,7 +63,10 @@ var memory_config = {
                     beginAtZero: true,
                     max: 100,
                     min: 0,
-                    stepSize: 25
+                    stepSize: 25,
+                    callback: function(value) {
+                        return value + '%';
+                    }
                 }
             }]
         },
@@ -86,9 +92,9 @@ var load_config = {
                 display: true,
                 ticks: {
                     beginAtZero: true,
-                    max: 100,
+                    max: 10,
                     min: 0,
-                    stepSize: 25
+                    stepSize: 1
                 }
             }]
         },
