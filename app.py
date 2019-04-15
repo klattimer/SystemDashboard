@@ -53,10 +53,10 @@ cherrypy._json.encode = _encode
 class Root(object): pass
 
 class Server(object):
-    def __init__(self):
+    def __init__(self, host, port):
         cherrypy.config.update({
-            'server.socket_host': '0.0.0.0',
-            'server.socket_port': 8080,
+            'server.socket_host': host,
+            'server.socket_port': port,
             'error_page.400': self.JSONErrorHandler,
             'error_page.404': self.JSONErrorHandler,
             'error_page.403': self.JSONErrorHandler,
@@ -93,7 +93,10 @@ class Server(object):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    server = Server()
+    with open('config.json') as conf:
+        data = json.load(conf)
+        if isinstance(data["port"], int):
+            server = Server(data["host"], data["port"])
     f = open("app.pid", "w")
     f.write(str(os.getpid()))
     f.close()
