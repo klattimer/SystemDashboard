@@ -86,6 +86,7 @@ var diskrw_config = {
                     drawTicks: true
                 },
                 display: true,
+                stepsize: 1000,
                 callback: function(value) {
                     var ranges = [
                         { divider: 1e6, suffix: 'G' },
@@ -100,7 +101,17 @@ var diskrw_config = {
                         }
                         return n;
                     }
-                    return '$' + formatNumber(value);
+                    return formatNumber(value) +'B/s';
+                }
+            }],
+            xAxis: [{
+                gridLines: {
+                    drawTicks: true
+                },
+                display: true,
+                stepsize: 10
+                callback: function(value) {
+                    return value + 's';
                 }
             }]
         },
