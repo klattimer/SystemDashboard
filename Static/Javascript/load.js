@@ -36,6 +36,17 @@ var cpu_config = {
                         return value + '%';
                     }
                 }
+            }],
+            xAxis: [{
+                ticks: {
+                    beginAtZero: true,
+                    max: 0,
+                    min: -60,
+                    stepSize: 10,
+                    callback: function(value) {
+                        return value + 's';
+                    }
+                }
             }]
         },
     }
@@ -54,7 +65,7 @@ var memory_config = {
         },
         scales: {
             yAxes: [{
-              stacked: true,
+                stacked: true,
                 gridLines: {
                     drawTicks: true
                 },
@@ -66,6 +77,17 @@ var memory_config = {
                     stepSize: 25,
                     callback: function(value) {
                         return value + '%';
+                    }
+                }
+            }],
+            xAxis: [{
+                ticks: {
+                    beginAtZero: true,
+                    max: 0,
+                    min: -600,
+                    stepSize: 100,
+                    callback: function(value) {
+                        return value + 's';
                     }
                 }
             }]
@@ -91,10 +113,18 @@ var load_config = {
                 },
                 display: true,
                 ticks: {
+                    beginAtZero: true
+                }
+            }],
+            xAxis: [{
+                ticks: {
                     beginAtZero: true,
-                    max: 10,
-                    min: 0,
-                    stepSize: 1
+                    max: 0,
+                    min: -600,
+                    stepSize: 100,
+                    callback: function(value) {
+                        return value + 's';
+                    }
                 }
             }]
         },
@@ -116,6 +146,10 @@ window.APP.load.push(function (event) {
         window.APP.cpu_history.push([]);
     }
 
+    labels = [];
+    for (var i = 0; i < 61; i++){
+        labels.push(-600 + (i * 10);
+    }
     memory_config.data.labels = labels;
     var ctx = document.getElementById('memory-chart-area').getContext('2d');
     window.APP.charts.memory = new Chart(ctx, memory_config);
