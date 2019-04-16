@@ -3,6 +3,7 @@ import socket
 import struct
 import select
 import time
+import logging
 
 default_timer = time.time
 
@@ -19,7 +20,7 @@ def checksum(source_string):
     countTo = (len(source_string) / 2) * 2
     count = 0
     while count < countTo:
-        thisVal = ord(source_string[count + 1]) * 256 + ord(source_string[count])
+        thisVal = int(source_string[count + 1]) * 256 + int(source_string[count])
         sum = sum + thisVal
         sum = sum & 0xffffffff  # Necessary?
         count = count + 2
@@ -82,7 +83,7 @@ def send_one_ping(my_socket, dest_addr, ID):
     # Make a dummy heder with a 0 checksum.
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, my_checksum, ID, 1)
     bytesInDouble = struct.calcsize("d")
-    data = (192 - bytesInDouble) * "Q"
+    data = (192 - bytesInDouble) * b'Q'
     data = struct.pack("d", default_timer()) + data
 
     # Calculate the checksum on the data and the dummy header.
@@ -105,6 +106,7 @@ def ping(dest_addr, timeout=2):
     try:
         my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
     except:
+        logging.exception("Failed to create raw socket")
         return -3
 
     my_ID = os.getpid() & 0xFFFF
@@ -113,9 +115,11 @@ def ping(dest_addr, timeout=2):
         send_one_ping(my_socket, dest_addr, my_ID)
         delay = receive_one_ping(my_socket, my_ID, timeout)
     except:
+        logging.exception("Timeout")
         return -1
 
     if delay is None:
+        logging.exception("Network unreachable")
         return -1
 
     my_socket.close()
