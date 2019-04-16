@@ -77,71 +77,85 @@ window.APP.load.push(function (event) {
 window.APP.update_funcs.push({
     interval: 1000,
     func: function () {
-        var cpud = window.APP.page_data.cpu;
-        var cpu_data = [];
-        for (var i = 0; i < cpud.cpu_percent.length;i++) {
-            var pc = (cpud.cpu_percent[i] / (100.0 * cpud.cpu_percent.length)) * 100.0;
-            cpu_data.push(pc);
-        };
-        s = cpud.swap.used / cpud.swap.total;
-        s = parseInt(s * 100);
-        f = 100 - s;
-        swap_data = [s];
+        try {
+            var cpud = window.APP.page_data.cpu;
+            var cpu_data = [];
+            for (var i = 0; i < cpud.cpu_percent.length;i++) {
+                var pc = (cpud.cpu_percent[i] / (100.0 * cpud.cpu_percent.length)) * 100.0;
+                cpu_data.push(pc);
+            };
+            s = cpud.swap.used / cpud.swap.total;
+            s = parseInt(s * 100);
+            f = 100 - s;
+            swap_data = [s];
 
-        s = cpud.memory.used / cpud.memory.total;
-        s = parseInt(s * 100);
-        f = 100 - s;
-        memory_data = [s];
+            s = cpud.memory.used / cpud.memory.total;
+            s = parseInt(s * 100);
+            f = 100 - s;
+            memory_data = [s];
 
-        t = Math.max(cpu_data.length, swap_data.length, memory_data.length);
+            t = Math.max(cpu_data.length, swap_data.length, memory_data.length);
 
-        if (swap_data.length < t) {
-            for (var i = 0; i < t - swap_data.length + 1;i++) {
-                swap_data.push(0);
+            if (swap_data.length < t) {
+                for (var i = 0; i < t - swap_data.length + 1;i++) {
+                    swap_data.push(0);
+                }
             }
-        }
-        if (memory_data.length < t) {
-            for (var i = 0; i < t - memory_data.length + 1;i++) {
-                memory_data.push(0);
+            if (memory_data.length < t) {
+                for (var i = 0; i < t - memory_data.length + 1;i++) {
+                    memory_data.push(0);
+                }
             }
-        }
-        if (cpu_data.length < t) {
-            for (var i = 0; i < t - cpu_data.length + 1;i++) {
-                cpu_data.push(0);
+            if (cpu_data.length < t) {
+                for (var i = 0; i < t - cpu_data.length + 1;i++) {
+                    cpu_data.push(0);
+                }
             }
-        }
-        var new_datasets = [];
-        for (var i = 0; i < t; i++) {
-            var d = [];
-            d.push(cpu_data[i]);
-            d.push(memory_data[i]);
-            d.push(swap_data[i]);
-            var c = [];
+            var new_datasets = [];
+            for (var i = 0; i < t; i++) {
+                var d = [];
+                d.push(cpu_data[i]);
+                d.push(memory_data[i]);
+                d.push(swap_data[i]);
+                var c = [];
 
-            k = Object.keys(window.chartColors);
-            var c = [
-                        window.chartColors[k[i % k.length]] ,
-                        window.chartColors[k[(i+1) % k.length]],
-                        window.chartColors[k[(i+2) % k.length]],
-                    ];
+                k = Object.keys(window.chartColors);
+                var c = [
+                            window.chartColors[k[i % k.length]] ,
+                            window.chartColors[k[(i+1) % k.length]],
+                            window.chartColors[k[(i+2) % k.length]],
+                        ];
 
-            new_datasets.push({data:d, backgroundColor: c});
+                new_datasets.push({data:d, backgroundColor: c});
+            }
+            window.APP.charts.overview.data.datasets = new_datasets;
+            window.APP.charts.overview.update();
+        } catch (e) {
+
+            console.log("Error on: overview\n", e);
+
         }
-        window.APP.charts.overview.data.datasets = new_datasets;
-        window.APP.charts.overview.update();
     }
 });
 
 window.APP.update_funcs.push({
     interval: 60000,
     func: function () {
-        var ovd = window.APP.page_data.overview;
-        var cpud = window.APP.page_data.cpu;
+        try {
 
-        $('.overview-cpu').html(ovd.cpus.cpus + ' x ' + ovd.cpus.type);
-        $('.overview-platform').html(ovd.osname);
-        $('.overview-kernel').html(ovd.kernel);
-        $('.overview-uptime').html(ovd.uptime);
-        $('.overview-hostname').html(ovd.hostname);
+            var ovd = window.APP.page_data.overview;
+            var cpud = window.APP.page_data.cpu;
+
+            $('.overview-cpu').html(ovd.cpus.cpus + ' x ' + ovd.cpus.type);
+            $('.overview-platform').html(ovd.osname || 'Not Available');
+            $('.overview-kernel').html(ovd.kernel || 'Not Available');
+            $('.overview-uptime').html(ovd.uptime || 'Not Available');
+            $('.overview-hostname').html(ovd.hostname || 'Not Available');
+
+        } catch (e) {
+
+            console.log("Error on: overview\n", e);
+
+        }
     }
 });
