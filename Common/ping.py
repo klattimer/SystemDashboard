@@ -4,6 +4,7 @@ import struct
 import select
 import time
 import logging
+import random
 
 default_timer = time.time
 
@@ -109,7 +110,8 @@ def ping(dest_addr, timeout=2):
         logging.exception("Failed to create raw socket")
         return -3
 
-    my_ID = os.getpid() & 0xFFFF
+    #my_ID = os.getpid() & 0xFFFF
+    my_ID = random.randint(1, 65535) & 0xFFFF
 
     try:
         send_one_ping(my_socket, dest_addr, my_ID)
