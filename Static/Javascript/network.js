@@ -29,6 +29,7 @@ var traffic_config = {
                             { divider: 1e3, suffix: 'k' }
                         ];
                         function formatNumber(n) {
+                            n = n / 10; // Data comes in once every 10s
                             for (var i = 0; i < ranges.length; i++) {
                                if (n >= ranges[i].divider) {
                                   return (n / ranges[i].divider).toString() + ranges[i].suffix;
