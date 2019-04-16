@@ -53,12 +53,18 @@ class LogAPI(APIPluginInterface):
 
         start = chunk_start % length
         end = start + chunk_size
+        if start > length:
+            start = length
         if end > length:
             end = length
 
         with open(fname) as f:
-            f.seek(offsets[start])
-            chunk = f.read(offsets[end] - offsets[start])
+            try:
+                f.seek(offsets[start])
+                chunk = f.read(offsets[end] - offsets[start])
+            except:
+                logging.exception("Problem loading data chunk")
+                logging.debug("File: %s, Length: %d, Start: %d, End: %d" % (fname, length, start, end))
         return {
             "num_lines": length,
             "start": start,
