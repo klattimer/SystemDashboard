@@ -4,6 +4,12 @@ window.APP.fetch.push({
     interval: 10000
 });
 
+window.APP.fetch.push({
+    url: '/api/radar',
+    key: 'radar',
+    interval: 10000
+});
+
 var traffic_config = {
     type: 'line',
     data: {
@@ -79,6 +85,7 @@ var radar_config = {
                 44,
                 95
             ],
+            pointBackgroundColor: window.chartColors.red,
             fill: false,
             borderWidth:0,
             borderColor:"rgba(0,0,0,0)"
@@ -176,6 +183,28 @@ window.APP.update_funcs.push({
             window.APP.charts.traffic.data.datasets = datasets;
             window.APP.charts.traffic.update();
 
+            datasets = [];
+            labels = [];
+            var blips = window.APP.page_data.radar;
+
+            for (var i = 0; i < blips.length; i++) {
+                var blip = blips[i];
+                var ms = blip[1] * 1000;
+                var msi = parseInt(ms);
+                if (msi == 0) {
+                    ns = blip[1] * 1000000;
+                    nsi = parseInt(ns)
+                    time = ns + 'ns';
+                } else {
+                    time = ms + 'ms';
+                }
+                datasets.push(blip[1])
+                labels.push(blip[0] + ',  ' + time)
+            }
+
+            window.APP.charts.radar.data.datasets.data = datasets;
+            window.APP.charts.radar.data.labels = labels;
+            window.APP.charts.radar.update();
         } catch (e) {
 
             console.log("Error on: network\n", e);
