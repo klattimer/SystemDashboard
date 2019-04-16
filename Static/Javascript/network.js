@@ -54,9 +54,37 @@ var traffic_config = {
 var radar_config = {
     type: 'radar',
     data: {
-        labels: [],
+        labels: [
+            "192.168.1.1 - 34ms",
+            "192.168.1.11 - 88ms",
+            "192.168.1.12 - 43ms",
+            "192.168.1.142 - 12ms",
+            "192.168.1.13 - 124ms",
+            "192.168.1.8 - 152ms",
+            "192.168.1.15 - 34ms",
+            "192.168.1.9 - 45ms",
+            "192.168.1.19 - 12ms",
+            "192.168.1.21 - 144ms",
+            "192.168.1.41 - 122ms",
+            "192.168.1.40 - 44ms",
+            "192.168.1.56 - 95ms",
+        ],
         datasets: [{
-            data: [],
+            data: [
+                34,
+                88,
+                43,
+                12,
+                124,
+                152,
+                34,
+                45,
+                12,
+                144,
+                122,
+                44,
+                95
+            ],
             pointBackgroundColor: window.chartColors.red,
             fill: false,
             borderWidth:0,
@@ -155,7 +183,7 @@ window.APP.update_funcs.push({
             window.APP.charts.traffic.data.datasets = datasets;
             window.APP.charts.traffic.update();
 
-            datasets = [];
+            dataset = [];
             labels = [];
             var blips = window.APP.page_data.radar;
 
@@ -170,11 +198,11 @@ window.APP.update_funcs.push({
                 } else {
                     time = ms + 'ms';
                 }
-                datasets.push(blip[1])
-                labels.push(blip[0] + ',  ' + time)
+                dataset.push(blip[1]);
+                labels.push(blip[0]); // + ',  ' + time)
             }
 
-            window.APP.charts.radar.data.datasets.data = datasets;
+            window.APP.charts.radar.data.datasets.data = dataset;
             window.APP.charts.radar.data.labels = labels;
             window.APP.charts.radar.update();
         } catch (e) {
