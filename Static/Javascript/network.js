@@ -120,57 +120,65 @@ window.APP.load.push(function() {
 window.APP.update_funcs.push({
     interval: 10000,
     func: function () {
-        var size = 61;
-        var dev = Object.keys(window.APP.page_data.network.io)[0];
+        try {
 
-        var last = window.APP.net_in_last;
-        if (last == 0) last = window.APP.page_data.network.io[dev].bytes_recv;
-        window.APP.net_in_last = window.APP.page_data.network.io[dev].bytes_recv;
-        var in_bps = (window.APP.net_in_last - last) / 10;
+            var size = 61;
+            var dev = Object.keys(window.APP.page_data.network.io)[0];
 
-        last = window.APP.net_out_last;
-        if (last == 0) last = window.APP.page_data.network.io[dev].bytes_sent;
-        window.APP.net_out_last = window.APP.page_data.network.io[dev].bytes_sent;
-        var out_bps = (window.APP.net_out_last - last) / 10;
+            var last = window.APP.net_in_last;
+            if (last == 0) last = window.APP.page_data.network.io[dev].bytes_recv;
+            window.APP.net_in_last = window.APP.page_data.network.io[dev].bytes_recv;
+            var in_bps = (window.APP.net_in_last - last) / 10;
 
-        window.APP.net_history[0].push(in_bps);
-        window.APP.net_history[1].push(out_bps);
+            last = window.APP.net_out_last;
+            if (last == 0) last = window.APP.page_data.network.io[dev].bytes_sent;
+            window.APP.net_out_last = window.APP.page_data.network.io[dev].bytes_sent;
+            var out_bps = (window.APP.net_out_last - last) / 10;
 
-        datasets = [];
-        for (var i = 0; i < window.APP.net_history.length; i++) {
-            var len = window.APP.net_history[i].length;
-            if (len > size) {
-                window.APP.net_history[i] = window.APP.net_history[i].slice(len - size, len);
-            } else {
-                for (var j = 0; j < size - len; j++) {
-                    window.APP.net_history[i].splice(0, 0, 0);
+            window.APP.net_history[0].push(in_bps);
+            window.APP.net_history[1].push(out_bps);
+
+            datasets = [];
+            for (var i = 0; i < window.APP.net_history.length; i++) {
+                var len = window.APP.net_history[i].length;
+                if (len > size) {
+                    window.APP.net_history[i] = window.APP.net_history[i].slice(len - size, len);
+                } else {
+                    for (var j = 0; j < size - len; j++) {
+                        window.APP.net_history[i].splice(0, 0, 0);
+                    }
                 }
             }
+
+            dataset = {
+                data: window.APP.net_history[0],
+                borderColor: window.chartColors.blue,
+                pointBackgroundColor: window.chartColors.blue,
+                borderWidth: 1,
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            };
+            datasets.push(dataset);
+
+            dataset = {
+                data: window.APP.net_history[1],
+                borderColor: window.chartColors.red,
+                pointBackgroundColor: window.chartColors.red,
+                borderWidth: 1,
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            };
+            datasets.push(dataset);
+
+            window.APP.charts.traffic.data.datasets = datasets;
+            window.APP.charts.traffic.update();
+
+        } catch (e) {
+
+            console.log("Error on: network\n", e);
+
         }
-
-        dataset = {
-            data: window.APP.net_history[0],
-            borderColor: window.chartColors.blue,
-            pointBackgroundColor: window.chartColors.blue,
-            borderWidth: 1,
-            fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0
-        };
-        datasets.push(dataset);
-
-        dataset = {
-            data: window.APP.net_history[1],
-            borderColor: window.chartColors.red,
-            pointBackgroundColor: window.chartColors.red,
-            borderWidth: 1,
-            fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0
-        };
-        datasets.push(dataset);
-
-        window.APP.charts.traffic.data.datasets = datasets;
-        window.APP.charts.traffic.update();
     }
 });

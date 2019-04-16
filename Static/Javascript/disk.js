@@ -209,130 +209,166 @@ window.APP.load.push(function (event) {
 window.APP.update_funcs.push({
     interval: 1000,
     func: function() {
-        var size = 61;
+        try {
 
-        var last = window.APP.disk_in_last;
-        if (last == 0) last = window.APP.page_data.diskio.total_io.read_bytes;
-        window.APP.disk_in_last = window.APP.page_data.diskio.total_io.read_bytes;
-        var in_bps = window.APP.disk_in_last - last;
+            var size = 61;
 
-        last = window.APP.disk_out_last;
-        if (last == 0) last = window.APP.page_data.diskio.total_io.write_bytes;
-        window.APP.disk_out_last = window.APP.page_data.diskio.total_io.write_bytes;
-        var out_bps = window.APP.disk_out_last - last;
+            var last = window.APP.disk_in_last;
+            if (last == 0) last = window.APP.page_data.diskio.total_io.read_bytes;
+            window.APP.disk_in_last = window.APP.page_data.diskio.total_io.read_bytes;
+            var in_bps = window.APP.disk_in_last - last;
 
-        window.APP.diskrw_history[0].push(in_bps);
-        window.APP.diskrw_history[1].push(out_bps);
+            last = window.APP.disk_out_last;
+            if (last == 0) last = window.APP.page_data.diskio.total_io.write_bytes;
+            window.APP.disk_out_last = window.APP.page_data.diskio.total_io.write_bytes;
+            var out_bps = window.APP.disk_out_last - last;
 
-        datasets = [];
-        for (var i = 0; i < window.APP.diskrw_history.length; i++) {
-            var len = window.APP.diskrw_history[i].length;
-            if (len > size) {
-                window.APP.diskrw_history[i] = window.APP.diskrw_history[i].slice(len - size, len);
-            } else {
-                for (var j = 0; j < size - len; j++) {
-                    window.APP.diskrw_history[i].splice(0, 0, 0);
+            window.APP.diskrw_history[0].push(in_bps);
+            window.APP.diskrw_history[1].push(out_bps);
+
+            datasets = [];
+            for (var i = 0; i < window.APP.diskrw_history.length; i++) {
+                var len = window.APP.diskrw_history[i].length;
+                if (len > size) {
+                    window.APP.diskrw_history[i] = window.APP.diskrw_history[i].slice(len - size, len);
+                } else {
+                    for (var j = 0; j < size - len; j++) {
+                        window.APP.diskrw_history[i].splice(0, 0, 0);
+                    }
                 }
             }
+
+            dataset = {
+                data: window.APP.diskrw_history[0],
+                borderColor: window.chartColors.blue,
+                pointBackgroundColor: window.chartColors.blue,
+                borderWidth: 1,
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            };
+            datasets.push(dataset);
+
+            dataset = {
+                data: window.APP.diskrw_history[1],
+                borderColor: window.chartColors.red,
+                pointBackgroundColor: window.chartColors.red,
+                borderWidth: 1,
+                fill: false,
+                pointRadius: 0,
+                pointHoverRadius: 0
+            };
+            datasets.push(dataset);
+
+            window.APP.charts.diskrw.data.datasets = datasets;
+            window.APP.charts.diskrw.update();
+
+        } catch (e) {
+
+            console.log("Error on: diskio\n", e);
+
         }
 
-        dataset = {
-            data: window.APP.diskrw_history[0],
-            borderColor: window.chartColors.blue,
-            pointBackgroundColor: window.chartColors.blue,
-            borderWidth: 1,
-            fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0
-        };
-        datasets.push(dataset);
-
-        dataset = {
-            data: window.APP.diskrw_history[1],
-            borderColor: window.chartColors.red,
-            pointBackgroundColor: window.chartColors.red,
-            borderWidth: 1,
-            fill: false,
-            pointRadius: 0,
-            pointHoverRadius: 0
-        };
-        datasets.push(dataset);
-
-        window.APP.charts.diskrw.data.datasets = datasets;
-        window.APP.charts.diskrw.update();
     }
 });
 
 window.APP.update_funcs.push({
     interval: 60000,
     func: function () {
-        var dd = window.APP.page_data.disk;
-        for (var i = 0; i < window.APP.charts.disk_usage.length; i++) {
-            var d = dd.usage[Object.keys(dd.usage)[i]];
-            var label_id = 'disk'+i+'-percent';
-            var chart = window.APP.charts.disk_usage[i];
-            $('#' + label_id).html(100 - parseInt(d.percent) +'%');
-            chart.data.datasets[0].data = [parseInt(d.percent), (100 - parseInt(d.percent))];
-            chart.update();
-        }
 
-        for (var i = 0; i < window.APP.charts.rebuild_raid.length; i++) {
-            var chart = window.APP.charts.rebuild_raid[i];
-            var k = chart.array_key;
-            var d = chart.array_data;
-            var label_id = k+'-rebuild-percent';
-            $('#' + label_id).html(d.resync.progress);
-            chart.data.datasets[0].data = [parseFloat(d.resync.progress), 100 - parseFloat(d.resync.progress)];
-            chart.update();
-        }
+        try {
 
-
-        $('#disktemp').find('tbody').html('');
-
-        for (var i = 0; i < Object.keys(window.APP.page_data.disk.temperatures).length; i++) {
-            var disk = Object.keys(window.APP.page_data.disk.temperatures)[i];
-            var temp = window.APP.page_data.disk.temperatures[disk];
-
-            var state = '<i class="fas fa-circle status-blue"></i>';
-            if (temp > 60) {
-                state = '<i class="fas fa-circle status-orange"></i>';
-            }
-            if (temp > 80) {
-                state = '<i class="fas fa-circle status-red"></i>';
+            var dd = window.APP.page_data.disk;
+            for (var i = 0; i < window.APP.charts.disk_usage.length; i++) {
+                var d = dd.usage[Object.keys(dd.usage)[i]];
+                var label_id = 'disk'+i+'-percent';
+                var chart = window.APP.charts.disk_usage[i];
+                $('#' + label_id).html(100 - parseInt(d.percent) +'%');
+                chart.data.datasets[0].data = [parseInt(d.percent), (100 - parseInt(d.percent))];
+                chart.update();
             }
 
-            var row = '<tr><td>'+disk+'</td><td>'+temp+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
-            $('#disktemp').find('tbody').append(row);
+            for (var i = 0; i < window.APP.charts.rebuild_raid.length; i++) {
+                var chart = window.APP.charts.rebuild_raid[i];
+                var k = chart.array_key;
+                var d = chart.array_data;
+                var label_id = k+'-rebuild-percent';
+                $('#' + label_id).html(d.resync.progress);
+                chart.data.datasets[0].data = [parseFloat(d.resync.progress), 100 - parseFloat(d.resync.progress)];
+                chart.update();
+            }
+
+
+        } catch (e) {
+
+            console.log("Error on: disk\n", e);
+
         }
 
-        if (window.APP.page_data.disk.mdstat.devices !== undefined) {
-            for (var i = 0; i < Object.keys(window.APP.page_data.disk.mdstat.devices).length; i++) {
-                var k = Object.keys(window.APP.page_data.disk.mdstat.devices)[i];
-                var array = window.APP.page_data.disk.mdstat.devices[k];
+        try {
 
-                var id = k+'-disk-table';
+            $('#disktemp').find('tbody').html('');
 
-                $('#' + id).find('tbody').html('');
-                for (var j = 0; j < Object.keys(array.disks).length; j++) {
-                    var n = Object.keys(array.disks)[j];
-                    var dd = array.disks[n];
+            for (var i = 0; i < Object.keys(window.APP.page_data.disk.temperatures).length; i++) {
+                var disk = Object.keys(window.APP.page_data.disk.temperatures)[i];
+                var temp = window.APP.page_data.disk.temperatures[disk];
 
-                    var state = "active sync";
-                    var icon = "<i class='fas fa-check-circle status-green'></i>";
-                    if (dd.spare && dd.replacement) {
-                        state = "spare rebuilding";
-                        icon = "<i class='fas fa-check-circle status-orange'></i>";
-                    } else if (dd.spare) {
-                        state = "spare";
-                        icon = "<i class='fas fa-pause-circle status-grey'></i>";
-                    } else if (dd.faulty) {
-                        state = "faulty";
-                        icon = "<i class='fas fa-times-circle status-red'></i>";
+                var state = '<i class="fas fa-circle status-blue"></i>';
+                if (temp > 60) {
+                    state = '<i class="fas fa-circle status-orange"></i>';
+                }
+                if (temp > 80) {
+                    state = '<i class="fas fa-circle status-red"></i>';
+                }
+
+                var row = '<tr><td>'+disk+'</td><td>'+temp+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
+                $('#disktemp').find('tbody').append(row);
+            }
+
+        } catch (e) {
+
+            $('#disktemp').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
+
+            console.log("Error on: disk\n", e);
+
+        }
+
+        try {
+
+            if (window.APP.page_data.disk.mdstat.devices !== undefined) {
+                for (var i = 0; i < Object.keys(window.APP.page_data.disk.mdstat.devices).length; i++) {
+                    var k = Object.keys(window.APP.page_data.disk.mdstat.devices)[i];
+                    var array = window.APP.page_data.disk.mdstat.devices[k];
+
+                    var id = k+'-disk-table';
+
+                    $('#' + id).find('tbody').html('');
+                    for (var j = 0; j < Object.keys(array.disks).length; j++) {
+                        var n = Object.keys(array.disks)[j];
+                        var dd = array.disks[n];
+
+                        var state = "active sync";
+                        var icon = "<i class='fas fa-check-circle status-green'></i>";
+                        if (dd.spare && dd.replacement) {
+                            state = "spare rebuilding";
+                            icon = "<i class='fas fa-check-circle status-orange'></i>";
+                        } else if (dd.spare) {
+                            state = "spare";
+                            icon = "<i class='fas fa-pause-circle status-grey'></i>";
+                        } else if (dd.faulty) {
+                            state = "faulty";
+                            icon = "<i class='fas fa-times-circle status-red'></i>";
+                        }
+                        var row = "<tr><td>"+dd.number+"</td><td>"+n+"</td><td>"+state+"</td><td class='narrow'>"+icon+"</td></tr>";
+                        $('#' + id).find('tbody').append(row);
                     }
-                    var row = "<tr><td>"+dd.number+"</td><td>"+n+"</td><td>"+state+"</td><td class='narrow'>"+icon+"</td></tr>";
-                    $('#' + id).find('tbody').append(row);
                 }
             }
+
+        } catch (e) {
+
+            console.log("Error on: disk\n", e);
+
         }
     }
 });
