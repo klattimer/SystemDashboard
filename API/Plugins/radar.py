@@ -42,7 +42,7 @@ class RadarAPI(APIPluginInterface):
         address_list = list(netaddr.IPNetwork(network).iter_hosts())
         ping_results = []
 
-        pool = ThreadPool(processes=1000)
+        pool = ThreadPool(processes=1)
         async_results = []
         for address in address_list:
             logging.debug("Pinging " + str(address))
