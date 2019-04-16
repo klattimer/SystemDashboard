@@ -5,10 +5,17 @@ from Common.tools import get_primary_ip
 from Common.ping import ping
 import logging
 import netaddr
+from multiprocessing.pool import ThreadPool
+from time import sleep
+
 
 __plugin__ = "RadarAPI"
 __plugin_version__ = "0.1"
 
+
+def lping(address, timeout)
+    delay = ping(str(address), timeout=0.5)
+    return (address, delay)
 
 class RadarAPI(APIPluginInterface):
     api_path = "/api/radar"
@@ -34,9 +41,16 @@ class RadarAPI(APIPluginInterface):
         network = ip + '/' + str(netaddr.IPAddress(netmask).netmask_bits())
         address_list = list(netaddr.IPNetwork(network).iter_hosts())
         ping_results = []
+
+        pool = ThreadPool(processes=1)
+        async_results = []
         for address in address_list:
             logging.debug("Pinging " + str(address))
-            delay = ping(str(address), timeout=0.5)
-            if delay > 0:
-                ping_results.append([str(address), delay])
+            async_results.append(pool.apply_async(lping, (str(address), 0.5)))
+
+        sleep(1)
+
+        for asyng_result in async_results:
+                ping_results.append(asyng_result.get())
+
         return ping_results
