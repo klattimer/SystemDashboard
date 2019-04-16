@@ -53,7 +53,7 @@
 
                 });
                 window.APP.decrement_interval = null;
-                $('.power-menu .slider').change(function (event) {
+                $('.power-menu .slider').mouseup(function (event) {
                     var max = parseInt(event.target.max);
                     var min = parseInt(event.target.min);
                     var value = parseInt(event.target.value);
