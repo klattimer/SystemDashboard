@@ -38,5 +38,5 @@ class RadarAPI(APIPluginInterface):
             logging.debug("Pinging " + str(address))
             delay = ping(str(address), timeout=0.5)
             if delay > 0:
-                ping_results.append([address, delay])
+                ping_results.append([str(address), delay])
         return ping_results
