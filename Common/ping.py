@@ -104,10 +104,7 @@ def ping(dest_addr, timeout=2):
     icmp = socket.getprotobyname("icmp")
     try:
         my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
-    except socket.error, (errno, msg):
-        if errno == 1:
-            print msg
-            return -2
+    except:
         return -3
 
     my_ID = os.getpid() & 0xFFFF
