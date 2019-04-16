@@ -11,7 +11,7 @@ __plugin_version__ = "0.1"
 
 
 class RadarAPI(APIPluginInterface):
-    api_path = "/api/network"
+    api_path = "/api/radar"
     api_config = {
         '/': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
