@@ -58,6 +58,7 @@ class LogAPI(APIPluginInterface):
         if end > length:
             end = length
 
+        chunk = ""
         with open(fname) as f:
             try:
                 f.seek(offsets[start])
