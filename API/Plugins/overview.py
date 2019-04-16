@@ -5,6 +5,7 @@ from datetime import timedelta
 import platform
 import os
 import multiprocessing
+from Common.tools import get_primary_ip
 
 __plugin__ = "OverviewAPI"
 __plugin_version__ = "0.1"
@@ -83,6 +84,7 @@ class OverviewAPI(APIPluginInterface):
 
     def GET(self, **params):
         data = {}
+        data['primary_ip'] = get_primary_ip()
         data['uptime'] = self._get_uptime()
         data['cpus'] = self._get_cpus()
         data.update(self._get_platform())

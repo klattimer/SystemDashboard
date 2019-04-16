@@ -151,6 +151,7 @@ window.APP.update_funcs.push({
             $('.overview-kernel').html(ovd.kernel || 'Not Available');
             $('.overview-uptime').html(ovd.uptime || 'Not Available');
             $('.overview-hostname').html(ovd.hostname || 'Not Available');
+            $('.overview-ip').html(ovd.primary_ip || 'Not Available');
 
         } catch (e) {
 
