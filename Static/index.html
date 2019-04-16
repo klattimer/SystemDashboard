@@ -50,18 +50,24 @@
                         $('.power-menu').show();
                         window.APP.power_visible = true;
                     }
-                    $('.power-menu .slider').change(function (event) {
-                        var max = parseInt(event.target.max);
-                        var min = parseInt(event.target.min);
-                        var value = parseInt(event.target.value);
-                        if (value < .9 * max) {
-                            event.target.value = 0;
-                        } else {
-                            event.target.value = max;
-                        }
-                    });
-                });
 
+                });
+                window.APP.decrement_interval = null;
+                $('.power-menu .slider').change(function (event) {
+                    var max = parseInt(event.target.max);
+                    var min = parseInt(event.target.min);
+                    var value = parseInt(event.target.value);
+                    if (value < .9 * max) {
+                        window.APP.decrement_interval = setInterval(function () {
+                            if (parseInt(event.target.value) == 0) {
+                                clearInterval(window.APP.decrement_interval);
+                            }
+                            event.target.value = parseInt(parseInt(event.target.value) * 0.8)
+                        }, 10);
+                    } else {
+                        event.target.value = max;
+                    }
+                });
             });
         </script>
         <link rel="stylesheet" type="text/css" href="CSS/theme-default.css">
