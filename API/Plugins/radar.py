@@ -53,4 +53,4 @@ class RadarAPI(APIPluginInterface):
         for asyng_result in async_results:
                 ping_results.append(asyng_result.get())
 
-        return ping_results
+        return [ping for ping in ping_results if ping[1] > 0]
