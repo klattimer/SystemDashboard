@@ -202,7 +202,7 @@ window.APP.update_funcs.push({
                 labels.push(blip[0]); // + ',  ' + time)
             }
 
-            window.APP.charts.radar.data.datasets.data = dataset;
+            window.APP.charts.radar.data.datasets[0].data = dataset;
             window.APP.charts.radar.data.labels = labels;
             window.APP.charts.radar.update();
         } catch (e) {
