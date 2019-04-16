@@ -162,121 +162,139 @@ window.APP.load.push(function (event) {
 window.APP.update_funcs.push({
     interval: 10000,
     func: function () {
-        var size = 61;
-        var cpud = window.APP.page_data.cpu;
+        try {
 
-        s = cpud.memory.used / cpud.memory.total;
-        s = parseInt(s * 100);
-        window.APP.memory_history.push(s);
-        var len = window.APP.memory_history.length;
-        if (len > size) {
-            window.APP.memory_history = window.APP.memory_history.slice(len - size, len);
-        } else {
-            for (var j = 0; j < size - len; j++) {
-                window.APP.memory_history.splice(0, 0, 0);
-            }
-        }
-        dataset = {
-            data: window.APP.memory_history,
-            borderColor: window.chartColors.orange,
-            pointBackgroundColor: window.chartColors.orange,
-            borderWidth: 1,
-            fill: true,
-            backgroundColor: window.chartColors.yellow,
-            pointRadius: 0,
-            pointHoverRadius: 0
-        };
-        window.APP.charts.memory.data.datasets = [dataset];
-        window.APP.charts.memory.update();
-        window.APP.load_history[0].push(window.APP.page_data.loadave["1"]);
-        window.APP.load_history[1].push(window.APP.page_data.loadave["5"]);
-        window.APP.load_history[2].push(window.APP.page_data.loadave["15"]);
+            var size = 61;
+            var cpud = window.APP.page_data.cpu;
 
-        datasets = [];
-        for (var i = 0; i < window.APP.load_history.length; i++) {
-            var len = window.APP.load_history[i].length;
+            s = cpud.memory.used / cpud.memory.total;
+            s = parseInt(s * 100);
+            window.APP.memory_history.push(s);
+            var len = window.APP.memory_history.length;
             if (len > size) {
-                window.APP.load_history[i] = window.APP.load_history[i].slice(len - size, len);
+                window.APP.memory_history = window.APP.memory_history.slice(len - size, len);
             } else {
                 for (var j = 0; j < size - len; j++) {
-                    window.APP.load_history[i].splice(0, 0, 0);
+                    window.APP.memory_history.splice(0, 0, 0);
                 }
             }
-
-            k = Object.keys(window.chartColors);
-            var c = window.chartColors[k[i % k.length]];
             dataset = {
-                data: window.APP.load_history[i],
-                borderColor: c,
-                pointBackgroundColor: c,
+                data: window.APP.memory_history,
+                borderColor: window.chartColors.orange,
+                pointBackgroundColor: window.chartColors.orange,
                 borderWidth: 1,
                 fill: true,
-                backgroundColor: c,
+                backgroundColor: window.chartColors.yellow,
                 pointRadius: 0,
                 pointHoverRadius: 0
             };
-            datasets.push(dataset);
-        }
-        window.APP.charts.load.data.datasets = datasets;
-        window.APP.charts.load.update();
+            window.APP.charts.memory.data.datasets = [dataset];
+            window.APP.charts.memory.update();
+            window.APP.load_history[0].push(window.APP.page_data.loadave["1"]);
+            window.APP.load_history[1].push(window.APP.page_data.loadave["5"]);
+            window.APP.load_history[2].push(window.APP.page_data.loadave["15"]);
 
-        $('#sensors').find('tbody').html('');
-
-        for (var i = 0; i < Object.keys(window.APP.page_data.cpu.temperatures).length; i++) {
-            var k = Object.keys(window.APP.page_data.cpu.temperatures)[i];
-            var v = window.APP.page_data.cpu.temperatures[k];
-            for (var j = 0; j < v.length; j++) {
-                var t = v[j];
-                var name = k + " " + j;
-                if (t.label.length > 0) {
-                    name = t.label;
-                }
-                var state = '<i class="fas fa-circle status-blue"></i>';
-                if (t.current > t.high) {
-                    state = '<i class="fas fa-circle status-orange"></i>';
-                }
-                if (t.current > t.critical) {
-                    state = '<i class="fas fa-circle status-red"></i>';
+            datasets = [];
+            for (var i = 0; i < window.APP.load_history.length; i++) {
+                var len = window.APP.load_history[i].length;
+                if (len > size) {
+                    window.APP.load_history[i] = window.APP.load_history[i].slice(len - size, len);
+                } else {
+                    for (var j = 0; j < size - len; j++) {
+                        window.APP.load_history[i].splice(0, 0, 0);
+                    }
                 }
 
-                var row = '<tr><td>'+name+'</td><td>'+t.current+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
-                $('#sensors').find('tbody').append(row);
+                k = Object.keys(window.chartColors);
+                var c = window.chartColors[k[i % k.length]];
+                dataset = {
+                    data: window.APP.load_history[i],
+                    borderColor: c,
+                    pointBackgroundColor: c,
+                    borderWidth: 1,
+                    fill: true,
+                    backgroundColor: c,
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                };
+                datasets.push(dataset);
             }
+            window.APP.charts.load.data.datasets = datasets;
+            window.APP.charts.load.update();
+
+            $('#sensors').find('tbody').html('');
+
+            for (var i = 0; i < Object.keys(window.APP.page_data.cpu.temperatures).length; i++) {
+                var k = Object.keys(window.APP.page_data.cpu.temperatures)[i];
+                var v = window.APP.page_data.cpu.temperatures[k];
+                for (var j = 0; j < v.length; j++) {
+                    var t = v[j];
+                    var name = k + " " + j;
+                    if (t.label.length > 0) {
+                        name = t.label;
+                    }
+                    var state = '<i class="fas fa-circle status-blue"></i>';
+                    if (t.current > t.high) {
+                        state = '<i class="fas fa-circle status-orange"></i>';
+                    }
+                    if (t.current > t.critical) {
+                        state = '<i class="fas fa-circle status-red"></i>';
+                    }
+
+                    var row = '<tr><td>'+name+'</td><td>'+t.current+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
+                    $('#sensors').find('tbody').append(row);
+                }
+            }
+
+        } catch (e) {
+
+            $('#sensors').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
+
+            console.log("Error on: load\n", e);
+
         }
+
     }
 });
 
 window.APP.update_funcs.push({
     interval: 1000,
     func: function () {
-        var size = 61;
-        var cpud = window.APP.page_data.cpu;
-        var datasets = [];
-        for (var i = 0; i < cpud.cpu_percent.length;i++) {
-            var pc = cpud.cpu_percent[i];
-            window.APP.cpu_history[i].push(pc);
-            var len = window.APP.cpu_history[i].length;
-            if (len > size) {
-                window.APP.cpu_history[i] = window.APP.cpu_history[i].slice(len - size, len);
-            } else {
-                for (var j = 0; j < size - len; j++) {
-                    window.APP.cpu_history[i].splice(0, 0, 0);
+        try {
+            var size = 61;
+            var cpud = window.APP.page_data.cpu;
+            var datasets = [];
+            for (var i = 0; i < cpud.cpu_percent.length;i++) {
+                var pc = cpud.cpu_percent[i];
+                window.APP.cpu_history[i].push(pc);
+                var len = window.APP.cpu_history[i].length;
+                if (len > size) {
+                    window.APP.cpu_history[i] = window.APP.cpu_history[i].slice(len - size, len);
+                } else {
+                    for (var j = 0; j < size - len; j++) {
+                        window.APP.cpu_history[i].splice(0, 0, 0);
+                    }
                 }
+                k = Object.keys(window.chartColors);
+                var c = window.chartColors[k[i % k.length]];
+                dataset = {
+                    data: window.APP.cpu_history[i],
+                    borderColor: c,
+                    pointBackgroundColor: c,
+                    borderWidth: 1,
+                    fill: false,
+                    pointRadius: 0,
+                    pointHoverRadius: 0
+                };
+                datasets.push(dataset);
             }
-            k = Object.keys(window.chartColors);
-            var c = window.chartColors[k[i % k.length]];
-            dataset = {
-                data: window.APP.cpu_history[i],
-                borderColor: c,
-                pointBackgroundColor: c,
-                borderWidth: 1,
-                fill: false,
-                pointRadius: 0,
-                pointHoverRadius: 0
-            };
-            datasets.push(dataset);
+            window.APP.charts.cpu.data.datasets = datasets;
+            window.APP.charts.cpu.update();
+
+        } catch (e) {
+
+            console.log("Error on: load\n", e);
+
         }
-        window.APP.charts.cpu.data.datasets = datasets;
-        window.APP.charts.cpu.update();
     }
 });

@@ -17,8 +17,6 @@ window.APP = {
         var containers = $('.chart-container');
         for (var i = 0; i < containers.length; i++) {
             var canvas = $(containers[i]).find('canvas')[0];
-            console.log($(containers[i]).width());
-            console.log($(containers[i]).height());
 
             $(canvas).attr('width', $(containers[i]).width());
             $(canvas).attr('height', $(containers[i]).height());
@@ -33,11 +31,15 @@ window.APP = {
         for (var i = 0;i < window.APP.update_funcs.length; i++) {
             (function(index) {
                 var int = setInterval(function() {
-                    window.APP.update_funcs[index].func();
+                    try {
+                        window.APP.update_funcs[index].func();
+                    } catch (e) {}
                 }, window.APP.update_funcs[index].interval);
                 window.APP._intervals.push(int);
             })(i);
-            window.APP.update_funcs[i].func();
+            try {
+                window.APP.update_funcs[i].func();
+            } catch (e) {}
         }
         $('.widget-grid-container').masonry({
             columnWidth: $('.widget-grid').width() / 4
@@ -45,15 +47,30 @@ window.APP = {
     },
     _get: function (fetch_obj, inc_get) {
         $.get( fetch_obj.url, function(data) {
+
             window.APP.page_data[fetch_obj.key] = data;
+
             if (inc_get === true) {
                 window.APP._gotcount++;
             }
+
             if (window.APP._getcount == window.APP._gotcount && window.APP._loaded === false) {
                 window.APP._loaded = true;
                 window.APP._load();
             }
-        }, "json");
+        }, "json")
+        .fail(function() {
+
+            if (inc_get === true) {
+                window.APP._gotcount++;
+            }
+
+            if (window.APP._getcount == window.APP._gotcount && window.APP._loaded === false) {
+                window.APP._loaded = true;
+                window.APP._load();
+            }
+
+        });
     },
     onload: function (event) {
         window.APP._recalc_base_size();
