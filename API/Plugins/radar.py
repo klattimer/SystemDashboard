@@ -33,5 +33,9 @@ class RadarAPI(APIPluginInterface):
 
         network = ip + '/' + str(netaddr.IPAddress(netmask).netmask_bits())
         address_list = list(netaddr.IPNetwork(network).iter_hosts())
+        ping_results = []
         for address in address_list:
-            print (address)
+            delay = ping(address, timeout=0.5)
+            if delay > 0:
+                ping_results.append([address, delay])
+        return ping_results
