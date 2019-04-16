@@ -13,7 +13,7 @@ __plugin__ = "RadarAPI"
 __plugin_version__ = "0.1"
 
 
-def lping(address, timeout)
+def lping(address, timeout):
     delay = ping(str(address), timeout=0.5)
     return (address, delay)
 
