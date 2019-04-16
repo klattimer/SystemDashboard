@@ -31,7 +31,7 @@ class RadarAPI(APIPluginInterface):
                 if address.address == ip:
                     netmask = address.netmask
 
-        network = ip + '/' + str(IPAddress(netmask).netmask_bits())
+        network = ip + '/' + str(netaddr.IPAddress(netmask).netmask_bits())
         address_list = list(netaddr.IPNetwork(network).iter_hosts())
         for address in address_list:
             print (address)
