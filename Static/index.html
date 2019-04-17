@@ -53,20 +53,26 @@
 
                 });
                 window.APP.decrement_interval = null;
+                window.APP.release_timeout = null;
                 $('.power-menu .slider').mouseup(function (event) {
-                    var max = parseInt(event.target.max);
-                    var min = parseInt(event.target.min);
-                    var value = parseInt(event.target.value);
-                    if (value < .9 * max) {
-                        window.APP.decrement_interval = setInterval(function () {
-                            if (parseInt(event.target.value) == 0) {
-                                clearInterval(window.APP.decrement_interval);
-                            }
-                            event.target.value = parseInt(parseInt(event.target.value) * 0.8)
-                        }, 10);
-                    } else {
-                        event.target.value = max;
-                    }
+                    clearInterval(window.APP.release_timeout);
+                    window.APP.release_timeout = setTimeout(function() {
+                        var max = parseInt(event.target.max);
+                        var min = parseInt(event.target.min);
+                        var value = parseInt(event.target.value);
+                        if (value < .9 * max) {
+                            window.APP.decrement_interval = setInterval(function () {
+                                if (parseInt(event.target.value) == 0) {
+                                    clearInterval(window.APP.decrement_interval);
+                                    window.APP.decrement_interval = null;
+                                    return;
+                                }
+                                event.target.value = parseInt(parseInt(event.target.value) * 0.8)
+                            }, 10);
+                        } else {
+                            event.target.value = max;
+                        }
+                    }, 90);
                 });
             });
         </script>
