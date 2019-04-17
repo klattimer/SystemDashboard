@@ -63,7 +63,7 @@
                         if (value < .9 * max) {
                             window.APP.decrement_interval = setInterval(function () {
                                 console.log("Decrement interval running " + event.target.value);
-                                if (parseInt(event.target.value) == 0) {
+                                if (parseInt(event.target.value) == 1) {
                                     console.log("Decrement interval stopping");
                                     clearInterval(window.APP.decrement_interval);
                                     window.APP.decrement_interval = null;
