@@ -107,7 +107,6 @@ def ping(dest_addr, timeout=2):
     try:
         my_socket = socket.socket(socket.AF_INET, socket.SOCK_RAW, icmp)
     except:
-        logging.exception("Failed to create raw socket")
         return -3
 
     #my_ID = os.getpid() & 0xFFFF
@@ -117,11 +116,9 @@ def ping(dest_addr, timeout=2):
         send_one_ping(my_socket, dest_addr, my_ID)
         delay = receive_one_ping(my_socket, my_ID, timeout)
     except:
-        logging.exception("Timeout")
-        return -1
+        return -2
 
     if delay is None:
-        logging.exception("Network unreachable")
         return -1
 
     my_socket.close()
