@@ -1,7 +1,7 @@
 System Dashboard
 -
 
-This project has grown out of a need to have something which I can run on my servers without needing infrastructure or anything which allows me to monitor stuff going on, on that system, I'm not too bothered about aggregation or logging, in this project, I simply want to get information about the current state, periodically and display it in a way which I can survey at a glance.
+This project has grown out of a need to have something which I can run on my servers without needing infrastructure or anything, which allows me to monitor stuff going on, on that system, I'm not too bothered about aggregation or logging, in this project, I simply want to get information about the current state, periodically, and display it in a way which I can survey at a glance.
 
 It *could* be extended to add other features such as SNMP support and other such things, but it's really a simple tool which means instead of sshing into the system, typing a bunch of commands and making sure things are OK, instead I can go to a web page and see everything neatly organised and readable. 
 
