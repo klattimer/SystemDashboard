@@ -47,6 +47,7 @@ Planned features
 - Reboot and shutdown the system, logging that it is occurring and having a UI which can cope with it offlining 
 - A small, efficient javascript library to make it easy to add new modules directly via templates and python code
 - Zeroconf to announce itself, and a way of seeing "other" systems which are available to view.
+- Mount and unmount disks
 
 Requirements
 ---
