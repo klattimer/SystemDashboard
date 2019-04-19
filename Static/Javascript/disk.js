@@ -428,6 +428,8 @@ window.APP.update_funcs.push({
                     available = formatNumber(d.free) +'B';
                     percentage = parseInt(d.percent) + '%';
                     available_row = '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:'+percentage+'"></div></div>'+available+' Free'
+                } else {
+                    available_row = '';
                 }
 
                 row = '<tr><td class="narrow">'+state+'</td>' +
