@@ -90,5 +90,7 @@ window.APP = {
         }
     },
 };
-
+function getRootVar(variable) {
+    return getComputedStyle(document.documentElement).getPropertyValue(variable);
+}
 window.onload = window.APP.onload

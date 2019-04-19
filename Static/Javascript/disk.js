@@ -21,8 +21,8 @@ var disk_config = {
 				66,
 			],
 			backgroundColor: [
-				window.chartColors.red,
-				window.chartColors.blue
+				getRootVar("--color-red"),
+				getRootVar("--color-blue")
 			],
 			label: 'Disk Usage /'
 		}]
@@ -49,8 +49,8 @@ var rebuild_config = {
 		datasets: [{
 			data: [],
 			backgroundColor: [
-				window.chartColors.green,
-				window.chartColors.red
+				getRootVar("--color-green"),
+				getRootVar("--color-red")
 			]
 		}]
 	},
@@ -240,8 +240,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.diskrw_history[0],
-                borderColor: window.chartColors.blue,
-                pointBackgroundColor: window.chartColors.blue,
+                borderColor: getRootVar("--color-blue"),
+                pointBackgroundColor: getRootVar("--color-blue"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,
@@ -251,8 +251,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.diskrw_history[1],
-                borderColor: window.chartColors.red,
-                pointBackgroundColor: window.chartColors.red,
+                borderColor: getRootVar("--color-red"),
+                pointBackgroundColor: getRootVar("--color-red"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,

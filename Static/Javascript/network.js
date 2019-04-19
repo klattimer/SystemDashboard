@@ -85,7 +85,7 @@ var radar_config = {
                 44,
                 95
             ],
-            pointBackgroundColor: window.chartColors.red,
+            pointBackgroundColor: getRootVar("--color-red"),
             fill: false,
             borderWidth:0,
             borderColor:"rgba(0,0,0,0)"
@@ -160,8 +160,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.net_history[0],
-                borderColor: window.chartColors.blue,
-                pointBackgroundColor: window.chartColors.blue,
+                borderColor: getRootVar("--color-blue"),
+                pointBackgroundColor: getRootVar("--color-blue"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,
@@ -171,8 +171,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.net_history[1],
-                borderColor: window.chartColors.red,
-                pointBackgroundColor: window.chartColors.red,
+                borderColor: getRootVar("--color-red"),
+                pointBackgroundColor: getRootVar("--color-red"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,

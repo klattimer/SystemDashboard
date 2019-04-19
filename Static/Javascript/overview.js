@@ -20,9 +20,9 @@ var overview_chart_config = {
                 2,
             ],
             backgroundColor: [
-                window.chartColors.orange,
-                window.chartColors.green,
-                window.chartColors.yellow
+                getRootVar('--color-orange'),
+                getRootVar('--color-green'),
+                getRootVar('--color-yellow'),
             ]
         },
         {
@@ -32,9 +32,9 @@ var overview_chart_config = {
                 2,
             ],
             backgroundColor: [
-                window.chartColors.yellow,
-                window.chartColors.orange,
-                window.chartColors.green
+                getRootVar('--color-yellow'),
+                getRootVar('--color-orange'),
+                getRootVar('--color-green'),
             ]
         }],
         labels: [
@@ -119,11 +119,20 @@ window.APP.update_funcs.push({
                 d.push(swap_data[i]);
                 var c = [];
 
-                k = Object.keys(window.chartColors);
+                k = [
+                    getRootVar("--color-red"),
+                    getRootVar("--color-orange"),
+                    getRootVar("--color-yellow"),
+                    getRootVar("--color-green"),
+                    getRootVar("--color-blue"),
+                    getRootVar("--color-purple"),
+                    getRootVar("--color-grey"),
+                    getRootVar("--color-pink")
+                ]
                 var c = [
-                            window.chartColors[k[i % k.length]] ,
-                            window.chartColors[k[(i+1) % k.length]],
-                            window.chartColors[k[(i+2) % k.length]],
+                            k[i % k.length],
+                            k[(i+1) % k.length],
+                            k[(i+2) % k.length]
                         ];
 
                 new_datasets.push({data:d, backgroundColor: c});

@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>SystemDashboard</title>
+        <link rel="stylesheet" type="text/css" href="CSS/theme-default.css">
+        <link rel="stylesheet" type="text/css" href="CSS/main.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
         <script>
@@ -80,8 +82,6 @@
                 });
             });
         </script>
-        <link rel="stylesheet" type="text/css" href="CSS/theme-default.css">
-        <link rel="stylesheet" type="text/css" href="CSS/main.css">
     </head>
     <body>
         <div class="header">
@@ -230,28 +230,48 @@
             <a class="named-anchor" name="storage"></a>
             <div class="widget-grid-header"><i class="far fa-hdd"></i>Storage</div>
             <div class="widget-grid-container">
-            <div class="widget-grid-item w2h1">
-                <div class="widget-grid-item-inner">
-                    <div id="diskrw-chart-area-container" class="chart-container"><canvas id="diskrw-chart-area"></canvas></div>
-                    <h1><i class="far fa-hdd"></i>Disk Reads/Writes</h1>
+                <div class="widget-grid-item w2h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="diskrw-chart-area-container" class="chart-container"><canvas id="diskrw-chart-area"></canvas></div>
+                        <h1><i class="far fa-hdd"></i>Disk Reads/Writes</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="widget-grid-item w1h1">
-                <div class="widget-grid-item-inner">
-                    <h1><i class="fas fa-thermometer-quarter"></i>Disk Temperature</h1>
-                    <table id="disktemp" class="data-table">
-                        <thead>
-                        <tr>
-                            <th>Device </th>
-                            <th>Temperature</th>
-                            <th class="narrow"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="widget-grid-item w3h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-chart-pie"></i>Partitions</h1>
+                        <table id="partitions" class="data-table">
+                            <thead>
+                            <tr>
+                                <th class="narrow"></th>
+                                <th>Partition</th>
+                                <th>Label</th>
+                                <th>Usage</th>
+                                <th>Size</th>
+                                <th>Mount Point</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-thermometer-quarter"></i>Disk Temperature</h1>
+                        <table id="disktemp" class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Device </th>
+                                <th>Temperature</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
             <a class="named-anchor" name="users"></a>
