@@ -80,10 +80,12 @@ class DiskAPI(APIPluginInterface):
 
         for d in devices.keys():
             if d in partitions.keys():
-                partition_data = dict(partitions[d]._asdict())
+                partition_data = partitions[d]._asdict()
                 devices[d].update(partition_data)
             if devices[d]['mountpoint'] in diskusage.keys():
-                devices[d].update(diskusage[devices[d]['mountpoint']])
+                mp = devices[d]['mountpoint']
+                u = diskusage[mp]
+                devices[d].update(u._asdict())
 
         return {
             "partitions": devices,
