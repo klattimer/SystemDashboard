@@ -71,6 +71,7 @@ class DiskAPI(APIPluginInterface):
                     out += collect(dev['children'])
                 else:
                     out += [dev]
+            out = {dev['name']: dev for dev in out}
             return out
 
         devices = collect(blk_info['blockdevices'])
