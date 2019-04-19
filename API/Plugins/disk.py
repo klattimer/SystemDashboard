@@ -71,7 +71,6 @@ class DiskAPI(APIPluginInterface):
                     out += collect(dev['children'])
                 else:
                     out += [dev]
-            out = {dev['name']: dev for dev in out}
             return out
 
         devices = collect(blk_info['blockdevices'])
@@ -84,5 +83,5 @@ class DiskAPI(APIPluginInterface):
             'mdstat': md,
             'blockdevices': blk_info['blockdevices'],
             'disks': disks,
-            'devices': devices
+            'devices': {dev['name']: dev for dev in devices}
         }
