@@ -398,7 +398,7 @@ window.APP.update_funcs.push({
             for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
                 var k = Object.keys(dd.partitions)[i];
                 var d = dd.partitions[k];
-                if (k.indexOf('loop') > -1 || d.fstype == null) {
+                if (k.indexOf('loop') > -1 || d.fstype == null || d.mountpoint == '[SWAP]') {
                     continue;
                 }
                 var state = '<i class="fas fa-circle status-red"></i>';
