@@ -224,3 +224,14 @@ canvas {
     color: var(--color-blue);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.progress-bar-outer {
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+    display:block;
+}
+
+.progress-bar-inner {
+    background-color: var(--color-pink);
+    display:block;
+}

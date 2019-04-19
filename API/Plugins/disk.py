@@ -98,6 +98,5 @@ class DiskAPI(APIPluginInterface):
         return {
             "partitions": devices,
             "drives": drives,
-            "usage": diskusage,
             'mdstat': md
         }

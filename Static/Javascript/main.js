@@ -11,6 +11,9 @@ window.APP = {
     _gotcount: 0,
     _loaded: false,
     _intervals: [],
+    _warnings: [],
+    _errors: [],
+    _criticals: [],
     _recalc_base_size: function () {
         var base_size = $('.widget-grid').width() / 4;
         document.documentElement.style.setProperty('--base-size', base_size + 'px');

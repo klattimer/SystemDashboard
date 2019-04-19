@@ -311,7 +311,11 @@ window.APP.update_funcs.push({
         } catch (e) {
 
             console.log("Error on: disk\n", e);
-
+            window.APP._warnings.push({
+                "error": "Cannot update disk percentage or raid rebuild status",
+                "code": "",
+                "timestamp": ""
+            });
         }
 
         try {
@@ -385,6 +389,55 @@ window.APP.update_funcs.push({
 
             console.log("Error on: disk\n", e);
 
+        }
+
+        try {
+            $('#partitions').find('tbody').html('');
+            for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+                var k = Object.keys(dd.partitions)[i];
+                var d = dd.partitions[k];
+                if (k.indexOf('loop') > -1) {
+                    continue;
+                }
+                var state = '<i class="fas fa-circle status-red"></i>';
+                mp = '';
+                if (d.mountpoint !== null) {
+                    mp = d.mountpoint;
+                    state = '<i class="fas fa-circle status-green"></i>';
+                }
+
+                var ranges = [
+                    { divider: 1e9, suffix: 'T' },
+                    { divider: 1e6, suffix: 'G' },
+                    { divider: 1e6, suffix: 'M' },
+                    { divider: 1e3, suffix: 'k' }
+                ];
+                function formatNumber(n) {
+                    n = n / 10; // Data comes in once every 10s
+                    for (var i = 0; i < ranges.length; i++) {
+                       if (n >= ranges[i].divider) {
+                          return (n / ranges[i].divider).toString() + ranges[i].suffix;
+                       }
+                    }
+                    return n;
+                }
+                available = formatNumber(d.free) +'B';
+                percentage = parseInt(d.percent) + '%';
+                size = formatNumber(d.size) + 'B';
+
+                row = '<td class="narrow">'+state+'</td>' +
+                        '<td>'+d.device+'</td>' +
+                        '<td>'+d.label+'</td>' +
+                        '<td><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:'+percentage+'"></div>'+available+' Free</td>' +
+                        '<td>'+size+'</td>' +
+                        '<td>'+mp+'</td>' +
+                        '<td class="narrow"></td>';
+
+                $('#partitions').find('tbody').append(row)
+            }
+        } catch (e) {
+
+            console.log("Error on: disk\n", e);
         }
     }
 });
