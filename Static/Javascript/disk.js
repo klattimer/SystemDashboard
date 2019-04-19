@@ -286,6 +286,7 @@ window.APP.update_funcs.push({
 
             var dd = window.APP.page_data.disk;
             for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+                var k = Object.keys(dd.partitions)[i];
                 var d = dd.partitions[k];
                 if (d.total === undefined || d.used === undefined) {
                     continue;
