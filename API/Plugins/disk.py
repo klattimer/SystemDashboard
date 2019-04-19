@@ -100,7 +100,5 @@ class DiskAPI(APIPluginInterface):
             "drives": drives,
             "usage": diskusage,
             "temperatures": temperatures,
-            'mdstat': md,
-            'blockdevices': blk_info['blockdevices'],
-            'disks': disks
+            'mdstat': md
         }

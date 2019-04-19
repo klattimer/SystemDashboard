@@ -308,10 +308,13 @@ window.APP.update_funcs.push({
         try {
 
             $('#disktemp').find('tbody').html('');
-
-            for (var i = 0; i < Object.keys(window.APP.page_data.disk.temperatures).length; i++) {
-                var disk = Object.keys(window.APP.page_data.disk.temperatures)[i];
-                var temp = window.APP.page_data.disk.temperatures[disk];
+            var c = 0;
+            for (var i = 0; i < Object.keys(window.APP.page_data.disk.drives).length; i++) {
+                var disk = Object.keys(window.APP.page_data.disk.drives)[i];
+                var temp = window.APP.page_data.disk.drives[disk].temperature;
+                if (temp === null || temp === undefined) {
+                    continue;
+                }
 
                 var state = '<i class="fas fa-circle status-blue"></i>';
                 if (temp > 60) {
@@ -323,13 +326,17 @@ window.APP.update_funcs.push({
 
                 var row = '<tr><td>'+disk+'</td><td>'+temp+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
                 $('#disktemp').find('tbody').append(row);
+                c++;
+            }
+            if (c == 0) {
+                $('#disktemp').remove();
             }
 
         } catch (e) {
+            $('#disktemp').remove();
+            // $('#disktemp').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
 
-            $('#disktemp').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
-
-            console.log("Error on: disk\n", e);
+            console.log("Error on: disk temperatures\n", e);
 
         }
 
