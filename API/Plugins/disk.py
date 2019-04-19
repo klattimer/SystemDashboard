@@ -33,7 +33,7 @@ class DiskAPI(APIPluginInterface):
 
     def get_blk_info(self):
         try:
-            j = subprocess.Popen([b'lsblk', b'-fmJ'], stdout=subprocess.PIPE).stdout.read()
+            j = subprocess.Popen([b'lsblk', b'-fmJb'], stdout=subprocess.PIPE).stdout.read()
             return json.loads(j)
         except:
             logging.exception("Couldn't get block info")
@@ -75,13 +75,20 @@ class DiskAPI(APIPluginInterface):
 
         devices = collect(blk_info['blockdevices'])
 
+        devices = {'/dev/' + dev['name']: dev for dev in devices}
+        partitions = {dev['device']: dev for dev in partitions}
+
+        for d in devices.keys():
+            if d in partitions.keys():
+                devices[d].update(partitions[d])
+            if d['mountpoint'] in diskusage.keys():
+                devices[d].update(diskusage[d['mountpoint']])
 
         return {
-            "partitions": partitions,
+            "partitions": devices,
             "usage": diskusage,
             "temperatures": temperatures,
             'mdstat': md,
             'blockdevices': blk_info['blockdevices'],
-            'disks': disks,
-            'devices': {dev['name']: dev for dev in devices}
+            'disks': disks
         }
