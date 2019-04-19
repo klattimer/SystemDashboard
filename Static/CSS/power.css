@@ -1,0 +1,97 @@
+
+.power-menu::before {
+    content: " ";
+    display: block;
+    border: 15px solid rgba(0,0,0,0.9);
+    box-sizing: border-box;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    top: -30px;
+    left: calc(50% - 15px);
+}
+
+.power-menu {
+    display: none;
+    position: fixed;
+    z-index: 100000010;
+    top: 70px;
+    right: 30px;
+    background: rgba(0,0,0,0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    width: 320px;
+}
+
+
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 80%;
+    height: 40px;
+    background: #373737;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border-radius: 20px;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.3) inset;
+    width: 70%;
+    display: inline-block;
+    vertical-align: -webkit-baseline-middle;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 40px; /* Set a specific slider handle width */
+    height: 40px; /* Slider handle height */
+    background: rgb(255, 85, 105); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 20px;
+    content: "<i class="fas fa-power-off"></i>";
+}
+
+.slider::-moz-range-thumb {
+    width: 40px; /* Set a specific slider handle width */
+    height: 40px; /* Slider handle height */
+    background: rgb(255, 85, 105); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 20px;
+}
+
+.power-row + .power-row {
+    margin-top: 20px;
+}
+.power-row {
+    align-items: center;
+    display: flex;
+}
+
+.power-menu label {
+    width: 30%;
+    color: white;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-block;
+    letter-spacing: 0.3;
+}
