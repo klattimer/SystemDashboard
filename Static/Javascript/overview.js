@@ -128,7 +128,7 @@ window.APP.update_funcs.push({
                     getRootVar("--color-purple"),
                     getRootVar("--color-grey"),
                     getRootVar("--color-pink")
-                ]
+                ];
                 var c = [
                             k[i % k.length],
                             k[(i+1) % k.length],
