@@ -89,7 +89,7 @@ var diskrw_config = {
                 ticks: {
                     callback: function(value) {
                         var ranges = [
-                            { divider: 1e6, suffix: 'G' },
+                            { divider: 1e9, suffix: 'G' },
                             { divider: 1e6, suffix: 'M' },
                             { divider: 1e3, suffix: 'k' }
                         ];
@@ -409,8 +409,8 @@ window.APP.update_funcs.push({
                 }
 
                 var ranges = [
-                    { divider: 1e9, suffix: 'T' },
-                    { divider: 1e6, suffix: 'G' },
+                    { divider: 1e12, suffix: 'T' },
+                    { divider: 1e9, suffix: 'G' },
                     { divider: 1e6, suffix: 'M' },
                     { divider: 1e3, suffix: 'k' }
                 ];

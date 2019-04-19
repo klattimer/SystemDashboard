@@ -30,7 +30,7 @@ var traffic_config = {
                 ticks: {
                     callback: function(value) {
                         var ranges = [
-                            { divider: 1e6, suffix: 'G' },
+                            { divider: 1e9, suffix: 'G' },
                             { divider: 1e6, suffix: 'M' },
                             { divider: 1e3, suffix: 'k' }
                         ];
