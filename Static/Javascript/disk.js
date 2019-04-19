@@ -126,7 +126,7 @@ window.APP.load.push(function (event) {
     window.APP.charts.disk_usage = [];
     for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
         var k = Object.keys(dd.partitions)[i];
-        var d = dd.usage[k];
+        var d = dd.partitions[k];
         var name = d.mountpoint;
         if (d.total === undefined || d.used === undefined) {
             window.APP.charts.disk_usage.push(null);
@@ -286,7 +286,7 @@ window.APP.update_funcs.push({
 
             var dd = window.APP.page_data.disk;
             for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
-                var d = dd.usage[k];
+                var d = dd.partitions[k];
                 if (d.total === undefined || d.used === undefined) {
                     continue;
                 }
