@@ -398,12 +398,12 @@ window.APP.update_funcs.push({
             for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
                 var k = Object.keys(dd.partitions)[i];
                 var d = dd.partitions[k];
-                if (k.indexOf('loop') > -1) {
+                if (k.indexOf('loop') > -1 || d.fstype == null) {
                     continue;
                 }
                 var state = '<i class="fas fa-circle status-red"></i>';
                 mp = '';
-                if (d.mountpoint !== null) {
+                if (d.mountpoint !== null ) {
                     mp = d.mountpoint;
                     state = '<i class="fas fa-circle status-green"></i>';
                 }
@@ -418,20 +418,23 @@ window.APP.update_funcs.push({
                     n = n / 10; // Data comes in once every 10s
                     for (var i = 0; i < ranges.length; i++) {
                        if (n >= ranges[i].divider) {
-                          return (n / ranges[i].divider).toString() + ranges[i].suffix;
+                          return parseInt(n / ranges[i].divider).toString() + ranges[i].suffix;
                        }
                     }
                     return n;
                 }
-                available = formatNumber(d.free) +'B';
-                percentage = parseInt(d.percent) + '%';
                 size = formatNumber(d.size) + 'B';
+                if (d.free > 0) {
+                    available = formatNumber(d.free) +'B';
+                    percentage = parseInt(d.percent) + '%';
+                    available_row = '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:'+percentage+'"></div></div>'+available+' Free'
+                }
 
                 row = '<tr><td class="narrow">'+state+'</td>' +
                         '<td>'+k+'</td>' +
                         '<td>'+d.fstype+'</td>' +
                         '<td>'+d.label+'</td>' +
-                        '<td><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:'+percentage+'"></div>'+available+' Free</td>' +
+                        '<td>'+available_row+'</td>' +
                         '<td>'+size+'</td>' +
                         '<td>'+mp+'</td>' +
                         '<td class="narrow"></td></tr>';
