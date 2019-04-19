@@ -239,3 +239,18 @@ canvas {
     display:block;
     height: 100%;
 }
+
+#stack {
+    width: 25%;
+    display:inline-block;
+    height: 100%;
+    font-size: 14px;
+}
+
+
+.stack-item {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 5px;
+    height: 30%;
+    margin-bottom: 3%;
+}
