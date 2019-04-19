@@ -228,10 +228,14 @@ canvas {
 .progress-bar-outer {
     width: 100%;
     border: 1px solid rgba(0,0,0,0.1);
+    background-color: :  rgba(0,0,0,0.04);
     display:block;
+    height: 4px;
+    margin-bottom: 4px;
 }
 
 .progress-bar-inner {
     background-color: var(--color-pink);
     display:block;
+    height: 100%;
 }
