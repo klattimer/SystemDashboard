@@ -398,7 +398,7 @@ window.APP.update_funcs.push({
             for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
                 var k = Object.keys(dd.partitions)[i];
                 var d = dd.partitions[k];
-                if (k.indexOf('loop') > -1 || d.fstype == null || d.mountpoint == '[SWAP]') {
+                if (k.indexOf('loop') > -1 || d.fstype == null || d.fstype == 'swap') {
                     continue;
                 }
                 var state = '<i class="fas fa-circle status-red"></i>';
@@ -431,10 +431,15 @@ window.APP.update_funcs.push({
                     available_row = '';
                 }
 
+                label = d.label;
+                if (label == null) {
+                    label = '';
+                }
+
                 row = '<tr><td class="narrow">'+state+'</td>' +
                         '<td>'+k+'</td>' +
                         '<td>'+d.fstype+'</td>' +
-                        '<td>'+d.label+'</td>' +
+                        '<td>'+label+'</td>' +
                         '<td>'+available_row+'</td>' +
                         '<td>'+size+'</td>' +
                         '<td>'+mp+'</td>' +
