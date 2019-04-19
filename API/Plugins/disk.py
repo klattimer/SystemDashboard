@@ -76,11 +76,11 @@ class DiskAPI(APIPluginInterface):
         devices = collect(blk_info['blockdevices'])
 
         devices = {'/dev/' + dev['name']: dev for dev in devices}
-        partitions = {dev['device']: dev for dev in partitions}
+        partitions = {partition.device: dev for dev in partitions}
 
         for d in devices.keys():
             if d in partitions.keys():
-                devices[d].update(partitions[d])
+                devices[d].update(dict(partitions[d]))
             if d['mountpoint'] in diskusage.keys():
                 devices[d].update(diskusage[d['mountpoint']])
 
