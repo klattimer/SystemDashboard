@@ -367,27 +367,27 @@ canvas {
 }
 
 .status-green {
-    color: #21b34e;
+    color: var(--color-green);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .status-red {
-    color: #b33532;
+    color: var(--color-red);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .status-orange {
-    color: rgba(255, 216, 91, 1);
+    color: var(--color-orange);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .status-grey {
-    color: #b6b6b6;
+    color: var(--color-grey);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .status-blue {
-    color: rgba(88, 174, 255, 1);
+    color: var(--color-blue);
     text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
