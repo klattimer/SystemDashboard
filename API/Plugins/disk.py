@@ -91,7 +91,7 @@ class DiskAPI(APIPluginInterface):
                 mp = devices[d]['mountpoint']
                 u = diskusage[mp]
                 devices[d].update(u._asdict())
-            devices[d]['size'] = in(devices[d]['size'])
+            devices[d]['size'] = int(devices[d]['size'])
 
 
 
