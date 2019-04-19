@@ -427,13 +427,14 @@ window.APP.update_funcs.push({
                 percentage = parseInt(d.percent) + '%';
                 size = formatNumber(d.size) + 'B';
 
-                row = '<td class="narrow">'+state+'</td>' +
-                        '<td>'+d.device+'</td>' +
+                row = '<tr><td class="narrow">'+state+'</td>' +
+                        '<td>'+k+'</td>' +
+                        '<td>'+d.fstype+'</td>' +
                         '<td>'+d.label+'</td>' +
                         '<td><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:'+percentage+'"></div>'+available+' Free</td>' +
                         '<td>'+size+'</td>' +
                         '<td>'+mp+'</td>' +
-                        '<td class="narrow"></td>';
+                        '<td class="narrow"></td></tr>';
 
                 $('#partitions').find('tbody').append(row)
             }
