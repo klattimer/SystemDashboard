@@ -62,7 +62,7 @@ class DiskAPI(APIPluginInterface):
         disks.sort()
         temperatures = {'/dev/' + k: self.get_hdd_temp(k) for k in disks}
 
-        blkinfo = self.get_blk_info()
+        blk_info = self.get_blk_info()
 
         def collect(devices):
             out = []
