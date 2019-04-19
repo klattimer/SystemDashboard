@@ -75,6 +75,11 @@ class DiskAPI(APIPluginInterface):
 
         devices = collect(blk_info['blockdevices'])
 
+        drives = {'/dev/' + dev['name']: dev for dev in blk_info['blockdevices'] if dev['name'] in disks}
+        for d in drives.keys():
+            if d in temperatures.keys():
+                drives[d]['temperature'] = temperatures[d]
+
         devices = {'/dev/' + dev['name']: dev for dev in devices}
         partitions = {partition.device: dev for dev in partitions}
 
@@ -86,9 +91,13 @@ class DiskAPI(APIPluginInterface):
                 mp = devices[d]['mountpoint']
                 u = diskusage[mp]
                 devices[d].update(u._asdict())
+            devices[d]['size'] = in(devices[d]['size'])
+
+
 
         return {
             "partitions": devices,
+            "drives": drives,
             "usage": diskusage,
             "temperatures": temperatures,
             'mdstat': md,
