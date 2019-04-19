@@ -257,8 +257,11 @@ canvas {
     height: 30%;
     margin-bottom: 3%;
     color: white;
-    padding: 20px;
+    padding: 24px 20px;
     box-sizing: border-box;
+}
+.stack-item i {
+    margin-right: 12px;
 }
 
 .stack-item.warning {
