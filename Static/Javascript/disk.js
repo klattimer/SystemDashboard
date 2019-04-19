@@ -393,6 +393,7 @@ window.APP.update_funcs.push({
         }
 
         try {
+            var dd = window.APP.page_data.disk;
             $('#partitions').find('tbody').html('');
             for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
                 var k = Object.keys(dd.partitions)[i];
