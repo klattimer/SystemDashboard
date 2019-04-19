@@ -31,6 +31,13 @@ class DiskAPI(APIPluginInterface):
         except:
             logging.exception("Couldn't get disk temperature")
 
+    def get_blk_info(self):
+        try:
+            j = subprocess.Popen([b'lsblk', b'-fmJ'], stdout=subprocess.PIPE).stdout.read()
+            return json.loads(j)
+        except:
+            logging.exception("Couldn't get block info")
+
     def GET(self, **params):
         partitions = psutil.disk_partitions(all=False)
         diskusage = {}
@@ -61,5 +68,6 @@ class DiskAPI(APIPluginInterface):
             "usage": diskusage,
             "temperatures": temperatures,
             'mdstat': md,
+            'blk_info': self.get_blk_info(),
             'disks': disks
         }
