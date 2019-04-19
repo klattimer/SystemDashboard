@@ -244,7 +244,7 @@ canvas {
     width: 25%;
     display:inline-block;
     height: 100%;
-    font-size: 12px;
+    font-size: 22px;
     font-weight: 500;
     padding: 20px;
     box-sizing: border-box;
@@ -269,6 +269,6 @@ canvas {
     background-color: var(--color-orange);
 }
 
-.stack-item.red {
-    background-color: var(--color-orange);
+.stack-item.critical {
+    background-color: var(--color-red);
 }
