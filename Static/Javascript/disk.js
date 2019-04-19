@@ -124,8 +124,14 @@ window.APP.load.push(function (event) {
     var dd = window.APP.page_data.disk;
 
     window.APP.charts.disk_usage = [];
-    for (var i = 0; i < Object.keys(dd.usage).length; i++) {
-        var d = dd.usage[Object.keys(dd.usage)[i]];
+    for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+        var k = Object.keys(dd.partitions)[i];
+        var d = dd.usage[k];
+        var name = d.mountpoint;
+        if (d.total === undefined || d.used === undefined) {
+            window.APP.charts.disk_usage.push(null);
+            continue;
+        }
         var id = 'disk'+i+'-chart-area';
         var label_id = 'disk'+i+'-percent';
 
@@ -135,7 +141,7 @@ window.APP.load.push(function (event) {
                    "<canvas id='"+id+"'></canvas></div>" +
                    "<div id='"+label_id+"' class='centre-percent'>"+(100 - parseInt(d.percent))+"%</div>" +
                    "<div class='centre-label'>available</div>" +
-                   "<h1><i class='far fa-hdd'></i>"+Object.keys(dd.usage)[i]+" Disk Usage</h1></div></div>";
+                   "<h1><i class='far fa-hdd'></i>"+name+" Disk Usage</h1></div></div>";
         $('a[name=storage] + .widget-grid-header + .widget-grid-container').append(html);
 
         $(document.getElementById(id)).attr('width', $(document.getElementById(id)).width());
@@ -279,8 +285,11 @@ window.APP.update_funcs.push({
         try {
 
             var dd = window.APP.page_data.disk;
-            for (var i = 0; i < window.APP.charts.disk_usage.length; i++) {
-                var d = dd.usage[Object.keys(dd.usage)[i]];
+            for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+                var d = dd.usage[k];
+                if (d.total === undefined || d.used === undefined) {
+                    continue;
+                }
                 var label_id = 'disk'+i+'-percent';
                 var chart = window.APP.charts.disk_usage[i];
                 $('#' + label_id).html(100 - parseInt(d.percent) +'%');

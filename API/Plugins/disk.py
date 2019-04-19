@@ -99,6 +99,5 @@ class DiskAPI(APIPluginInterface):
             "partitions": devices,
             "drives": drives,
             "usage": diskusage,
-            "temperatures": temperatures,
             'mdstat': md
         }
