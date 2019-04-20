@@ -22,7 +22,7 @@ class BaseAuthMech:
         params = {
             'iat': int(time()),
             'iss': self.issuer_identity,
-            'exp': int(time()) + expires,
+            'exp': int(time()) + self.expires,
             'sub': user_id,
             'jti': str(uuid.uuid4()),
             'https://': True,
