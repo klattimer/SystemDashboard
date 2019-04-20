@@ -57,4 +57,4 @@ class AuthMechInterface(BaseAuthMech):
 class PAMAuthMech(AuthMechInterface):
 
     def checkpass(self, username, password):
-        return pam.pam().authenticate(username, password)
+        return pam.authenticate(username, password)

@@ -4,3 +4,5 @@ psutil==5.6.1
 mdstat[linuxraid]
 mdstat==1.0.4
 netaddr==0.7.19
+itsdangerous==1.1.0
+pam==0.1.4
