@@ -24,3 +24,6 @@ class LiveAPI(APIPluginInterface):
 
     def GET(self):
         return True
+
+    def POST(self):
+        return True

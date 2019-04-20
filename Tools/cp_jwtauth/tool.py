@@ -64,13 +64,11 @@ class JWTAuthTool(cherrypy.Tool):
             except RenewToken as e:
                 # Set the new token on the response headers
                 cherrypy.response.headers['Authorization'] = 'Bearer ' + e.token.decode("utf-8")
-                return
-
             return
 
         # Get the username/password from URL (authorization basic)
-
-        request = cherrypy.serving.request
+        username = None
+        password = None
         accept_charset='utf-8'
         fallback_charset = 'ISO-8859-1'
         if token is not None and token.startswith("Basic"):
@@ -85,12 +83,20 @@ class JWTAuthTool(cherrypy.Tool):
                 decoded_params = unicodedata.normalize('NFC', decoded_params)
                 decoded_params = tonative(decoded_params)
                 username, password = decoded_params.split(':', 1)
+        else:
+            try:
+                username = cherrypy.request.json['username']
+                password = cherrypy.request.json['password']
+            except:
+                pass
 
-                if self.auth_mech.checkpass(username, password):
-                    token = self.auth_mech.generateToken(username)
-                    request.login = username
-                    cherrypy.response.headers['Authorization'] = 'Bearer ' + token.decode("utf-8")
-                    return  # successful authentication
+        if self.auth_mech.checkpass(username, password):
+            token = self.auth_mech.generateToken(username)
+            cherrypy.request.login = username
+            cherrypy.response.headers['Authorization'] = 'Bearer ' + token.decode("utf-8")
+            return  # successful authentication
+
+
         charset = accept_charset.upper()
         charset_declaration = (
             ('charset="%s"' % charset)
@@ -98,13 +104,13 @@ class JWTAuthTool(cherrypy.Tool):
             else ''
         )
 
-        # Respond with 401 status and a WWW-Authenticate header
-        cherrypy.response.headers['www-authenticate'] = ('Basic %s' % (charset))
-        raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
+        if self.auth_url is None:
+            # Respond with 401 status and a WWW-Authenticate header
+            cherrypy.response.headers['www-authenticate'] = ('Basic %s' % (charset))
+            raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
+        else:
+            raise cherrypy.HTTPRedirect(self.auth_url)
 
-        raise cherrypy.HTTPRedirect(self.auth_url)
-            # Get the username/password from request JSON
-            # Get the username/password from
 
 def _try_decode(subject, charsets):
     for charset in charsets[:-1]:
