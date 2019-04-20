@@ -43,14 +43,14 @@ class JWTAuthTool(cherrypy.Tool):
         if 'required' not in kwargs.keys() or kwargs['required'] is False:
             # Authoirzation not required to access this url
             return
-        print(cherrypy.response.headers)
+        print(cherrypy.request.headers)
         token = None
         try:
             if 'Authorization' in cherrypy.request.headers:
                 token = cherrypy.request.headers['Authorization']
-            if 'Authorization' in cherrypy.request.cookie:
+            elif 'Authorization' in cherrypy.request.cookie:
                 token = cherrypy.request.cookies['Authorization']
-            if 'Authorization' in cherrypy.request.json:
+            elif 'Authorization' in cherrypy.request.json:
                 token = cherrypy.request.json['Authorization']
         except:
             logging.exception("Couldn't acquire a token")
