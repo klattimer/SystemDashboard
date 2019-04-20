@@ -6,6 +6,7 @@ __version__ = '0.1'
 
 from .tool import JWTAuthTool, AuthenticationFailure
 from itsdangerous import JSONWebSignatureSerializer, BadSignature
+import pam
 
 
 class BaseAuthMech:
@@ -50,4 +51,10 @@ class BaseAuthMech:
 class AuthMechInterface(BaseAuthMech):
 
     def checkpass(self, username, password):
-        return False
+        raise Exception('checkpass required on AuthMech')
+
+
+class PAMAuthMech(AuthMechInterface):
+
+    def checkpass(self, username, password):
+        return pam.pam().authenticate(username, password)

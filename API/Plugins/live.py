@@ -13,7 +13,9 @@ class LiveAPI(APIPluginInterface):
         '/': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.json_in.on': True,
-            'tools.json_out.on': True
+            'tools.json_out.on': True,
+            'tools.jwtauth.on': True,
+            'tools.jwtauth.required': True
         }
     }
 

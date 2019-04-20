@@ -14,6 +14,8 @@ import json
 from copy import copy
 import datetime
 import re
+from Tools.cp_jwtauth import JWTAuthTool, PAMAuthMech
+
 
 #
 # Monkey patches for JSON Serialisation
@@ -58,6 +60,10 @@ class Server(object):
         self.conf = conf
         ip = self.validateIP()
         port = self.validatePort()
+        cherrypy.tools.jwtauth = JWTAuthTool(
+            "mysupersecretpassphraseformytokens",
+            PAMAuthMech
+        )
         cherrypy.config.update({
             'server.socket_host': ip,
             'server.socket_port': port,
@@ -85,7 +91,7 @@ class Server(object):
         if re.match(r"(([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4})", self.conf["host"]) or re.match(r"(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", self.conf["host"]):
             return self.conf["host"]
         return "0.0.0.0"
-    
+
     def validatePort(self):
         if re.match(r"^\d{1,5}$", str(self.conf["port"])):
             return self.conf["port"]
