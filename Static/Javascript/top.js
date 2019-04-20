@@ -5,6 +5,8 @@ window.APP.fetch.push({
 });
 
 
+
+
 window.APP.update_funcs.push({
     interval: 10000,
     func: function (event) {

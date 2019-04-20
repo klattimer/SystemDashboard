@@ -43,7 +43,7 @@ class JWTAuthTool(cherrypy.Tool):
         if 'required' not in kwargs.keys() or kwargs['required'] is False:
             # Authoirzation not required to access this url
             return
-
+        print(cherrypy.response.headers)
         token = None
         try:
             if 'Authorization' in cherrypy.request.headers:
@@ -68,7 +68,7 @@ class JWTAuthTool(cherrypy.Tool):
 
             return
 
-        # Get the username/password from URL
+        # Get the username/password from URL (authorization basic)
 
         request = cherrypy.serving.request
         accept_charset='utf-8'
@@ -78,20 +78,19 @@ class JWTAuthTool(cherrypy.Tool):
             msg = 'Bad Request'
             with cherrypy.HTTPError.handle((ValueError, binascii.Error), 400, msg):
                 scheme, params = token.split(' ', 1)
-                if scheme.lower() == 'basic':
-                    charsets = accept_charset, fallback_charset
-                    decoded_params = base64.b64decode(params.encode('ascii'))
-                    decoded_params = _try_decode(decoded_params, charsets)
-                    decoded_params = ntou(decoded_params)
-                    decoded_params = unicodedata.normalize('NFC', decoded_params)
-                    decoded_params = tonative(decoded_params)
-                    username, password = decoded_params.split(':', 1)
+                charsets = accept_charset, fallback_charset
+                decoded_params = base64.b64decode(params.encode('ascii'))
+                decoded_params = _try_decode(decoded_params, charsets)
+                decoded_params = ntou(decoded_params)
+                decoded_params = unicodedata.normalize('NFC', decoded_params)
+                decoded_params = tonative(decoded_params)
+                username, password = decoded_params.split(':', 1)
 
-                    if self.auth_mech.checkpass(username, password):
-                        token = self.auth_mech.generateToken(username)
-                        request.login = username
-                        cherrypy.response.headers['Authorization'] = 'Bearer ' + token.decode("utf-8")
-                        return  # successful authentication
+                if self.auth_mech.checkpass(username, password):
+                    token = self.auth_mech.generateToken(username)
+                    request.login = username
+                    cherrypy.response.headers['Authorization'] = 'Bearer ' + token.decode("utf-8")
+                    return  # successful authentication
         charset = accept_charset.upper()
         charset_declaration = (
             ('charset="%s"' % charset)

@@ -44,7 +44,7 @@ class BaseAuthMech:
         if int(params['exp']) < int(time()):
             raise AuthenticationFailure("Token Expired")
 
-        if  int(params['exp']) -  self.renew_window > int(time()):
+        if  int(params['exp']) - self.renew_window > int(time()):
             raise RenewToken(self.renewToken(params))
 
         return token
