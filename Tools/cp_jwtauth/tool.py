@@ -56,6 +56,7 @@ class JWTAuthTool(cherrypy.Tool):
             logging.exception("Couldn't acquire a token")
 
         if token is not None and token.startswith("Bearer"):
+            logging.debug("Attempting token authorisation")
             try:
                 self.auth_mech.verifyToken(token)
             except AuthenticationFailure as e:
@@ -86,7 +87,9 @@ class JWTAuthTool(cherrypy.Tool):
                     username, password = decoded_params.split(':', 1)
 
                     if self.auth_mech.checkpass(username, password):
+                        token = self.auth_mech.generateToken(username)
                         request.login = username
+                        cherrypy.response.headers['Authorization'] = 'Bearer ' + token
                         return  # successful authentication
         charset = accept_charset.upper()
         charset_declaration = (
@@ -95,7 +98,7 @@ class JWTAuthTool(cherrypy.Tool):
             else ''
         )
         # Respond with 401 status and a WWW-Authenticate header
-        cherrypy.serving.response.headers['www-authenticate'] = ('Basic %s' % (charset))
+        cherrypy.response.headers['www-authenticate'] = ('Basic %s' % (charset))
         raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
 
             # Get the username/password from request JSON
