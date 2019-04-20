@@ -88,7 +88,7 @@ class JWTAuthTool(cherrypy.Tool):
                 username = cherrypy.request.json['username']
                 password = cherrypy.request.json['password']
             except:
-                pass
+                logging.debug("Username and password not in json")
 
         if self.auth_mech.checkpass(username, password):
             token = self.auth_mech.generateToken(username)
@@ -104,12 +104,18 @@ class JWTAuthTool(cherrypy.Tool):
             else ''
         )
 
-        if self.auth_url is None:
-            # Respond with 401 status and a WWW-Authenticate header
+        #
+        # Check if the request was a JSON/API request or not
+        #
+        #
+        if cherrypy.request.headers['Accept'] != 'application/json':
+            # If we're not a browser set the WWW-Authenticate header
             cherrypy.response.headers['www-authenticate'] = ('Basic %s' % (charset))
-            raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
-        else:
-            raise cherrypy.HTTPRedirect(self.auth_url)
+
+        if self.auth_url is None:
+            raise cherrypy.HTTPError(401, 'You are not authorized to access this resource')
+
+        raise cherrypy.HTTPRedirect(self.auth_url)
 
 
 def _try_decode(subject, charsets):
