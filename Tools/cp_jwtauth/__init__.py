@@ -4,7 +4,7 @@ __author__ = 'Karl Lattimer'
 __email__ = 'karl@qdh.org.uk'
 __version__ = '0.1'
 
-from .tool import JWTAuthTool, AuthenticationFailure
+from .tool import JWTAuthTool, AuthenticationFailure, RenewToken
 from itsdangerous import JSONWebSignatureSerializer, BadSignature
 import logging
 import pam
@@ -41,16 +41,16 @@ class BaseAuthMech:
         except BadSignature:
             raise AuthenticationFailure("Invalid Signature")
 
-        if int(params['exp']) > int(time()) - self.renew_window:
-            raise RenewToken(self.renewToken(params))
-
         if int(params['exp']) < int(time()):
             raise AuthenticationFailure("Token Expired")
+
+        if  int(params['exp']) -  self.renew_window > int(time()):
+            raise RenewToken(self.renewToken(params))
 
         return token
 
     def renewToken(self, params):
-        params['exp'] = int(time()) + expires
+        params['exp'] = int(time()) + self.expires
         token = self.serialiser.dumps(params)
         return token
 
