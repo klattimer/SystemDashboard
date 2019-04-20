@@ -77,7 +77,7 @@ class JWTAuthTool(cherrypy.Tool):
             with cherrypy.HTTPError.handle((ValueError, binascii.Error), 400, msg):
                 scheme, params = auth_header.split(' ', 1)
                 if scheme.lower() == 'basic':
-                    charsets = 'UTF-8'
+                    charsets = ('UTF-8')
                     decoded_params = base64.b64decode(params.encode('ascii'))
                     decoded_params = _try_decode(decoded_params, charsets)
                     decoded_params = ntou(decoded_params)
@@ -95,3 +95,11 @@ class JWTAuthTool(cherrypy.Tool):
 
             # Get the username/password from request JSON
             # Get the username/password from
+
+def _try_decode(subject, charsets):
+    for charset in charsets[:-1]:
+        try:
+            return tonative(subject, charset)
+        except ValueError:
+            pass
+    return tonative(subject, charsets[-1])
