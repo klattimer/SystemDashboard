@@ -262,6 +262,11 @@ canvas {
 }
 .stack-item i {
     margin-right: 12px;
+    display: none;
+}
+
+.stack-filler i {
+    display: none;
 }
 
 .stack-item.warning {

@@ -144,6 +144,30 @@ window.APP.update_funcs.push({
             console.log("Error on: overview\n", e);
 
         }
+
+        var filled = false;
+        if (window.APP._warnings.length > 0) {
+            $('.warning').html('<i class="fas fa-exclamation-triangle"></i> '+window.APP._errors.length+' Warnings');
+            $('.warning').show();
+            $('.stack-filler').hide();
+            filled = true;
+        }
+        if (window.APP._errors.length > 0) {
+            $('.error').html('<i class="fas fa-exclamation-circle"></i> '+window.APP._errors.length+' Errors');
+            $('.error').show();
+            $('.stack-filler').hide();
+            filled = true;
+        }
+        if (window.APP._criticals.length > 0) {
+            $('.critical').html('<i class="fas fa-skull-crossbones"></i> '+window.APP._criticals.length+' Criticals');
+            $('.critical').show();
+            $('.stack-filler').hide();
+            filled = true;
+        }
+
+        if (filled === false) {
+            $('.stack-filler').show();
+        }
     }
 });
 
