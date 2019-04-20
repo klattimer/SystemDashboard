@@ -84,16 +84,16 @@ class JWTAuthTool(cherrypy.Tool):
                         request.login = username
                         return  # successful authentication
 
-            charset = accept_charset.upper()
-            charset_declaration = (
-                ('charset="%s"' % charset)
-                if charset != fallback_charset
-                else ''
-            )
-            # Respond with 401 status and a WWW-Authenticate header
-            cherrypy.serving.response.headers['www-authenticate'] = (
-                'Basic %s' % (realm, charset_declaration)
-            )
+        charset = accept_charset.upper()
+        charset_declaration = (
+            ('charset="%s"' % charset)
+            if charset != fallback_charset
+            else ''
+        )
+        # Respond with 401 status and a WWW-Authenticate header
+        cherrypy.serving.response.headers['www-authenticate'] = (
+            'Basic %s' % (realm, charset_declaration)
+        )
         raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
 
             # Get the username/password from request JSON
