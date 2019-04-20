@@ -267,7 +267,9 @@ canvas {
 
 .stack-filler {
     display: block;
-
+    transform: translateY(-50%);
+    top: 50%;
+    position: relative;
 }
 
 .stack-item.warning {
