@@ -55,7 +55,7 @@ class JWTAuthTool(cherrypy.Tool):
                 self.auth_mech.verifyToken(token)
             except AuthenticationFailure as e:
                 raise cherrypy.HTTPRedirect(self.auth_url)
-            except: RenewToken as e:
+            except RenewToken as e:
                 # Set the new token on the response headers
                 pass
 
