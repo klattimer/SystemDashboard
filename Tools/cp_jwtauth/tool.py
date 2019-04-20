@@ -43,7 +43,7 @@ class JWTAuthTool(cherrypy.Tool):
         try:
             if 'Authorization' in cherrypy.request.headers:
                 token = cherrypy.request.headers['Authorization']
-            if 'Authorization' in cherrypy.request.cookies:
+            if 'Authorization' in cherrypy.request.cookie:
                 token = cherrypy.request.cookies['Authorization']
             if 'Authorization' in cherrypy.request.json:
                 token = cherrypy.request.json['Authorization']
