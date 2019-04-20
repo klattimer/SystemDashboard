@@ -1,4 +1,9 @@
+import binascii
+import unicodedata
+import base64
+
 import cherrypy
+from cherrypy._cpcompat import ntou, tonative
 import logging
 
 __version__ = "0.1"
@@ -72,7 +77,7 @@ class JWTAuthTool(cherrypy.Tool):
             with cherrypy.HTTPError.handle((ValueError, binascii.Error), 400, msg):
                 scheme, params = auth_header.split(' ', 1)
                 if scheme.lower() == 'basic':
-                    charsets = accept_charset, fallback_charset
+                    charsets = 'UTF-8'
                     decoded_params = base64.b64decode(params.encode('ascii'))
                     decoded_params = _try_decode(decoded_params, charsets)
                     decoded_params = ntou(decoded_params)
