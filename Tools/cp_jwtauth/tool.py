@@ -5,7 +5,6 @@ import base64
 import cherrypy
 from cherrypy._cpcompat import ntou, tonative
 import logging
-from time import time
 
 __version__ = "0.1"
 
