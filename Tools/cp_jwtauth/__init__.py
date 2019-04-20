@@ -8,6 +8,7 @@ from .tool import JWTAuthTool, AuthenticationFailure, RenewToken
 from itsdangerous import JSONWebSignatureSerializer, BadSignature
 import logging
 import pam
+import cherrypy
 from time import time
 import uuid
 
@@ -23,10 +24,10 @@ class BaseAuthMech:
         params = {
             'iat': int(time()),
             'iss': self.issuer_identity,
+            'aud': cherrypy.request.address,
             'exp': int(time()) + self.expires,
             'sub': user_id,
-            'jti': str(uuid.uuid4()),
-            'https://': True,
+            'jti': str(uuid.uuid4())
         }
 
         token = self.serialiser.dumps(params)
@@ -44,10 +45,11 @@ class BaseAuthMech:
         if int(params['exp']) < int(time()):
             raise AuthenticationFailure("Token Expired")
 
-        if  int(params['exp']) - self.renew_window > int(time()):
-            raise RenewToken(self.renewToken(params))
+        if params['aud'] != cherrypy.request.address:
+            raise AuthenticationFailure("Invalid audience")
 
-        return token
+        if int(params['exp']) - self.renew_window > int(time()):
+            raise RenewToken(self.renewToken(params))
 
     def renewToken(self, params):
         params['exp'] = int(time()) + self.expires

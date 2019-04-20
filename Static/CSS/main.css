@@ -259,14 +259,15 @@ canvas {
     color: white;
     padding: 24px 20px;
     box-sizing: border-box;
+    display: none;
 }
 .stack-item i {
     margin-right: 12px;
-    display: none;
 }
 
-.stack-filler i {
-    display: none;
+.stack-filler {
+    display: block;
+
 }
 
 .stack-item.warning {
