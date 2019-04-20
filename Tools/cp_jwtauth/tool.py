@@ -63,7 +63,8 @@ class JWTAuthTool(cherrypy.Tool):
                 raise cherrypy.HTTPRedirect(self.auth_url)
             except RenewToken as e:
                 # Set the new token on the response headers
-                pass
+                cherrypy.response.headers['Authorization'] = 'Bearer ' + e.token.decode("utf-8")
+                return
 
             return
 

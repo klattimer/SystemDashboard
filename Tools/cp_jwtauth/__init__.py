@@ -33,6 +33,9 @@ class BaseAuthMech:
         return token
 
     def verifyToken(self, token):
+        (bearer, token) = token.split(' ')
+        if bearer != "Bearer":
+            raise AuthenticationFailure("Invalid authentication token")
         try:
             params = self.serialiser.loads(token)
         except BadSignature:
