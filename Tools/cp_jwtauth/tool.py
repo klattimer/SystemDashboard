@@ -69,15 +69,15 @@ class JWTAuthTool(cherrypy.Tool):
         # Get the username/password from URL
 
         request = cherrypy.serving.request
-
-        auth_header = request.headers.get('authorization')
-        if auth_header is not None:
+        accept_charset='utf-8'
+        fallback_charset = 'ISO-8859-1'
+        if token is not None and token.startswith("Basic"):
             # split() error, base64.decodestring() error
             msg = 'Bad Request'
             with cherrypy.HTTPError.handle((ValueError, binascii.Error), 400, msg):
-                scheme, params = auth_header.split(' ', 1)
+                scheme, params = token.split(' ', 1)
                 if scheme.lower() == 'basic':
-                    charsets = ('UTF-8')
+                    charsets = accept_charset, fallback_charset
                     decoded_params = base64.b64decode(params.encode('ascii'))
                     decoded_params = _try_decode(decoded_params, charsets)
                     decoded_params = ntou(decoded_params)
@@ -88,9 +88,14 @@ class JWTAuthTool(cherrypy.Tool):
                     if self.auth_mech.checkpass(username, password):
                         request.login = username
                         return  # successful authentication
-
+        charset = accept_charset.upper()
+        charset_declaration = (
+            ('charset="%s"' % charset)
+            if charset != fallback_charset
+            else ''
+        )
         # Respond with 401 status and a WWW-Authenticate header
-        cherrypy.serving.response.headers['www-authenticate'] = ('Basic charset="UTF-8"')
+        cherrypy.serving.response.headers['www-authenticate'] = ('Basic %s' % (charset))
         raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
 
             # Get the username/password from request JSON
