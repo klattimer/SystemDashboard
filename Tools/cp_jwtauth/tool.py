@@ -50,7 +50,7 @@ class JWTAuthTool(cherrypy.Tool):
         except:
             logging.exception("Couldn't acquire a token")
 
-        if token is not None:
+        if token is not None and token.startswith("Bearer"):
             try:
                 self.auth_mech.verifyToken(token)
             except AuthenticationFailure as e:

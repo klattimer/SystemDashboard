@@ -6,6 +6,7 @@ __version__ = '0.1'
 
 from .tool import JWTAuthTool, AuthenticationFailure
 from itsdangerous import JSONWebSignatureSerializer, BadSignature
+import logging
 import pam
 
 
@@ -57,4 +58,9 @@ class AuthMechInterface(BaseAuthMech):
 class PAMAuthMech(AuthMechInterface):
 
     def checkpass(self, username, password):
-        return pam.pam().authenticate(username, password)
+        auth =  pam.pam().authenticate(username, password)
+        if auth is True:
+            logging.debug("Authentication Success")
+        else:
+            logging.debug("Authentication Failure")
+        return auth
