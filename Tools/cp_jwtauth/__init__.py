@@ -9,6 +9,7 @@ from itsdangerous import JSONWebSignatureSerializer, BadSignature
 import logging
 import pam
 from time import time
+import uuid
 
 
 class BaseAuthMech:
