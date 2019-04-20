@@ -89,7 +89,7 @@ class JWTAuthTool(cherrypy.Tool):
                     if self.auth_mech.checkpass(username, password):
                         token = self.auth_mech.generateToken(username)
                         request.login = username
-                        cherrypy.response.headers['Authorization'] = 'Bearer ' + token
+                        cherrypy.response.headers['Authorization'] = 'Bearer ' + str(token)
                         return  # successful authentication
         charset = accept_charset.upper()
         charset_declaration = (
