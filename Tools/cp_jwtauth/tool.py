@@ -1,6 +1,7 @@
 import binascii
 import unicodedata
 import base64
+import json
 
 import cherrypy
 from cherrypy._cpcompat import ntou, tonative
@@ -50,7 +51,8 @@ class JWTAuthTool(cherrypy.Tool):
                 token = cherrypy.request.headers['Authorization']
             elif 'Authorization' in cherrypy.request.cookie:
                 token = cherrypy.request.cookies['Authorization']
-            elif 'Authorization' in cherrypy.request.json:
+            j = json.loads(cherrypy.request.body.read())
+            if 'Authorization' in cherrypy.request.json:
                 token = cherrypy.request.json['Authorization']
         except:
             logging.exception("Couldn't acquire a token")
@@ -85,8 +87,9 @@ class JWTAuthTool(cherrypy.Tool):
                 username, password = decoded_params.split(':', 1)
         else:
             try:
-                username = cherrypy.request.json['username']
-                password = cherrypy.request.json['password']
+                j = json.loads(cherrypy.request.body.read())
+                username = j['username']
+                password = j['password']
             except:
                 logging.debug("Username and password not in json")
 

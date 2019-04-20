@@ -2,6 +2,7 @@ import cherrypy
 import psutil
 from API import APIPluginInterface
 import logging
+import json
 
 __plugin__ = "LiveAPI"
 __plugin_version__ = "0.1"
@@ -26,4 +27,5 @@ class LiveAPI(APIPluginInterface):
         return True
 
     def POST(self):
+        print (json.dumps(cherrypy.request.json))
         return True
