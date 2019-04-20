@@ -21,12 +21,12 @@ class RenewToken(Exception):
 
 
 class JWTAuthTool(cherrypy.Tool):
-    def __init__(self, secret, auth_mech, auth_url='/login', token_expires=86400, renew_window=3600):
+    def __init__(self, issuer_identity, secret, auth_mech, auth_url=None, token_expires=86400, renew_window=3600):
         cherrypy.Tool.__init__(self, 'on_start_resource',
                                self.on_start_resource,
                                priority=20)
 
-        self.auth_mech = auth_mech(secret, token_expires, renew_window)
+        self.auth_mech = auth_mech(issuer_identity, secret, token_expires, renew_window)
         self.auth_url = auth_url
         self.renew_window = renew_window
 
@@ -97,10 +97,12 @@ class JWTAuthTool(cherrypy.Tool):
             if charset != fallback_charset
             else ''
         )
+
         # Respond with 401 status and a WWW-Authenticate header
         cherrypy.response.headers['www-authenticate'] = ('Basic %s' % (charset))
         raise cherrypy.HTTPError(401, 'You are not authorized to access that resource')
 
+        raise cherrypy.HTTPRedirect(self.auth_url)
             # Get the username/password from request JSON
             # Get the username/password from
 

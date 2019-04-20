@@ -61,6 +61,7 @@ class Server(object):
         ip = self.validateIP()
         port = self.validatePort()
         cherrypy.tools.jwtauth = JWTAuthTool(
+            "SystemDashboard",
             "mysupersecretpassphraseformytokens",
             PAMAuthMech
         )
