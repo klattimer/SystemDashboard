@@ -17,6 +17,9 @@ var traffic_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
         animation: false,
         legend: {
             display: false

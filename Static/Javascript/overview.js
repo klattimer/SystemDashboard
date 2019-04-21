@@ -44,6 +44,9 @@ var overview_chart_config = {
         ]
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
         animation: false,
         legend: {
             display: false

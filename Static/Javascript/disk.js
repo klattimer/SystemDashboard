@@ -28,6 +28,9 @@ var disk_config = {
 		}]
 	},
 	options: {
+        tooltips: {
+            enabled: false
+        },
 		responsive: true,
 		legend: {
 			position: 'top',
@@ -44,7 +47,6 @@ var disk_config = {
 
 var rebuild_config = {
 	type: 'doughnut',
-    responsive: true,
 	data: {
 		datasets: [{
 			data: [],
@@ -55,6 +57,9 @@ var rebuild_config = {
 		}]
 	},
 	options: {
+        tooltips: {
+            enabled: false
+        },
 		responsive: true,
 		legend: {
 			position: 'top',
@@ -76,6 +81,9 @@ var diskrw_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
         animation: false,
         legend: {
             display: false

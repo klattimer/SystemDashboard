@@ -12,6 +12,9 @@ var cpu_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
         animation: false,
         legend: {
             display: false
@@ -54,6 +57,9 @@ var memory_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
         animation: false,
         legend: {
             display: false
@@ -97,6 +103,9 @@ var load_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
         animation: false,
         legend: {
             display: false
