@@ -270,6 +270,7 @@ canvas {
     transform: translateY(-50%);
     top: 50%;
     position: relative;
+    text-align: center;
 }
 
 .stack-item.warning {

@@ -301,7 +301,7 @@ window.APP.update_funcs.push({
             for (var i = 0; i < window.APP.charts.rebuild_raid.length; i++) {
                 var chart = window.APP.charts.rebuild_raid[i];
                 var k = chart.array_key;
-                var d = chart.array_data;
+                var d = window.APP.page_data.disk.mdstat.devices[k];
                 var label_id = k+'-rebuild-percent';
                 $('#' + label_id).html(d.resync.progress);
                 chart.data.datasets[0].data = [parseFloat(d.resync.progress), 100 - parseFloat(d.resync.progress)];
