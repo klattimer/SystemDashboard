@@ -20,6 +20,7 @@ var traffic_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false

@@ -15,6 +15,7 @@ var cpu_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -60,6 +61,7 @@ var memory_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -106,6 +108,7 @@ var load_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false

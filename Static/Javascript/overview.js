@@ -47,6 +47,7 @@ var overview_chart_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false

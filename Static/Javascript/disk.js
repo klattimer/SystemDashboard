@@ -31,6 +31,7 @@ var disk_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
 		responsive: true,
 		legend: {
 			position: 'top',
@@ -60,6 +61,7 @@ var rebuild_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
 		responsive: true,
 		legend: {
 			position: 'top',
@@ -84,6 +86,7 @@ var diskrw_config = {
         tooltips: {
             enabled: false
         },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
