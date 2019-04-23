@@ -79,7 +79,7 @@ class WebAPI(APIPluginInterface):
 
     def __init__(self, server):
         super(WebAPI, self).__init__(server)
-        path = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Templates"))),
+        path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Templates"))
         self.lookup = TemplateLookup(directories=[path])
 
     def collect(self):
