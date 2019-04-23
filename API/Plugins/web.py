@@ -132,8 +132,7 @@ class WebAPI(APIPluginInterface):
 
         output = self.lookup.get_template("container.html")
         head = style_tags + script_tags
-        output.render(head=head)
-        return output
+        return output.render(head=head)
 
     def signin(self):
         pass
