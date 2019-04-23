@@ -7,7 +7,7 @@ __plugin_version__ = "0.1"
 
 
 class WebAPI(APIPluginInterface):
-    api_path = "/newroot"
+    api_path = "/"
     api_config = {
         '/': {
             'request.dispatch': cherrypy.dispatch.Dispatcher()
@@ -36,6 +36,9 @@ class WebAPI(APIPluginInterface):
         {
             "src": "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js",
             "crossorigin": "anonymous",
+        },
+        {
+            "src": "Javascript/main.js"
         }
     ]
     styles = [

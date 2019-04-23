@@ -15,6 +15,18 @@ class PowerAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    styles = [
+        {
+            "href": "CSS/power.css",
+            "rel": "stylesheet",
+            "type": "text/css"
+        }
+    ]
+    scripts = [
+        {
+            "src": "Javascript/power.js"
+        }
+    ]
 
     def __init__(self, server):
         super(PowerAPI, self).__init__(server)

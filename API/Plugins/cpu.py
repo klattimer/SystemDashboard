@@ -17,6 +17,12 @@ class CPUAPI(APIPluginInterface):
         }
     }
 
+    scripts = [
+        {
+            "src": "Javascript/load.js"
+        }
+    ]
+
     def __init__(self, server):
         super(CPUAPI, self).__init__(server)
 

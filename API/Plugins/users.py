@@ -26,6 +26,12 @@ class UsersAPI(APIPluginInterface):
         }
     }
 
+    scripts = [
+        {
+            "src": "Javascript/users.js"
+        }
+    ]
+
     def __init__(self, server):
         super(UsersAPI, self).__init__(server)
 

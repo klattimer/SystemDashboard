@@ -38,6 +38,12 @@ class NetstatAPI(APIPluginInterface):
         }
     }
 
+    scripts = [
+        {
+            "src": "Javascript/netstat.js"
+        }
+    ]
+
     def __init__(self, server):
         super(NetstatAPI, self).__init__(server)
 

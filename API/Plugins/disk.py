@@ -19,6 +19,11 @@ class DiskAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "Javascript/disk.js"
+        }
+    ]
 
     def __init__(self, server):
         super(DiskAPI, self).__init__(server)

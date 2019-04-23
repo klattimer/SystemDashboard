@@ -20,6 +20,11 @@ class OverviewAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "Javascript/overview.js"
+        }
+    ]
 
     def __init__(self, server):
         super(OverviewAPI, self).__init__(server)

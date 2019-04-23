@@ -16,6 +16,11 @@ class TopAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "Javascript/top.js"
+        }
+    ]
 
     def __init__(self, server):
         super(TopAPI, self).__init__(server)

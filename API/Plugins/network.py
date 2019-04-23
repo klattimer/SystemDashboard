@@ -17,6 +17,12 @@ class NetworkAPI(APIPluginInterface):
         }
     }
 
+    scripts = [
+        {
+            "src": "Javascript/network.js"
+        }
+    ]
+
     def __init__(self, server):
         super(NetworkAPI, self).__init__(server)
 
