@@ -1,6 +1,7 @@
 import cherrypy
 from API import APIPluginInterface
 import logging
+import os
 
 __plugin__ = "WebAPI"
 __plugin_version__ = "0.1"
@@ -12,7 +13,7 @@ class WebAPI(APIPluginInterface):
         '/': {
             'request.dispatch': cherrypy.dispatch.Dispatcher(),
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': "../../Static",
+            'tools.staticdir.dir': os.path.abspath("../../Static"),
         }
     }
     scripts = [
