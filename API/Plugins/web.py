@@ -13,7 +13,7 @@ class WebAPI(APIPluginInterface):
         '/': {
             'request.dispatch': cherrypy.dispatch.Dispatcher(),
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.abspath("../../Static"),
+            'tools.staticdir.dir': os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "Static"),
         }
     }
     scripts = [
