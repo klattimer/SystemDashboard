@@ -84,7 +84,7 @@ class WebAPI(APIPluginInterface):
 
     def collect(self):
         theme = {
-            "href": "CSS/theme-%s.css" % self.server.conf['theme'],
+            "href": "CSS/theme-%s.css" % self._server.conf['theme'],
             "type": "text/css",
             "rel": stylesheet
         }
