@@ -56,7 +56,7 @@ class Root(object): pass
 
 class Server(object):
     default_conf = {
-        "theme": "dark"
+        "theme": "default"
     }
     def __init__(self, conf):
         self.conf = copy(self.__class__.default_conf)
