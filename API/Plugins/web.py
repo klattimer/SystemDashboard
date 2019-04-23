@@ -10,7 +10,9 @@ class WebAPI(APIPluginInterface):
     api_path = "/"
     api_config = {
         '/': {
-            'request.dispatch': cherrypy.dispatch.Dispatcher()
+            'request.dispatch': cherrypy.dispatch.Dispatcher(),
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': "../../Static",
         }
     }
     scripts = [
