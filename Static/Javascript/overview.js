@@ -20,9 +20,9 @@ var overview_chart_config = {
                 2,
             ],
             backgroundColor: [
-                window.chartColors.orange,
-                window.chartColors.green,
-                window.chartColors.yellow
+                getRootVar('--color-orange'),
+                getRootVar('--color-green'),
+                getRootVar('--color-yellow'),
             ]
         },
         {
@@ -32,9 +32,9 @@ var overview_chart_config = {
                 2,
             ],
             backgroundColor: [
-                window.chartColors.yellow,
-                window.chartColors.orange,
-                window.chartColors.green
+                getRootVar('--color-yellow'),
+                getRootVar('--color-orange'),
+                getRootVar('--color-green'),
             ]
         }],
         labels: [
@@ -44,6 +44,10 @@ var overview_chart_config = {
         ]
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -119,11 +123,20 @@ window.APP.update_funcs.push({
                 d.push(swap_data[i]);
                 var c = [];
 
-                k = Object.keys(window.chartColors);
+                k = [
+                    getRootVar("--color-red"),
+                    getRootVar("--color-orange"),
+                    getRootVar("--color-yellow"),
+                    getRootVar("--color-green"),
+                    getRootVar("--color-blue"),
+                    getRootVar("--color-purple"),
+                    getRootVar("--color-grey"),
+                    getRootVar("--color-pink")
+                ];
                 var c = [
-                            window.chartColors[k[i % k.length]] ,
-                            window.chartColors[k[(i+1) % k.length]],
-                            window.chartColors[k[(i+2) % k.length]],
+                            k[i % k.length],
+                            k[(i+1) % k.length],
+                            k[(i+2) % k.length]
                         ];
 
                 new_datasets.push({data:d, backgroundColor: c});
@@ -134,6 +147,30 @@ window.APP.update_funcs.push({
 
             console.log("Error on: overview\n", e);
 
+        }
+
+        var filled = false;
+        if (window.APP._warnings.length > 0) {
+            $('.warning').html('<i class="fas fa-exclamation-triangle"></i> '+window.APP._errors.length+' Warnings');
+            $('.warning').show();
+            $('.stack-filler').hide();
+            filled = true;
+        }
+        if (window.APP._errors.length > 0) {
+            $('.error').html('<i class="fas fa-exclamation-circle"></i> '+window.APP._errors.length+' Errors');
+            $('.error').show();
+            $('.stack-filler').hide();
+            filled = true;
+        }
+        if (window.APP._criticals.length > 0) {
+            $('.critical').html('<i class="fas fa-skull-crossbones"></i> '+window.APP._criticals.length+' Criticals');
+            $('.critical').show();
+            $('.stack-filler').hide();
+            filled = true;
+        }
+
+        if (filled === false) {
+            $('.stack-filler').show();
         }
     }
 });

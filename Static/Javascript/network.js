@@ -4,12 +4,6 @@ window.APP.fetch.push({
     interval: 10000
 });
 
-window.APP.fetch.push({
-    url: '/api/radar',
-    key: 'radar',
-    interval: 10000
-});
-
 var traffic_config = {
     type: 'line',
     data: {
@@ -17,6 +11,10 @@ var traffic_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -30,7 +28,7 @@ var traffic_config = {
                 ticks: {
                     callback: function(value) {
                         var ranges = [
-                            { divider: 1e6, suffix: 'G' },
+                            { divider: 1e9, suffix: 'G' },
                             { divider: 1e6, suffix: 'M' },
                             { divider: 1e3, suffix: 'k' }
                         ];
@@ -51,61 +49,6 @@ var traffic_config = {
     }
 };
 
-var radar_config = {
-    type: 'radar',
-    data: {
-        labels: [
-            "192.168.1.1 - 34ms",
-            "192.168.1.11 - 88ms",
-            "192.168.1.12 - 43ms",
-            "192.168.1.142 - 12ms",
-            "192.168.1.13 - 124ms",
-            "192.168.1.8 - 152ms",
-            "192.168.1.15 - 34ms",
-            "192.168.1.9 - 45ms",
-            "192.168.1.19 - 12ms",
-            "192.168.1.21 - 144ms",
-            "192.168.1.41 - 122ms",
-            "192.168.1.40 - 44ms",
-            "192.168.1.56 - 95ms",
-        ],
-        datasets: [{
-            data: [
-                34,
-                88,
-                43,
-                12,
-                124,
-                152,
-                34,
-                45,
-                12,
-                144,
-                122,
-                44,
-                95
-            ],
-            pointBackgroundColor: window.chartColors.red,
-            fill: false,
-            borderWidth:0,
-            borderColor:"rgba(0,0,0,0)"
-
-        }]
-    },
-    options: {
-        legend: {
-            display: false
-        },
-        scale: {
-            // Hides the scale
-            display: true,
-            pointLabels: {
-                // Boolean - if true, show point labels
-                display: false
-            }
-        }
-    }
-}
 
 window.APP.load.push(function() {
     labels = [];
@@ -116,9 +59,6 @@ window.APP.load.push(function() {
 
     var ctx = document.getElementById('traffic-chart-area').getContext('2d');
     window.APP.charts.traffic = new Chart(ctx, traffic_config);
-
-    var ctx = document.getElementById('radar-chart-area').getContext('2d');
-    window.APP.charts.radar = new Chart(ctx, radar_config);
 
     window.APP.net_history = [[], []];
     window.APP.net_out_last = 0;
@@ -160,8 +100,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.net_history[0],
-                borderColor: window.chartColors.blue,
-                pointBackgroundColor: window.chartColors.blue,
+                borderColor: getRootVar("--color-blue"),
+                pointBackgroundColor: getRootVar("--color-blue"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,
@@ -171,8 +111,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.net_history[1],
-                borderColor: window.chartColors.red,
-                pointBackgroundColor: window.chartColors.red,
+                borderColor: getRootVar("--color-red"),
+                pointBackgroundColor: getRootVar("--color-red"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,
@@ -182,29 +122,6 @@ window.APP.update_funcs.push({
 
             window.APP.charts.traffic.data.datasets = datasets;
             window.APP.charts.traffic.update();
-
-            dataset = [];
-            labels = [];
-            var blips = window.APP.page_data.radar;
-
-            for (var i = 0; i < blips.length; i++) {
-                var blip = blips[i];
-                var ms = blip[1] * 1000;
-                var msi = parseInt(ms);
-                if (msi == 0) {
-                    ns = blip[1] * 1000000;
-                    nsi = parseInt(ns)
-                    time = ns + 'ns';
-                } else {
-                    time = ms + 'ms';
-                }
-                dataset.push(blip[1]);
-                labels.push(blip[0]); // + ',  ' + time)
-            }
-
-            window.APP.charts.radar.data.datasets[0].data = dataset;
-            window.APP.charts.radar.data.labels = labels;
-            window.APP.charts.radar.update();
         } catch (e) {
 
             console.log("Error on: network\n", e);

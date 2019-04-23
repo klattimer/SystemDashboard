@@ -21,13 +21,17 @@ var disk_config = {
 				66,
 			],
 			backgroundColor: [
-				window.chartColors.red,
-				window.chartColors.blue
+				getRootVar("--color-red"),
+				getRootVar("--color-blue")
 			],
 			label: 'Disk Usage /'
 		}]
 	},
 	options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
 		responsive: true,
 		legend: {
 			position: 'top',
@@ -44,17 +48,20 @@ var disk_config = {
 
 var rebuild_config = {
 	type: 'doughnut',
-    responsive: true,
 	data: {
 		datasets: [{
 			data: [],
 			backgroundColor: [
-				window.chartColors.green,
-				window.chartColors.red
+				getRootVar("--color-green"),
+				getRootVar("--color-red")
 			]
 		}]
 	},
 	options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
 		responsive: true,
 		legend: {
 			position: 'top',
@@ -76,6 +83,10 @@ var diskrw_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -89,7 +100,7 @@ var diskrw_config = {
                 ticks: {
                     callback: function(value) {
                         var ranges = [
-                            { divider: 1e6, suffix: 'G' },
+                            { divider: 1e9, suffix: 'G' },
                             { divider: 1e6, suffix: 'M' },
                             { divider: 1e3, suffix: 'k' }
                         ];
@@ -124,8 +135,14 @@ window.APP.load.push(function (event) {
     var dd = window.APP.page_data.disk;
 
     window.APP.charts.disk_usage = [];
-    for (var i = 0; i < Object.keys(dd.usage).length; i++) {
-        var d = dd.usage[Object.keys(dd.usage)[i]];
+    for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+        var k = Object.keys(dd.partitions)[i];
+        var d = dd.partitions[k];
+        var name = d.mountpoint;
+        if (d.total === undefined || d.used === undefined) {
+            window.APP.charts.disk_usage.push(null);
+            continue;
+        }
         var id = 'disk'+i+'-chart-area';
         var label_id = 'disk'+i+'-percent';
 
@@ -135,7 +152,7 @@ window.APP.load.push(function (event) {
                    "<canvas id='"+id+"'></canvas></div>" +
                    "<div id='"+label_id+"' class='centre-percent'>"+(100 - parseInt(d.percent))+"%</div>" +
                    "<div class='centre-label'>available</div>" +
-                   "<h1><i class='far fa-hdd'></i>"+Object.keys(dd.usage)[i]+" Disk Usage</h1></div></div>";
+                   "<h1><i class='far fa-hdd'></i>"+name+" Disk Usage</h1></div></div>";
         $('a[name=storage] + .widget-grid-header + .widget-grid-container').append(html);
 
         $(document.getElementById(id)).attr('width', $(document.getElementById(id)).width());
@@ -240,8 +257,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.diskrw_history[0],
-                borderColor: window.chartColors.blue,
-                pointBackgroundColor: window.chartColors.blue,
+                borderColor: getRootVar("--color-blue"),
+                pointBackgroundColor: getRootVar("--color-blue"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,
@@ -251,8 +268,8 @@ window.APP.update_funcs.push({
 
             dataset = {
                 data: window.APP.diskrw_history[1],
-                borderColor: window.chartColors.red,
-                pointBackgroundColor: window.chartColors.red,
+                borderColor: getRootVar("--color-red"),
+                pointBackgroundColor: getRootVar("--color-red"),
                 borderWidth: 1,
                 fill: false,
                 pointRadius: 0,
@@ -279,8 +296,12 @@ window.APP.update_funcs.push({
         try {
 
             var dd = window.APP.page_data.disk;
-            for (var i = 0; i < window.APP.charts.disk_usage.length; i++) {
-                var d = dd.usage[Object.keys(dd.usage)[i]];
+            for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+                var k = Object.keys(dd.partitions)[i];
+                var d = dd.partitions[k];
+                if (d.total === undefined || d.used === undefined) {
+                    continue;
+                }
                 var label_id = 'disk'+i+'-percent';
                 var chart = window.APP.charts.disk_usage[i];
                 $('#' + label_id).html(100 - parseInt(d.percent) +'%');
@@ -291,7 +312,7 @@ window.APP.update_funcs.push({
             for (var i = 0; i < window.APP.charts.rebuild_raid.length; i++) {
                 var chart = window.APP.charts.rebuild_raid[i];
                 var k = chart.array_key;
-                var d = chart.array_data;
+                var d = window.APP.page_data.disk.mdstat.devices[k];
                 var label_id = k+'-rebuild-percent';
                 $('#' + label_id).html(d.resync.progress);
                 chart.data.datasets[0].data = [parseFloat(d.resync.progress), 100 - parseFloat(d.resync.progress)];
@@ -302,16 +323,23 @@ window.APP.update_funcs.push({
         } catch (e) {
 
             console.log("Error on: disk\n", e);
-
+            window.APP._warnings.push({
+                "error": "Cannot update disk percentage or raid rebuild status",
+                "code": "",
+                "timestamp": ""
+            });
         }
 
         try {
 
             $('#disktemp').find('tbody').html('');
-
-            for (var i = 0; i < Object.keys(window.APP.page_data.disk.temperatures).length; i++) {
-                var disk = Object.keys(window.APP.page_data.disk.temperatures)[i];
-                var temp = window.APP.page_data.disk.temperatures[disk];
+            var c = 0;
+            for (var i = 0; i < Object.keys(window.APP.page_data.disk.drives).length; i++) {
+                var disk = Object.keys(window.APP.page_data.disk.drives)[i];
+                var temp = window.APP.page_data.disk.drives[disk].temperature;
+                if (temp === null || temp === undefined) {
+                    continue;
+                }
 
                 var state = '<i class="fas fa-circle status-blue"></i>';
                 if (temp > 60) {
@@ -323,13 +351,17 @@ window.APP.update_funcs.push({
 
                 var row = '<tr><td>'+disk+'</td><td>'+temp+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
                 $('#disktemp').find('tbody').append(row);
+                c++;
+            }
+            if (c == 0) {
+                $('#disktemp').remove();
             }
 
         } catch (e) {
+            $('#disktemp').remove();
+            // $('#disktemp').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
 
-            $('#disktemp').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
-
-            console.log("Error on: disk\n", e);
+            console.log("Error on: disk temperatures\n", e);
 
         }
 
@@ -369,6 +401,66 @@ window.APP.update_funcs.push({
 
             console.log("Error on: disk\n", e);
 
+        }
+
+        try {
+            var dd = window.APP.page_data.disk;
+            $('#partitions').find('tbody').html('');
+            for (var i = 0; i < Object.keys(dd.partitions).length; i++) {
+                var k = Object.keys(dd.partitions)[i];
+                var d = dd.partitions[k];
+                if (k.indexOf('loop') > -1 || d.fstype == null || d.fstype == 'swap') {
+                    continue;
+                }
+                var state = '<i class="fas fa-circle status-red"></i>';
+                mp = '';
+                if (d.mountpoint !== null ) {
+                    mp = d.mountpoint;
+                    state = '<i class="fas fa-circle status-green"></i>';
+                }
+
+                var ranges = [
+                    { divider: 1e12, suffix: 'T' },
+                    { divider: 1e9, suffix: 'G' },
+                    { divider: 1e6, suffix: 'M' },
+                    { divider: 1e3, suffix: 'k' }
+                ];
+                function formatNumber(n) {
+                    for (var i = 0; i < ranges.length; i++) {
+                       if (n >= ranges[i].divider) {
+                          return parseInt(n / ranges[i].divider).toString() + ranges[i].suffix;
+                       }
+                    }
+                    return n;
+                }
+                size = formatNumber(d.size) + 'B';
+                if (d.free > 0) {
+                    available = formatNumber(d.free) +'B';
+                    percentage = parseInt(d.percent) + '%';
+                    available_row = '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:'+percentage+'"></div></div>'+available+' Free'
+                } else {
+                    available_row = '';
+                }
+
+                label = d.label;
+                if (label == null) {
+                    label = '';
+                }
+
+                row = '<tr><td class="narrow">'+state+'</td>' +
+                        '<td>'+k+'</td>' +
+                        '<td>'+d.fstype+'</td>' +
+                        '<td>'+label+'</td>' +
+                        '<td>'+available_row+'</td>' +
+                        '<td>'+size+'</td>' +
+                        '<td>'+mp+'</td>' +
+                        '<td class="narrow"></td></tr>';
+
+                $('#partitions').find('tbody').append(row)
+            }
+        } catch (e) {
+
+            console.log("Error on: disk\n", e);
         }
     }
 });

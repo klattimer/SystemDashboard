@@ -26,6 +26,11 @@ class RadarAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "/Javascript/radar.js"
+        }
+    ]
 
     def __init__(self, server):
         super(RadarAPI, self).__init__(server)

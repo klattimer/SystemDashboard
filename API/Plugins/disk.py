@@ -19,6 +19,11 @@ class DiskAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "Javascript/disk.js"
+        }
+    ]
 
     def __init__(self, server):
         super(DiskAPI, self).__init__(server)
@@ -30,6 +35,13 @@ class DiskAPI(APIPluginInterface):
                     return int(line.split()[9])
         except:
             logging.exception("Couldn't get disk temperature")
+
+    def get_blk_info(self):
+        try:
+            j = subprocess.Popen([b'lsblk', b'-fmJb'], stdout=subprocess.PIPE).stdout.read()
+            return json.loads(j)
+        except:
+            logging.exception("Couldn't get block info")
 
     def GET(self, **params):
         partitions = psutil.disk_partitions(all=False)
@@ -55,11 +67,41 @@ class DiskAPI(APIPluginInterface):
         disks.sort()
         temperatures = {'/dev/' + k: self.get_hdd_temp(k) for k in disks}
 
+        blk_info = self.get_blk_info()
+
+        def collect(devices):
+            out = []
+            for dev in devices:
+                if 'children' in dev.keys():
+                    out += collect(dev['children'])
+                else:
+                    out += [dev]
+            return out
+
+        devices = collect(blk_info['blockdevices'])
+
+        drives = {'/dev/' + dev['name']: dev for dev in blk_info['blockdevices'] if dev['name'] in disks}
+        for d in drives.keys():
+            if d in temperatures.keys():
+                drives[d]['temperature'] = temperatures[d]
+
+        devices = {'/dev/' + dev['name']: dev for dev in devices}
+        partitions = {partition.device: dev for dev in partitions}
+
+        for d in devices.keys():
+            if d in partitions.keys():
+                partition_data = partitions[d]._asdict()
+                devices[d].update(partition_data)
+            if devices[d]['mountpoint'] in diskusage.keys():
+                mp = devices[d]['mountpoint']
+                u = diskusage[mp]
+                devices[d].update(u._asdict())
+            devices[d]['size'] = int(devices[d]['size'])
+
+
 
         return {
-            "partitions": partitions,
-            "usage": diskusage,
-            "temperatures": temperatures,
-            'mdstat': md,
-            'disks': disks
+            "partitions": devices,
+            "drives": drives,
+            'mdstat': md
         }

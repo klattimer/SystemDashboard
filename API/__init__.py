@@ -10,6 +10,7 @@ class APIPluginInterface(object):
     api_config = {}
     scripts = []
     styles = []
+    templates = []
 
     def __init__(self, server):
         self._server = server
@@ -20,6 +21,7 @@ class APIRegistry(object):
     def __init__(self, server):
         self.__server = server
         files = os.listdir(os.path.join(os.path.dirname(__file__), "Plugins"))
+        self.plugins = []
         for f in files:
             if f.startswith('__'): continue
 
@@ -34,5 +36,6 @@ class APIRegistry(object):
             self.register(plugin(server))
 
     def register(self, plugin):
+        self.plugins.append(plugin)
         cherrypy.tree.mount(plugin, plugin.__class__.api_path, plugin.__class__.api_config)
         logging.info("Mounting plugin " + plugin.__class__.__name__ + " on " + plugin.__class__.api_path)

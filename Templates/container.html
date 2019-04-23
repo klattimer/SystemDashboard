@@ -2,82 +2,7 @@
 <html>
     <head>
         <title>SystemDashboard</title>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-        <script>
-            window.chartColors = {
-                red: 'rgb(255, 99, 132)',
-                orange: 'rgb(255, 159, 64)',
-                yellow: 'rgb(255, 205, 86)',
-                green: 'rgb(75, 192, 192)',
-                blue: 'rgb(54, 162, 235)',
-                purple: 'rgb(153, 102, 255)',
-                grey: 'rgb(201, 203, 207)'
-            };
-        </script>
-        <script src="Javascript/main.js"></script>
-        <script src="Javascript/overview.js"></script>
-        <script src="Javascript/disk.js"></script>
-        <script src="Javascript/top.js"></script>
-        <script src="Javascript/load.js"></script>
-        <script src="Javascript/netstat.js"></script>
-        <script src="Javascript/network.js"></script>
-        <script src="Javascript/users.js"></script>
-        <script src="Javascript/log.js"></script>
-        <script   src="http://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
-        <script   src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="   crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
-        <script>
-            window.APP.load.push(function (event) {
-                Chart.defaults.global.elements.line.fill = false;
-                $( ".menu a" ).click(function(event) {
-                    event.preventDefault();
-                    var href = $(this).attr("href");
-                    href = href.replace('#', '');
-                    href = "a[name=" + href + "]";
-                    $("html, body").animate({
-                        scrollTop: $(href).offset().top
-                    }, 500, "linear");
-                });
-                window.APP.power_visible = false;
-                $('#power').click(function(event) {
-                    if (window.APP.power_visible === true) {
-                        $('power-menu').hide();
-                        window.APP.power_visible = false;
-                    } else {
-                        $('.power-menu').show();
-                        window.APP.power_visible = true;
-                    }
-
-                });
-                window.APP.decrement_interval = null;
-                window.APP.release_timeout = null;
-                $('.power-menu .slider').mouseup(function (event) {
-                    clearInterval(window.APP.release_timeout);
-                    window.APP.release_timeout = setTimeout(function() {
-                        var max = parseInt(event.target.max);
-                        var min = parseInt(event.target.min);
-                        var value = parseInt(event.target.value);
-                        if (value < .9 * max) {
-                            window.APP.decrement_interval = setInterval(function () {
-                                if (parseInt(event.target.value) == 0) {
-                                    clearInterval(window.APP.decrement_interval);
-                                    window.APP.decrement_interval = null;
-                                    return;
-                                }
-                                event.target.value = parseInt(parseInt(event.target.value) * 0.8)
-                            }, 10);
-                        } else {
-                            event.target.value = max;
-                        }
-                    }, 90);
-                });
-            });
-        </script>
-        <link rel="stylesheet" type="text/css" href="CSS/theme-default.css">
-        <link rel="stylesheet" type="text/css" href="CSS/main.css">
+        ${head}
     </head>
     <body>
         <div class="header">
@@ -131,6 +56,12 @@
                         </tr>
                     </table>
                     <div id="overview-chart-area-container" class="chart-container"><canvas id="overview-chart-area"></canvas></div>
+                    <div id="stack">
+                    <div class="stack-item critical"><i class="fas fa-skull-crossbones"></i> 1 Critical</div>
+                    <div class="stack-item error"><i class="fas fa-exclamation-circle"></i> 1 Errors</div>
+                    <div class="stack-item warning"><i class="fas fa-exclamation-triangle"></i> 2 Warnings</div>
+                    <div class="stack-filler">Status OK</div>
+                    </div>
                 </div>
             </div>
 
@@ -226,28 +157,49 @@
             <a class="named-anchor" name="storage"></a>
             <div class="widget-grid-header"><i class="far fa-hdd"></i>Storage</div>
             <div class="widget-grid-container">
-            <div class="widget-grid-item w2h1">
-                <div class="widget-grid-item-inner">
-                    <div id="diskrw-chart-area-container" class="chart-container"><canvas id="diskrw-chart-area"></canvas></div>
-                    <h1><i class="far fa-hdd"></i>Disk Reads/Writes</h1>
+                <div class="widget-grid-item w2h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="diskrw-chart-area-container" class="chart-container"><canvas id="diskrw-chart-area"></canvas></div>
+                        <h1><i class="far fa-hdd"></i>Disk Reads/Writes</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="widget-grid-item w1h1">
-                <div class="widget-grid-item-inner">
-                    <h1><i class="fas fa-thermometer-quarter"></i>Disk Temperature</h1>
-                    <table id="disktemp" class="data-table">
-                        <thead>
-                        <tr>
-                            <th>Device </th>
-                            <th>Temperature</th>
-                            <th class="narrow"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-thermometer-quarter"></i>Disk Temperature</h1>
+                        <table id="disktemp" class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Device </th>
+                                <th>Temperature</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+                <div class="widget-grid-item w3h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-chart-pie"></i>Partitions</h1>
+                        <table id="partitions" class="data-table">
+                            <thead>
+                            <tr>
+                                <th class="narrow"></th>
+                                <th>Partition</th>
+                                <th>Type</th>
+                                <th>Label</th>
+                                <th>Usage</th>
+                                <th>Size</th>
+                                <th>Mount Point</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
             <a class="named-anchor" name="users"></a>

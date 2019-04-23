@@ -11,6 +11,9 @@ window.APP = {
     _gotcount: 0,
     _loaded: false,
     _intervals: [],
+    _warnings: [],
+    _errors: [],
+    _criticals: [],
     _recalc_base_size: function () {
         var base_size = $('.widget-grid').width() / 4;
         document.documentElement.style.setProperty('--base-size', base_size + 'px');
@@ -90,5 +93,11 @@ window.APP = {
         }
     },
 };
-
+function getRootVar(variable) {
+    return getComputedStyle(document.documentElement).getPropertyValue(variable);
+}
 window.onload = window.APP.onload
+
+window.APP.load.push(function (event) {
+    Chart.defaults.global.elements.line.fill = false;
+});

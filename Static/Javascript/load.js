@@ -12,6 +12,10 @@ var cpu_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -54,6 +58,10 @@ var memory_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -97,6 +105,10 @@ var load_config = {
         labels: []
     },
     options: {
+        tooltips: {
+            enabled: false
+        },
+        hover: {mode: null},
         animation: false,
         legend: {
             display: false
@@ -180,11 +192,11 @@ window.APP.update_funcs.push({
             }
             dataset = {
                 data: window.APP.memory_history,
-                borderColor: window.chartColors.orange,
-                pointBackgroundColor: window.chartColors.orange,
+                borderColor: getRootVar("--color-orange"),
+                pointBackgroundColor: getRootVar("--color-orange"),
                 borderWidth: 1,
                 fill: true,
-                backgroundColor: window.chartColors.yellow,
+                backgroundColor: getRootVar("--color-yellow"),
                 pointRadius: 0,
                 pointHoverRadius: 0
             };
@@ -205,8 +217,17 @@ window.APP.update_funcs.push({
                     }
                 }
 
-                k = Object.keys(window.chartColors);
-                var c = window.chartColors[k[i % k.length]];
+                k = [
+                    getRootVar("--color-red"),
+                    getRootVar("--color-orange"),
+                    getRootVar("--color-yellow"),
+                    getRootVar("--color-green"),
+                    getRootVar("--color-blue"),
+                    getRootVar("--color-purple"),
+                    getRootVar("--color-grey"),
+                    getRootVar("--color-pink")
+                ]
+                var c = k[i % k.length];
                 dataset = {
                     data: window.APP.load_history[i],
                     borderColor: c,
@@ -275,8 +296,17 @@ window.APP.update_funcs.push({
                         window.APP.cpu_history[i].splice(0, 0, 0);
                     }
                 }
-                k = Object.keys(window.chartColors);
-                var c = window.chartColors[k[i % k.length]];
+                k = [
+                    getRootVar("--color-red"),
+                    getRootVar("--color-orange"),
+                    getRootVar("--color-yellow"),
+                    getRootVar("--color-green"),
+                    getRootVar("--color-blue"),
+                    getRootVar("--color-purple"),
+                    getRootVar("--color-grey"),
+                    getRootVar("--color-pink")
+                ];
+                var c = k[i % k.length];
                 dataset = {
                     data: window.APP.cpu_history[i],
                     borderColor: c,
