@@ -86,7 +86,7 @@ class Server(object):
                 },
         })
 
-        self.__api = APIRegistry(self)
+        self.api = APIRegistry(self)
 
     def validateIP(self):
         if re.match(r"(([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4})", self.conf["host"]) or re.match(r"(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", self.conf["host"]):
