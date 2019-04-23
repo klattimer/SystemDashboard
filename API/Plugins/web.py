@@ -77,12 +77,21 @@ class WebAPI(APIPluginInterface):
         super(WebAPI, self).__init__(server)
 
     def collect(self):
+        theme = {
+            "href": "CSS/theme-default.css",
+            "type": "text/css",
+            "rel": stylesheet
+        }
+        styles = [theme]
+        styles += copy(self.__class__.styles)
         scripts = copy(self.__class__.scripts)
-        styles = copy(self.__class__.styles)
+        templates = []
+
         for plugin in self._server.api.plugins:
             if plugin == self: continue
             scripts += plugin.__class__.scripts
             styles += plugin.__class__.styles
+            templates += plugin.__class__.templates
         return (scripts, styles)
 
     def generate_scripts(self, scripts):

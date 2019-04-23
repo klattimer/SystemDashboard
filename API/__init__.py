@@ -10,6 +10,7 @@ class APIPluginInterface(object):
     api_config = {}
     scripts = []
     styles = []
+    templates = []
 
     def __init__(self, server):
         self._server = server
