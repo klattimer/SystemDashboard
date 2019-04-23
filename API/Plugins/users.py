@@ -57,14 +57,26 @@ class UsersAPI(APIPluginInterface):
         return result
 
     def GET(self, **params):
-        users = psutil.users()
-        for i, user in enumerate(users):
-            d = user._asdict()
-            d['started'] = datetime.fromtimestamp(d['started'])
-            process = psutil.Process(d['pid'])
-            d['process_name'] = process.name()
-            users[i] = d
+        errors = []
+        try:
+            users = psutil.users()
+            for i, user in enumerate(users):
+                d = user._asdict()
+                d['started'] = datetime.fromtimestamp(d['started'])
+                process = psutil.Process(d['pid'])
+                d['process_name'] = process.name()
+                users[i] = d
+        except:
+            logging.exception("Cannot get psutil data")
+            self.errors.append({"type": "critical", "message": "psutil exception"})
+        try:
+            lastlog =  self.lastlog()
+        except:
+            logging.exception("Cannot get lastlog data")
+            self.errors.append({"type": "error", "message": "lastlog exception"})
+
         return {
             "logged_in": users,
-            "last_logins": self.lastlog()
+            "last_logins": lastlog,
+            "errors": errors
         }

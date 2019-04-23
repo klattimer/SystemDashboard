@@ -50,7 +50,6 @@ class RadarAPI(APIPluginInterface):
         pool = ThreadPool(processes=1000)
         async_results = []
         for address in address_list:
-            logging.debug("Pinging " + str(address))
             async_results.append(pool.apply_async(lping, (str(address), 0.5)))
 
         sleep(1)

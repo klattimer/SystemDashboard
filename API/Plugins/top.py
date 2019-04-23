@@ -37,11 +37,18 @@ class TopAPI(APIPluginInterface):
         return procs
 
     def GET(self, **params):
-        procs = self._list_processes()
+        errors = []
+        try:
+            procs = self._list_processes()
+        except:
+            logging.exception("Cannot get psutil data")
+            self.errors.append({"type": "critical", "message": "psutil exception"})
+
         cpu = sorted(procs, key=lambda p: p['cpu_percent'], reverse=True)[:20]
         mem = sorted(procs, key=lambda p: p['memory_percent'], reverse=True)[:20]
 
         return {
             'top_cpu_usage': cpu,
-            'top_memory_usage': mem
+            'top_memory_usage': mem,
+            "errors": errors
         }

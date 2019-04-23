@@ -20,6 +20,12 @@ class CPUAPI(APIPluginInterface):
     scripts = [
         {
             "src": "Javascript/load.js"
+        },
+        {
+            "src": "Javascript/cpu.js"
+        },
+        {
+            "src": "Javascript/memory.js"
         }
     ]
 
@@ -27,12 +33,28 @@ class CPUAPI(APIPluginInterface):
         super(CPUAPI, self).__init__(server)
 
     def GET(self, **params):
-        data = {
-            "cpu_percent": psutil.cpu_percent(interval=1, percpu=True),
-            "cpu_frequency": [i._asdict() for i in psutil.cpu_freq(percpu=True)],
-            "memory": psutil.virtual_memory()._asdict(),
-            "swap": psutil.swap_memory()._asdict()
-        }
+        try:
+            data = {
+                "cpu_percent": psutil.cpu_percent(interval=1, percpu=True),
+                "cpu_frequency": [i._asdict() for i in psutil.cpu_freq(percpu=True)],
+                "memory": psutil.virtual_memory()._asdict(),
+                "swap": psutil.swap_memory()._asdict(),
+                "errors": []
+            }
+        except:
+            logging.exception("Cannot get psutil data")
+            data = {
+                "cpu_percent": [],
+                "cpu_frequency": [],
+                "memory": {},
+                "swap": {},
+                "errors": [
+                    {
+                        "type": "critical",
+                        "message": "psutil exception"
+                    }
+                ]
+            }
 
         try:
             t = psutil.sensors_temperatures()
@@ -42,6 +64,7 @@ class CPUAPI(APIPluginInterface):
             data['temperatures'] = t
         except:
             logging.exception("Cannot get temperatures")
+            data['errors'].append({"type": "warning", "message": "cannot get temperatures"})
 
         try:
             t = psutil.sensors_fans()
@@ -51,5 +74,6 @@ class CPUAPI(APIPluginInterface):
             data['fans'] = t
         except:
             logging.exception("Cannot get fan speeds")
+            data['errors'].append({"type": "warning", "message": "cannot get fan speeds"})
 
         return data

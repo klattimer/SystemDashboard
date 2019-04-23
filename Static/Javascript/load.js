@@ -5,99 +5,6 @@ window.APP.fetch.push({
 });
 
 
-var cpu_config = {
-    type: 'line',
-    data: {
-        datasets: [],
-        labels: []
-    },
-    options: {
-        tooltips: {
-            enabled: false
-        },
-        hover: {mode: null},
-        animation: false,
-        legend: {
-            display: false
-        },
-        scales: {
-            yAxes: [{
-                gridLines: {
-                    drawTicks: true
-                },
-                display: true,
-                ticks: {
-                    beginAtZero: true,
-                    max: 100,
-                    min: 0,
-                    stepSize: 25,
-                    callback: function(value) {
-                        return value + '%';
-                    }
-                }
-            }],
-            xAxis: [{
-                ticks: {
-                    beginAtZero: true,
-                    max: 0,
-                    min: -60,
-                    stepSize: 10,
-                    callback: function(value) {
-                        return value + 's';
-                    }
-                }
-            }]
-        },
-    }
-};
-
-var memory_config = {
-    type: 'line',
-    data: {
-        datasets: [],
-        labels: []
-    },
-    options: {
-        tooltips: {
-            enabled: false
-        },
-        hover: {mode: null},
-        animation: false,
-        legend: {
-            display: false
-        },
-        scales: {
-            yAxes: [{
-                stacked: true,
-                gridLines: {
-                    drawTicks: true
-                },
-                display: true,
-                ticks: {
-                    beginAtZero: true,
-                    max: 100,
-                    min: 0,
-                    stepSize: 25,
-                    callback: function(value) {
-                        return value + '%';
-                    }
-                }
-            }],
-            xAxis: [{
-                ticks: {
-                    beginAtZero: true,
-                    max: 0,
-                    min: -600,
-                    stepSize: 100,
-                    callback: function(value) {
-                        return value + 's';
-                    }
-                }
-            }]
-        },
-    }
-};
-
 var load_config = {
     type: 'line',
     data: {
@@ -141,27 +48,8 @@ var load_config = {
 window.APP.load.push(function (event) {
     labels = [];
     for (var i = 0; i < 61; i++){
-        labels.push(-60 + i);
-    }
-    cpu_config.data.labels = labels;
-    var ctx = document.getElementById('cpu-chart-area').getContext('2d');
-    window.APP.charts.cpu = new Chart(ctx, cpu_config);
-
-    window.APP.cpu_history = [];
-    var cpud = window.APP.page_data.cpu;
-    for (var i = 0; i < cpud.cpu_percent.length;i++) {
-        window.APP.cpu_history.push([]);
-    }
-
-    labels = [];
-    for (var i = 0; i < 61; i++){
         labels.push(-600 + (i * 10));
     }
-    memory_config.data.labels = labels;
-    var ctx = document.getElementById('memory-chart-area').getContext('2d');
-    window.APP.charts.memory = new Chart(ctx, memory_config);
-
-    window.APP.memory_history = [];
 
     load_config.data.labels = labels;
     var ctx = document.getElementById('load-chart-area').getContext('2d');
@@ -177,31 +65,6 @@ window.APP.update_funcs.push({
         try {
 
             var size = 61;
-            var cpud = window.APP.page_data.cpu;
-
-            s = cpud.memory.used / cpud.memory.total;
-            s = parseInt(s * 100);
-            window.APP.memory_history.push(s);
-            var len = window.APP.memory_history.length;
-            if (len > size) {
-                window.APP.memory_history = window.APP.memory_history.slice(len - size, len);
-            } else {
-                for (var j = 0; j < size - len; j++) {
-                    window.APP.memory_history.splice(0, 0, 0);
-                }
-            }
-            dataset = {
-                data: window.APP.memory_history,
-                borderColor: getRootVar("--color-orange"),
-                pointBackgroundColor: getRootVar("--color-orange"),
-                borderWidth: 1,
-                fill: true,
-                backgroundColor: getRootVar("--color-yellow"),
-                pointRadius: 0,
-                pointHoverRadius: 0
-            };
-            window.APP.charts.memory.data.datasets = [dataset];
-            window.APP.charts.memory.update();
             window.APP.load_history[0].push(window.APP.page_data.loadave["1"]);
             window.APP.load_history[1].push(window.APP.page_data.loadave["5"]);
             window.APP.load_history[2].push(window.APP.page_data.loadave["15"]);
@@ -243,6 +106,21 @@ window.APP.update_funcs.push({
             window.APP.charts.load.data.datasets = datasets;
             window.APP.charts.load.update();
 
+        } catch (e) {
+
+            $('#sensors').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
+
+            console.log("Error on: load\n", e);
+
+        }
+
+    }
+});
+
+window.APP.update_funcs.push({
+    interval: 10000,
+    func: function () {
+        try {
             $('#sensors').find('tbody').html('');
 
             for (var i = 0; i < Object.keys(window.APP.page_data.cpu.temperatures).length; i++) {
@@ -275,56 +153,5 @@ window.APP.update_funcs.push({
 
         }
 
-    }
-});
-
-window.APP.update_funcs.push({
-    interval: 1000,
-    func: function () {
-        try {
-            var size = 61;
-            var cpud = window.APP.page_data.cpu;
-            var datasets = [];
-            for (var i = 0; i < cpud.cpu_percent.length;i++) {
-                var pc = cpud.cpu_percent[i];
-                window.APP.cpu_history[i].push(pc);
-                var len = window.APP.cpu_history[i].length;
-                if (len > size) {
-                    window.APP.cpu_history[i] = window.APP.cpu_history[i].slice(len - size, len);
-                } else {
-                    for (var j = 0; j < size - len; j++) {
-                        window.APP.cpu_history[i].splice(0, 0, 0);
-                    }
-                }
-                k = [
-                    getRootVar("--color-red"),
-                    getRootVar("--color-orange"),
-                    getRootVar("--color-yellow"),
-                    getRootVar("--color-green"),
-                    getRootVar("--color-blue"),
-                    getRootVar("--color-purple"),
-                    getRootVar("--color-grey"),
-                    getRootVar("--color-pink")
-                ];
-                var c = k[i % k.length];
-                dataset = {
-                    data: window.APP.cpu_history[i],
-                    borderColor: c,
-                    pointBackgroundColor: c,
-                    borderWidth: 1,
-                    fill: false,
-                    pointRadius: 0,
-                    pointHoverRadius: 0
-                };
-                datasets.push(dataset);
-            }
-            window.APP.charts.cpu.data.datasets = datasets;
-            window.APP.charts.cpu.update();
-
-        } catch (e) {
-
-            console.log("Error on: load\n", e);
-
-        }
     }
 });
