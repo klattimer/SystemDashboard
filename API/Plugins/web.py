@@ -86,7 +86,7 @@ class WebAPI(APIPluginInterface):
         theme = {
             "href": "CSS/theme-%s.css" % self._server.conf['theme'],
             "type": "text/css",
-            "rel": stylesheet
+            "rel": "stylesheet"
         }
         styles = [theme]
         styles += copy(self.__class__.styles)
