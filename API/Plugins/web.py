@@ -95,6 +95,7 @@ class WebAPI(APIPluginInterface):
             tags.append(tag)
         return ''.join(tags)
 
+    @cherrypy.expose
     def index(self):
         (scripts, styles) = self.collect()
         style_tags = self.generate_styles(styles)
