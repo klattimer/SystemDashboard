@@ -48,6 +48,7 @@ body {
 .header-actions button:hover, .header-actions a:hover {
     border: 1px solid var(--header-menu-border-hover-color);
     background-color: var(--header-menu-background-hover-color);
+    color: var(--header-menu-foreground-hover-color);
 }
 
 .header-actions button i, .header-actions a i {
@@ -71,7 +72,7 @@ body {
     padding: 15px;
     font-size: 14px;
     font-weight: 300;
-    background: transparent;
+    background-color: var(--menu-background-color);
     border: none;
     border-right: 0.5px solid var(--menu-border-color);
     color: var(--menu-foreground-color);

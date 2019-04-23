@@ -10,45 +10,47 @@
         --color-pink: rgba(237, 105, 125, 1);
 
         --foreground-color: white;
-        --background-color: rgba(232, 217, 183, 0.3);
+        --background-color: #3b444b;
 
         --header-foreground-color: white;
-        --header-background-color: #565654;
+        --header-background-color: #353839;
 
         --header-menu-foreground-color: white;
-        --header-menu-background-color: rgba(255,255,255,0.05);
+        --header-menu-background-color: #414a4c;
         --header-menu-border-color: rgba(255,255,255,0.1);
 
-        --header-menu-foreground-hover-color: white;
-        --header-menu-background-hover-color: rgba(255,255,255,0.1);
+        --header-menu-foreground-hover-color: #414a4c;
+        --header-menu-background-hover-color: white;
         --header-menu-border-hover-color: rgba(255,255,255,0.15);
 
-        --menu-foreground-color: rgba(0,0,0,0.6);
-        --menu-background-color: #E0DBD2;
+        --menu-foreground-color: white;
+        --menu-background-color: #414a4c;
         --menu-border-color: rgba(0,0,0,0.4);
 
-        --menu-foreground-hover-color: rgba(255,255,255,0.8);
-        --menu-background-hover-color: rgba(0,0,0,0.2);
+        --menu-foreground-hover-color: #414a4c;
+        --menu-background-hover-color: white;
         --menu-border-hover-color: rgba(0,0,0,0.4);
 
         --section-header-foreground-color: white;
         --section-header-background-color: white;
 
-        --widget-header-foreground-color: black;
-        --widget-header-background-color: white;
-        --widget-header-font-weight: 300;
+        --widget-header-foreground-color: white;
+        --widget-header-background-color: #353839;
+        --widget-header-font-weight: 400;
 
         --widget-foreground-color: white;
-        --widget-background-color: white;
+        --widget-background-color: #414a4c;
         --widget-border-color: white;
 
         --widget-grid-item-foreground-color: white; 
-        --widget-grid-item-background-color: #4c4c4c; 
+        --widget-grid-item-background-color: #323232;
 
         --table-odd-row-color: white;
         --table-even-row-color: white;
         --table-border-color: white;
 
-        --table-data-foreground-color: black;
-        --table-info-foreground-color: black;
+        --table-data-foreground-color: white;
+        --table-info-foreground-color: white;
+
 }
+
