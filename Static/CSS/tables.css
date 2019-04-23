@@ -13,6 +13,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     height: calc(100% - 36px);
+    color: var(--table-data-foreground-color);
 }
 .data-table tbody tr {
     width: 100%;
@@ -60,8 +61,10 @@
     position: relative;
     transform: translateY(-50%);
     vertical-align: top;
+    color: var(--table-info-foreground-color);
 }
 .data-table th {
     border: 0;
     border-bottom: 2px solid #4f4f4f;
+    color:var(--table-data-foreground-color);
 }
