@@ -3,7 +3,6 @@ from API import APIPluginInterface
 import logging
 import os
 from copy import copy
-import mako.template import Template
 from mako.lookup import TemplateLookup
 
 __plugin__ = "WebAPI"
