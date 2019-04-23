@@ -33,7 +33,7 @@ Features
 - Monitor raid rebuild status
 - Monitor raid disk status
 - Monitor sensor readings for temperature
-- Monitor disk temperature
+- Monitor disk temperature 
 - Radar readout of local pingable addresses, helpful to see dropoffs. 
 
 Planned features
@@ -55,6 +55,7 @@ Requirements
 * cherrypy
 * psutil
 * netaddr
+* mako
 
 Javascript libraries used
 ---
