@@ -15,6 +15,19 @@ class LogAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    styles = [
+        {
+            "href": "CSS/log.css",
+            "rel": "stylesheet",
+            "type": "text/css"
+        }
+    ]
+
+    scripts = [
+        {
+            "src": "Javascript/log.js"
+        }
+    ]
 
     def __init__(self, server):
         super(LogAPI, self).__init__(server)

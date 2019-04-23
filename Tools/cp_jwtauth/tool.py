@@ -69,6 +69,7 @@ class JWTAuthTool(cherrypy.Tool):
             except RenewToken as e:
                 # Set the new token on the response headers
                 cherrypy.response.headers['Authorization'] = 'Bearer ' + e.token.decode("utf-8")
+                cherrypy.response.cookie['Authorization'] = 'Bearer ' + e.token.decode("utf-8")
             return
 
 
@@ -93,6 +94,7 @@ class JWTAuthTool(cherrypy.Tool):
                     token = self.auth_mech.generateToken(username)
                     cherrypy.request.login = username
                     cherrypy.response.headers['Authorization'] = 'Bearer ' + token.decode("utf-8")
+                    cherrypy.response.cookie['Authorization'] = 'Bearer ' + token.decode("utf-8")
                     return  # successful authentication
 
 

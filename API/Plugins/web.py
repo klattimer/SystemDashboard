@@ -3,6 +3,8 @@ from API import APIPluginInterface
 import logging
 import os
 from copy import copy
+import mako.template import Template
+from mako.lookup import TemplateLookup
 
 __plugin__ = "WebAPI"
 __plugin_version__ = "0.1"
@@ -14,7 +16,7 @@ class WebAPI(APIPluginInterface):
         '/': {
             'request.dispatch': cherrypy.dispatch.Dispatcher(),
             'tools.staticdir.on': True,
-            'tools.staticdir.dir': os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "..", "Static"),
+            'tools.staticdir.dir': os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Static")),
         }
     }
     scripts = [
@@ -43,6 +45,9 @@ class WebAPI(APIPluginInterface):
         },
         {
             "src": "Javascript/main.js"
+        },
+        {
+            "src": "Javascript/scrolltoname.js"
         }
     ]
     styles = [
@@ -75,10 +80,12 @@ class WebAPI(APIPluginInterface):
 
     def __init__(self, server):
         super(WebAPI, self).__init__(server)
+        path = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Templates"))),
+        self.lookup = TemplateLookup(directories=[path])
 
     def collect(self):
         theme = {
-            "href": "CSS/theme-default.css",
+            "href": "CSS/theme-%s.css" % self.server.conf['theme'],
             "type": "text/css",
             "rel": stylesheet
         }
@@ -110,12 +117,24 @@ class WebAPI(APIPluginInterface):
             tags.append(tag)
         return ''.join(tags)
 
+    def generate_templates(self, templates):
+        tags = []
+        for template in templates:
+            # TODO: Load the template file here
+            tags.append()
+        return ''.join(tags)
+
     @cherrypy.expose
     def index(self):
         (scripts, styles) = self.collect()
         style_tags = self.generate_styles(styles)
         script_tags = self.generate_scripts(scripts)
-        return style_tags + '\n\n' + script_tags
+        template_tags = self.generate_templates(templates)
+
+        output = self.lookup.get_template("container.html")
+        head = style_tags + script_tags
+        output.render(head=head)
+        return output
 
     def signin(self):
         pass

@@ -2,9 +2,309 @@
 <html>
     <head>
         <title>SystemDashboard</title>
-        head goes here
+        ${head}
     </head>
     <body>
-        body goes here
+        <div class="header">
+            <span class="header-title">System Dashboard</span>
+            <div class="header-actions">
+                <button id="power"><i class="fas fa-power-off"></i>Power</button>
+                <button id="signout"><i class="fas fa-sign-out-alt"></i>Sign out</button>
+            </div>
+        </div>
+        <div class="power-menu"><div class="power-row"><label for="power-slider">Shutdown</label><input type="range" min="1" max="10000" value="0" class="slider" id="power-slider"></div><div class="power-row"><label for="reboot-slider">Reboot</label><input type="range" min="1" max="10000" value="0" class="slider" id="reboot-slider"></div></div>
+        <div class="header-bump"></div>
+        <div class="menu">
+            <a href="#overview"><div class="menuicon"><i class="fas fa-tachometer-alt"></i></div>Overview</a>
+            <a href="#load"><div class="menuicon"><i class="fas fa-weight-hanging"></i></div>Load</a>
+            <a href="#network"><div class="menuicon"><i class="fas fa-network-wired"></i></div>Network</a>
+            <a href="#storage"><div class="menuicon"><i class="far fa-hdd"></i></div>Storage</a>
+            <a href="#users"><div class="menuicon"><i class="fas fa-users"></i></div>Users</a>
+            <a href="#processes"><div class="menuicon"><i class="fas fa-rocket"></i></div>Processes</a>
+            <a href="#logs"><div class="menuicon"><i class="fas fa-scroll"></i></div>System Logs</a>
+        </div>
+        <div class="menu-bump"></div>
+        <a class="named-anchor" name="overview"></a>
+        <div class="widget-grid">
+            <div class="widget-grid-header"><i class="fas fa-tachometer-alt"></i>Overview</div>
+            <div class="widget-grid-item w4h1">
+                <div class="widget-grid-item-inner">
+                    <table class="info-table">
+                        <tr>
+                            <th>Operating System</th>
+                            <td class="overview-platform"></td>
+                        </tr>
+                        <tr>
+                            <th>Uptime</th>
+                            <td class="overview-uptime"></td>
+                        </tr>
+                        <tr>
+                            <th>Hostname</th>
+                            <td class="overview-hostname"></td>
+                        </tr>
+                        <tr>
+                            <th>IP Address</th>
+                            <td class="overview-ip"></td>
+                        </tr>
+                        <tr>
+                            <th>Kernel</th>
+                            <td class="overview-kernel"></td>
+                        </tr>
+                        <tr>
+                            <th>CPU(s)</th>
+                            <td class="overview-cpu"></td>
+                        </tr>
+                    </table>
+                    <div id="overview-chart-area-container" class="chart-container"><canvas id="overview-chart-area"></canvas></div>
+                    <div id="stack">
+                    <div class="stack-item critical"><i class="fas fa-skull-crossbones"></i> 1 Critical</div>
+                    <div class="stack-item error"><i class="fas fa-exclamation-circle"></i> 1 Errors</div>
+                    <div class="stack-item warning"><i class="fas fa-exclamation-triangle"></i> 2 Warnings</div>
+                    <div class="stack-filler">Status OK</div>
+                    </div>
+                </div>
+            </div>
+
+            <a class="named-anchor" name="load"></a>
+            <div class="widget-grid-header"><i class="fas fa-weight-hanging"></i>Load</div>
+            <div class="widget-grid-container">
+                <div class="widget-grid-item w2h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="cpu-chart-area-container" class="chart-container"><canvas id="cpu-chart-area"></canvas></div>
+                        <h1><i class="fas fa-microchip"></i>CPU History</h1>
+                    </div>
+                </div>
+
+                <div class="widget-grid-item w2h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="memory-chart-area-container" class="chart-container"><canvas id="memory-chart-area"></canvas></div>
+                        <h1><i class="fas fa-memory"></i>Memory History</h1>
+                    </div>
+                </div>
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="load-chart-area-container" class="chart-container"><canvas id="load-chart-area"></canvas></div>
+                        <h1><i class="fas fa-bolt"></i>Load Average</h1>
+                    </div>
+                </div>
+
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-thermometer-quarter"></i>Sensors</h1>
+                        <table id="sensors" class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Device </th>
+                                <th>Temperature</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <a class="named-anchor" name="network"></a>
+            <div class="widget-grid-header"><i class="fas fa-network-wired"></i>Network</div>
+            <div class="widget-grid-container">
+                <div class="widget-grid-item w2h2">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-circle-notch"></i>Listening Processes</h1>
+                        <table id="listeners" class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Process</th>
+                                <th>User</th>
+                                <th>Port</th>
+                                <th>Service</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                <div id="radar-chart-area-container" class="chart-container"><canvas id="radar-chart-area"></canvas></div>
+                    <h1><i class="fas fa-network-wired"></i>Network Radar</h1>
+                    </div>
+                </div>
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-ethernet"></i>Connections</h1>
+                        <table id="connections" class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Remote Host</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="widget-grid-item w2h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="traffic-chart-area-container" class="chart-container"><canvas id="traffic-chart-area"></canvas></div>
+                        <h1><i class="fas fa-network-wired"></i>Network Traffic</h1>
+                    </div>
+                </div>
+            </div>
+            <a class="named-anchor" name="storage"></a>
+            <div class="widget-grid-header"><i class="far fa-hdd"></i>Storage</div>
+            <div class="widget-grid-container">
+                <div class="widget-grid-item w2h1">
+                    <div class="widget-grid-item-inner">
+                        <div id="diskrw-chart-area-container" class="chart-container"><canvas id="diskrw-chart-area"></canvas></div>
+                        <h1><i class="far fa-hdd"></i>Disk Reads/Writes</h1>
+                    </div>
+                </div>
+                <div class="widget-grid-item w1h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-thermometer-quarter"></i>Disk Temperature</h1>
+                        <table id="disktemp" class="data-table">
+                            <thead>
+                            <tr>
+                                <th>Device </th>
+                                <th>Temperature</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="widget-grid-item w3h1">
+                    <div class="widget-grid-item-inner">
+                        <h1><i class="fas fa-chart-pie"></i>Partitions</h1>
+                        <table id="partitions" class="data-table">
+                            <thead>
+                            <tr>
+                                <th class="narrow"></th>
+                                <th>Partition</th>
+                                <th>Type</th>
+                                <th>Label</th>
+                                <th>Usage</th>
+                                <th>Size</th>
+                                <th>Mount Point</th>
+                                <th class="narrow"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <a class="named-anchor" name="users"></a>
+            <div class="widget-grid-header"><i class="fas fa-users"></i>Users</div>
+            <div class="widget-grid-container">
+            <div class="widget-grid-item w2h1">
+                <div class="widget-grid-item-inner">
+                    <h1><i class="fas fa-key"></i>Logged in Users</h1>
+                    <table id="loggedin" class="data-table">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>TTY</th>
+                            <th>Host</th>
+                            <th>Process</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="widget-grid-item w2h1">
+                <div class="widget-grid-item-inner">
+                    <h1><i class="fas fa-history"></i>Recent Logins</h1>
+                    <table id="lastlog" class="data-table">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Time</th>
+                            <th>Host</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+            <a class="named-anchor" name="processes"></a>
+            <div class="widget-grid-header"><i class="fas fa-rocket"></i>Processes</div>
+            <div class="widget-grid-container">
+            <div class="widget-grid-item w2h2">
+                <div class="widget-grid-item-inner">
+                    <table id="top_cpu_usage" class="data-table">
+                        <thead>
+                        <tr>
+                            <th class="small">PID</th>
+                            <th>Process</th>
+                            <th>User</th>
+                            <th class="medium">Priority</th>
+                            <th class="mediumplus">CPU Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <h1><i class="fas fa-microchip"></i>Top CPU Utilisation</h1>
+                </div>
+            </div>
+            <div class="widget-grid-item w2h2">
+                <div class="widget-grid-item-inner">
+                    <table id="top_memory_usage" class="data-table">
+                        <thead>
+                        <tr>
+                            <th class="small">PID</th>
+                            <th>Process</th>
+                            <th>User</th>
+                            <th>Memory Usage</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <h1><i class="fas fa-memory"></i>Top Memory Utilisation</h1>
+                </div>
+            </div>
+            </div>
+            <a class="named-anchor" name="logs"></a>
+            <div class="widget-grid-header"><i class="fas fa-scroll"></i>Logs</div>
+            <div class="widget-grid-item w4h2">
+                <div class="widget-grid-item-inner">
+                    <div class="logselect">
+
+
+
+                        <button class="logfile" data-logfile="dmesg">dmesg</button>
+                        <button class="logfile" data-logfile="syslog">syslog</button>
+                        <button class="logfile" data-logfile="apache2/access.log">apache error log</button>
+                        <button class="logfile" data-logfile="apache2/error.log">apache access log</button>
+
+                        <button class="logfile" data-logfile="auth.log">auth log</button>
+                        <button class="logfile" data-logfile="bootstrap.log">bootstrap log</button>
+                        <button class="logfile" data-logfile="dpkg.log">dpkg log</button>
+                        <button class="logfile" data-logfile="faillog">fail log</button>
+                        <button class="logfile" data-logfile="fontconfig.log">font config log</button>
+                        <button class="logfile" data-logfile="kern.log">kernel log</button>
+                        <button class="logfile" data-logfile="mail.log">mail log</button>
+                        <button class="logfile" data-logfile="mdevents.log">mdevents</button>
+                        <button class="logfile" data-logfile="tallylog">tallylog</button>
+                    </div>
+                    <div class="log-content"><pre></pre></div>
+                    <button class="logend"><i class="fas fa-angle-double-down"></i></button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

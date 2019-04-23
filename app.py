@@ -55,9 +55,13 @@ cherrypy._json.encode = _encode
 class Root(object): pass
 
 class Server(object):
-    conf = {}
+    default_conf = {
+        "theme": "default"
+    }
     def __init__(self, conf):
-        self.conf = conf
+        self.conf = copy(self.__class__.default_conf)
+        self.conf.update(conf)
+
         ip = self.validateIP()
         port = self.validatePort()
         cherrypy.tools.jwtauth = JWTAuthTool(
@@ -75,15 +79,6 @@ class Server(object):
             'error_page.500': self.JSONErrorHandler,
             'error_page.441': self.JSONErrorHandler,
             'error_page.442': self.JSONErrorHandler
-        })
-
-        PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'Static')
-        cherrypy.tree.mount(Root(), '/', config={
-            '/': {
-                    'tools.staticdir.on': True,
-                    'tools.staticdir.dir': PATH,
-                    'tools.staticdir.index': 'index.html'
-                },
         })
 
         self.api = APIRegistry(self)

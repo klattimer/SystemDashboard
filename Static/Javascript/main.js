@@ -47,15 +47,6 @@ window.APP = {
         $('.widget-grid-container').masonry({
             columnWidth: $('.widget-grid').width() / 4
         });
-        if (window.APP._warnings.length > 0) {
-            $('.warning').html('<i class="fas fa-exclamation-triangle"></i> '+window.APP._errors.length+' Warnings');
-        }
-        if (window.APP._errors.length > 0) {
-            $('.error').html('<i class="fas fa-exclamation-circle"></i> '+window.APP._errors.length+' Errors');
-        }
-        if (window.APP._criticals.length > 0) {
-            $('.critical').html('<i class="fas fa-skull-crossbones"></i> '+window.APP._criticals.length+' Criticals');
-        }
     },
     _get: function (fetch_obj, inc_get) {
         $.get( fetch_obj.url, function(data) {
@@ -106,3 +97,7 @@ function getRootVar(variable) {
     return getComputedStyle(document.documentElement).getPropertyValue(variable);
 }
 window.onload = window.APP.onload
+
+window.APP.load.push(function (event) {
+    Chart.defaults.global.elements.line.fill = false;
+});
