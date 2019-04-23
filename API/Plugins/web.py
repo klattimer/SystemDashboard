@@ -10,9 +10,7 @@ class WebAPI(APIPluginInterface):
     api_path = "/newroot"
     api_config = {
         '/': {
-            'request.dispatch': cherrypy.dispatch.Dispatcher(),
-            'tools.json_in.on': True,
-            'tools.json_out.on': True
+            'request.dispatch': cherrypy.dispatch.Dispatcher()
         }
     }
     scripts = [
