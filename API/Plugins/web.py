@@ -98,7 +98,7 @@ class WebAPI(APIPluginInterface):
             scripts += plugin.__class__.scripts
             styles += plugin.__class__.styles
             templates += plugin.__class__.templates
-        return (scripts, styles)
+        return (scripts, styles, templates)
 
     def generate_scripts(self, scripts):
         tags = []
@@ -119,13 +119,13 @@ class WebAPI(APIPluginInterface):
     def generate_templates(self, templates):
         tags = []
         for template in templates:
-            # TODO: Load the template file here
-            tags.append()
+            self.lookup.get_template(template)
+            tags.append(template.render())
         return ''.join(tags)
 
     @cherrypy.expose
     def index(self):
-        (scripts, styles) = self.collect()
+        (scripts, styles, templates) = self.collect()
         style_tags = self.generate_styles(styles)
         script_tags = self.generate_scripts(scripts)
         template_tags = self.generate_templates(templates)
