@@ -2,6 +2,7 @@ import cherrypy
 from API import APIPluginInterface
 import logging
 import os
+from copy import copy
 
 __plugin__ = "WebAPI"
 __plugin_version__ = "0.1"
@@ -76,9 +77,10 @@ class WebAPI(APIPluginInterface):
         super(WebAPI, self).__init__(server)
 
     def collect(self):
-        scripts = []
-        styles = []
+        scripts = copy(self.__class__.scripts)
+        styles = copy(self.__class__.styles)
         for plugin in self._server.api.plugins:
+            if plugin == self: continue
             scripts += plugin.__class__.scripts
             styles += plugin.__class__.styles
         return (scripts, styles)
