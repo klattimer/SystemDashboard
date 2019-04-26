@@ -134,7 +134,30 @@ body {
   background: transparent;
 }
 
-#overview-chart-area-container {
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-container {
+    width: 100%;
+    height: calc(100% - 42px);
+    display: inline-block;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.w1h1 .chart-container, .w2h1 .chart-container {
+    height: calc(100% - 52px);
+}
+
+/*
+ * Chart container, with no header w1h1
+ * kinda special for the overview chart
+ */
+.chart-container.noheader.cw1h1 {
     width: 25%;
     height: 100%;
     display: inline-block;
@@ -143,19 +166,6 @@ body {
     padding: 10px;
     box-sizing: border-box;
 }
-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-.w1h1 .chart-container, .w2h1 .chart-container {
-    height: calc(100% - 52px);
-    display: inline-block;
-    position: relative;
-    width: 100%;
-}
-
 .centre-percent {
     display: block;
     position: absolute;
@@ -174,12 +184,6 @@ canvas {
     font-size: 10px;
 }
 #cpu-chart-area-container, #load-chart-area-container, #memory-chart-area-container, #traffic-chart-area-container, #diskrw-chart-area-container {
-    width: 100%;
-    height: calc(100% - 42px);
-    display: inline-block;
-    position: relative;
-    padding: 10px;
-    box-sizing: border-box;
 }
 
 .named-anchor {
