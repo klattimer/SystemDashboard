@@ -110,8 +110,11 @@ class Server(object):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     data = {}
-    with open('config.json') as conf:
-        data = json.load(conf)
+    try:
+        with open('config.json') as conf:
+            data = json.load(conf)
+    except:
+        data = {}
     server = Server(data)
     f = open("app.pid", "w")
     f.write(str(os.getpid()))
