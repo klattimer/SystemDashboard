@@ -38,12 +38,12 @@
         --widget-header-background-color: white;
         --widget-header-font-weight: 300;
 
-        --widget-foreground-color: white;
-        --widget-background-color: white;
+        --widget-foreground-color: black;
+        --widget-background-color: rgba(255,255,255,0.9);
         --widget-border-color: white;
 
-        --widget-grid-item-foreground-color: white; 
-        --widget-grid-item-background-color: #4c4c4c; 
+        --widget-grid-item-foreground-color: white;
+        --widget-grid-item-background-color: #4c4c4c;
 
         --table-odd-row-color: white;
         --table-even-row-color: white;
