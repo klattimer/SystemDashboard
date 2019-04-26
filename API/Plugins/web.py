@@ -43,6 +43,10 @@ class WebAPI(APIPluginInterface):
             "crossorigin": "anonymous",
         },
         {
+            "src": "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.runtime.js",
+            "crossorigin": "anonymous",
+        },
+        {
             "src": "Javascript/main.js"
         },
         {

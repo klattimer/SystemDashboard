@@ -24,6 +24,58 @@ class DiskAPI(APIPluginInterface):
             "src": "Javascript/disk.js"
         }
     ]
+    widgets = {
+        "disk_usage": {
+            "type": "PieChart",
+            "size": "w1h1",
+            "id": "{{disk.partition}}",
+            "fa_icon": "far fa-hdd",
+            "title_label": "{{disk.mountpoint}} Disk Usage",
+            "label_id": "{{disk.partition}}-available",
+            "label_value": "100%",
+            "label_small": "available"
+        },
+        "raid_rebuild": {
+            "type": "PieChart",
+            "size": "w1h1",
+            "id": "rebuilding-{{disk.partition}}",
+            "fa_icon": "far fa-hdd",
+            "title_label": "{{disk.mountpoint}} Rebuild Progress",
+            "label_id": "{{disk.partition}}-status",
+            "label_value": "0%",
+            "label_small": "complete"
+        },
+        "partitions": {
+
+        },
+        "temperatures": {
+            "type": "Table",
+            "size": "w1h1",
+            "id": "disk-temperatures",
+            "fa_icon": "",
+            "title_label": "Disk Temperatures",
+            "headers": [
+                "Disk",
+                "Temperature",
+                "Status"
+            ]
+        },
+        "diskrw": {
+            "type": "LineChart",
+            "size": "w2h1",
+            "id": "diskrw",
+            "fa_icon": "far fa-hdd",
+            "title_label": "{{disk.mountpoint}} Disk Usage",
+        },
+        "raid_disk_status": {
+
+        }
+    }
+    templates = [
+        "PieChart",
+        "LineChart",
+        "Table"
+    ]
 
     def __init__(self, server):
         super(DiskAPI, self).__init__(server)
@@ -97,8 +149,6 @@ class DiskAPI(APIPluginInterface):
                 u = diskusage[mp]
                 devices[d].update(u._asdict())
             devices[d]['size'] = int(devices[d]['size'])
-
-
 
         return {
             "partitions": devices,

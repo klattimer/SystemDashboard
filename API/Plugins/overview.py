@@ -25,6 +25,17 @@ class OverviewAPI(APIPluginInterface):
             "src": "Javascript/overview.js"
         }
     ]
+    widgets = {
+        "overview": {
+            "type": "Overview",
+            "size": "w4h1",
+            "id": "overview",
+            "fa_icon": ""
+        }
+    }
+    templates = [
+        "Overview"
+    ]
 
     def __init__(self, server):
         super(OverviewAPI, self).__init__(server)
