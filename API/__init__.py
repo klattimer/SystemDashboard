@@ -12,11 +12,10 @@ class WidgetLookup(TemplateCollection):
         # then take the directory name as the template lookup uri
         self.__templates = {}
         for path in directories:
-            templates = glob.glob(path, recursive=True)
-            print (templates)
+            templates = glob.glob(path + '/**', recursive=True)
             for f in templates:
+                if os.path.isdir(f): continue
                 p = f.split('/')
-                print (p)
                 if p[-1] == 'template.mako':
                     self.__templates[p[-2]] = f
                     logging.debug("adding " + p[-2])
