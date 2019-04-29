@@ -15,10 +15,13 @@ class WidgetLookup(TemplateCollection):
             templates = glob.glob(path, recursive=True)
             for f in templates:
                 p = f.split('/')
+                print (p)
                 if p[-1] == 'template.mako':
                     self.__templates[p[-2]] = f
+                    logging.debug("adding " + p[-2])
                 else:
                     self.__templates[p[-1]] = f
+                    logging.debug("adding " + p[-1])
 
     def has_template(self, uri):
         if uri in self.__templates.keys(): return True
