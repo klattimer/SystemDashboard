@@ -2,7 +2,8 @@ import importlib
 import os
 import logging
 import cherrypy
-from mako import Template
+from mako.template import Template
+from mako.lookup import TemplateCollection
 import glob
 
 class WidgetLookup(TemplateCollection):
