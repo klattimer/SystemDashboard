@@ -124,8 +124,8 @@ class WebAPI(APIPluginInterface):
     def generate_templates(self, templates):
         tags = []
         for template in templates:
-            self.wlookup.get_template(template)
-            tags.append(template.render())
+            t = self.wlookup.get_template(template)
+            tags.append(t.render())
         return ''.join(tags)
 
     @cherrypy.expose
