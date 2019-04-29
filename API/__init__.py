@@ -13,6 +13,7 @@ class WidgetLookup(TemplateCollection):
         self.__templates = {}
         for path in directories:
             templates = glob.glob(path, recursive=True)
+            print (templates)
             for f in templates:
                 p = f.split('/')
                 print (p)
