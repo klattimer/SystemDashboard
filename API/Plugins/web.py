@@ -1,5 +1,5 @@
 import cherrypy
-from API import APIPluginInterface
+from API import APIPluginInterface, WidgetLookup
 import logging
 import os
 from copy import copy
@@ -85,6 +85,7 @@ class WebAPI(APIPluginInterface):
         super(WebAPI, self).__init__(server)
         path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "Templates"))
         self.lookup = TemplateLookup(directories=[path])
+        self.wlookup = WidgetLookup(directories=[path])
 
     def collect(self):
         theme = {
@@ -123,7 +124,7 @@ class WebAPI(APIPluginInterface):
     def generate_templates(self, templates):
         tags = []
         for template in templates:
-            self.lookup.get_template(template)
+            self.wlookup.get_template(template)
             tags.append(template.render())
         return ''.join(tags)
 
@@ -135,7 +136,7 @@ class WebAPI(APIPluginInterface):
         template_tags = self.generate_templates(templates)
 
         output = self.lookup.get_template("container.html")
-        head = style_tags + script_tags
+        head = style_tags + script_tags + template_tags
         return output.render(head=head)
 
     def signin(self):
