@@ -69,12 +69,14 @@ class Server(object):
         cherrypy.tools.jwtauth = JWTAuthTool(
             "SystemDashboard",
             "mysupersecretpassphraseformytokens",
-            PAMAuthMech
+            PAMAuthMech,
+            '/auth'
         )
         cherrypy.config.update({
             'server.socket_host': ip,
             'server.socket_port': port,
             'error_page.400': self.JSONErrorHandler,
+            'error_page.401': self.cherrypy.tools.jwtauth.unauthorized_handler,
             'error_page.404': self.JSONErrorHandler,
             'error_page.403': self.JSONErrorHandler,
             'error_page.405': self.JSONErrorHandler,

@@ -9,7 +9,7 @@ __plugin_version__ = "0.1"
 
 
 class AuthAPI(APIPluginInterface):
-    api_path = "/api/auth"
+    api_path = "/auth"
     api_config = {
         '/': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
@@ -24,6 +24,8 @@ class AuthAPI(APIPluginInterface):
         super(AuthAPI, self).__init__(server)
 
     def GET(self):
+        # Check the request headers, if HTML is requested
+        # provide HTML login page. 
         return True
 
     def POST(self):
