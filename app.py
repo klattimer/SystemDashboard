@@ -75,14 +75,14 @@ class Server(object):
         cherrypy.config.update({
             'server.socket_host': ip,
             'server.socket_port': port,
-            'error_page.400': self.JSONErrorHandler,
-            'error_page.401': self.cherrypy.tools.jwtauth.unauthorized_handler,
-            'error_page.404': self.JSONErrorHandler,
-            'error_page.403': self.JSONErrorHandler,
-            'error_page.405': self.JSONErrorHandler,
-            'error_page.500': self.JSONErrorHandler,
-            'error_page.441': self.JSONErrorHandler,
-            'error_page.442': self.JSONErrorHandler
+            'error_page.400': self.errorHandler,
+            'error_page.401': self.errorHandler,
+            'error_page.404': self.errorHandler,
+            'error_page.403': self.errorHandler,
+            'error_page.405': self.errorHandler,
+            'error_page.500': self.errorHandler,
+            'error_page.441': self.errorHandler,
+            'error_page.442': self.errorHandler
         })
 
         self.api = APIRegistry(self)
@@ -96,6 +96,22 @@ class Server(object):
         if re.match(r"^\d{1,5}$", str(self.conf["port"])):
             return self.conf["port"]
         return "8080"
+
+    def defaultErrorHandler(self, status, message, traceback, version):
+        if type(message) == dict:
+            message = json.dumps(message)
+            return "<html><body><h1>%s</h1><code>%s</code><body>" % (str(status), message)
+        return "<html><body><h1>%s</h1><body>" % (str(status) + message)
+
+    def errorHandler(self, status, message, traceback, version):
+        handler = self.defaultErrorHandler
+        if cherrypy.request.headers['Accept'] == 'application/json':
+            handler = self.JSONErrorHandler
+        if status == 401:
+            handler = self.cherrypy.tools.jwtauth.unauthorized_handler
+
+        return handler(status, message, traceback, version)
+
 
     def JSONErrorHandler(self, status, message, traceback, version):
         response = cherrypy.response
