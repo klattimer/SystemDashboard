@@ -23,6 +23,26 @@ class NetworkAPI(APIPluginInterface):
         }
     ]
 
+    menuitems = [{
+        "id": "network",
+        "icon": "fas fa-network-wired",
+        "name": "Network",
+        "order": 3
+    }]
+    widgets = {
+        "traffic": {
+            "type": "LineChart",
+            "size": "w2h1",
+            "id": "traffic",
+            "fa_icon": "far ",
+            "title_label": "Network Traffic",
+            "menuitem": "network"
+        }
+    }
+    templates = [
+        "LineChart"
+    ]
+
     def __init__(self, server):
         super(NetworkAPI, self).__init__(server)
 

@@ -31,6 +31,19 @@ class RadarAPI(APIPluginInterface):
             "src": "/Javascript/radar.js"
         }
     ]
+    widgets = {
+        "radar": {
+            "type": "Radar",
+            "size": "w1h1",
+            "id": "radar",
+            "fa_icon": "fas fa-network-wired",
+            "title_label": "Network Radar",
+            "menuitem": "network"
+        }
+    }
+    templates = [
+        "Radar"
+    ]
 
     def __init__(self, server):
         super(RadarAPI, self).__init__(server)

@@ -19,6 +19,24 @@ class DiskIOAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "Javascript/diskrw.js"
+        }
+    ]
+    widgets = {
+        "diskrw": {
+            "type": "LineChart",
+            "size": "w2h1",
+            "id": "diskrw",
+            "fa_icon": "far fa-hdd",
+            "title_label": "{{disk.mountpoint}} Disk Usage",
+            "menuitem": "storage"
+        }
+    }
+    templates = [
+        "LineChart"
+    ]
 
     def __init__(self, server):
         super(DiskIOAPI, self).__init__(server)

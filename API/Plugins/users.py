@@ -31,6 +31,44 @@ class UsersAPI(APIPluginInterface):
             "src": "Javascript/users.js"
         }
     ]
+    menuitems = [{
+        "id": "users",
+        "icon": "fas fa-users",
+        "name": "Users",
+        "order": 3
+    }]
+    widgets = {
+        "logged_in": {
+            "type": "Table",
+            "size": "w2h1",
+            "id": "logged_in",
+            "fa_icon": "fas fa-key",
+            "title_label": "Logged in Users",
+            "headers": [
+                {"title": "User"},
+                {"title": "TTY"},
+                {"title": "Host"},
+                {"title": "Process"}
+            ],
+            "menuitem": "users"
+        },
+        "lastog": {
+            "type": "Table",
+            "size": "w2h1",
+            "id": "lastog",
+            "fa_icon": "fas fa-history",
+            "title_label": "Recent Logins",
+            "headers": [
+                {"title": "User"},
+                {"title": "Time"},
+                {"title": "Host"}
+            ],
+            "menuitem": "users"
+        }
+    }
+    templates = [
+        "Table"
+    ]
 
     def __init__(self, server):
         super(UsersAPI, self).__init__(server)

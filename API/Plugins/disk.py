@@ -24,6 +24,14 @@ class DiskAPI(APIPluginInterface):
             "src": "Javascript/disk.js"
         }
     ]
+
+    menuitems = [{
+        "id": "storage",
+        "icon": "far fa-hdd",
+        "name": "Storage",
+        "order": 2,
+    }]
+
     widgets = {
         "disk_usage": {
             "type": "PieChart",
@@ -33,7 +41,8 @@ class DiskAPI(APIPluginInterface):
             "title_label": "{{disk.mountpoint}} Disk Usage",
             "label_id": "{{disk.partition}}-available",
             "label_value": "100%",
-            "label_small": "available"
+            "label_small": "available",
+            "menuitem": "storage"
         },
         "raid_rebuild": {
             "type": "PieChart",
@@ -43,32 +52,51 @@ class DiskAPI(APIPluginInterface):
             "title_label": "{{disk.mountpoint}} Rebuild Progress",
             "label_id": "{{disk.partition}}-status",
             "label_value": "0%",
-            "label_small": "complete"
+            "label_small": "complete",
+            "menuitem": "storage"
         },
         "partitions": {
-
+            "type": "Table",
+            "size": "w3h1",
+            "id": "partitions",
+            "fa-icon": "fas fa-chart-pie",
+            "headers": [
+                { "title": "", "class": "narrow" },
+                { "title": "Partition"},
+                { "title": "Type"},
+                { "title": "Label"},
+                { "title": "Usage"},
+                { "title": "Size"},
+                { "title": "Mount Point"},
+                { "title": "", "class": "narrow" }
+            ]
         },
         "temperatures": {
             "type": "Table",
             "size": "w1h1",
             "id": "disk-temperatures",
-            "fa_icon": "",
+            "fa_icon": "fas fa-thermometer-quarter",
             "title_label": "Disk Temperatures",
             "headers": [
-                "Disk",
-                "Temperature",
-                "Status"
-            ]
-        },
-        "diskrw": {
-            "type": "LineChart",
-            "size": "w2h1",
-            "id": "diskrw",
-            "fa_icon": "far fa-hdd",
-            "title_label": "{{disk.mountpoint}} Disk Usage",
+                { "title": "Disk"},
+                { "title": "Temperature"},
+                { "title": "Status"}
+            ],
+            "menuitem": "storage"
         },
         "raid_disk_status": {
-
+            "type": "Table",
+            "size": "w2h1",
+            "id": "{{disk}}-disk-table",
+            "fa-icon": "fas fa-layer-group",
+            "title_label": "RAID {{disk}} Disk Status",
+            "headers": [
+                { "title": "Raid Device"},
+                { "title": "Partition"},
+                { "title": "Status"},
+                { "title": "", "class": "narrow" }
+            ],
+            "menuitem": "storage"
         }
     }
     templates = [

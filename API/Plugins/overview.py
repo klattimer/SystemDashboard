@@ -20,6 +20,13 @@ class OverviewAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+
+    menuitems = [{
+        "id": "overview",
+        "icon": "fas fa-tachometer-alt",
+        "name": "Overview",
+        "order": 1
+    }]
     scripts = [
         {
             "src": "Javascript/overview.js"
@@ -31,6 +38,7 @@ class OverviewAPI(APIPluginInterface):
             "size": "w4h1",
             "id": "overview",
             "fa_icon": ""
+            "menuitem": "overview"
         }
     }
     templates = [

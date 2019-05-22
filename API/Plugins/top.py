@@ -22,6 +22,47 @@ class TopAPI(APIPluginInterface):
         }
     ]
 
+    menuitems = [{
+        "id": "processes",
+        "icon": "fas fa-rocket",
+        "name": "Processes",
+        "order": 4
+    }]
+    widgets = {
+        "top_cpu_usage": {
+            "type": "Table",
+            "size": "w2h2",
+            "id": "top_cpu_usage",
+            "fa_icon": "fas fa-microchip",
+            "title_label": "Top CPU Utilisation",
+            "headers": [
+                {"title": "PID", "class": "small"},
+                {"title": "Process"},
+                {"title": "User"},
+                {"title": "Priority", "class": "medium"},
+                {"title": "CPU Usage", "class": "mediumplus"}
+            ],
+            "menuitem": "processes"
+        },
+        "top_memory_usage": {
+            "type": "Table",
+            "size": "w2h2",
+            "id": "top_memory_usage",
+            "fa_icon": "fas fa-memory",
+            "title_label": "Top CPU Utilisation",
+            "headers": [
+                {"title": "PID", "class": "small"},
+                {"title": "Process"},
+                {"title": "User"},
+                {"title": "Memory Usage"}
+            ],
+            "menuitem": "processes"
+        }
+    }
+    templates = [
+        "Table"
+    ]
+
     def __init__(self, server):
         super(TopAPI, self).__init__(server)
 

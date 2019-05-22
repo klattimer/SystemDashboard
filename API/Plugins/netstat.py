@@ -43,6 +43,37 @@ class NetstatAPI(APIPluginInterface):
             "src": "Javascript/netstat.js"
         }
     ]
+    widgets = {
+        "listeners": {
+            "type": "Table",
+            "size": "w2h2",
+            "id": "listeners",
+            "fa_icon": "fas fa-circle-notch",
+            "title_label": "Listening Processes",
+            "headers": [
+                {"title": "Process"},
+                {"title": "User"},
+                {"title": "Port"},
+                {"title": "Service"}
+            ],
+            "menuitem": "network"
+        },
+        "connections": {
+            "type": "Table",
+            "size": "w1h1",
+            "id": "connections",
+            "fa_icon": "fas fa-ethernet",
+            "title_label": "Connections",
+            "headers": [
+                {"title": "Service"},
+                {"title": "Remote Host"}
+            ],
+            "menuitem": "network"
+        }
+    }
+    templates = [
+        "Table"
+    ]
 
     def __init__(self, server):
         super(NetstatAPI, self).__init__(server)

@@ -17,10 +17,14 @@ class CPUAPI(APIPluginInterface):
         }
     }
 
+    menuitems = [{
+        "id": "load",
+        "icon": "fas fa-weight-hanging",
+        "name": "System Load",
+        "order": 1
+    }]
+
     scripts = [
-        {
-            "src": "Javascript/load.js"
-        },
         {
             "src": "Javascript/cpu.js"
         },

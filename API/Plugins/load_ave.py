@@ -17,6 +17,11 @@ class LoadAveAPI(APIPluginInterface):
             'tools.json_out.on': True
         }
     }
+    scripts = [
+        {
+            "src": "Javascript/load.js"
+        }
+    ]
 
     def __init__(self, server):
         super(LoadAveAPI, self).__init__(server)
