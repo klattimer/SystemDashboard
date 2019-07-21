@@ -74,6 +74,15 @@ var overview_chart_config = {
 };
 
 window.APP.load.push(function (event) {
+    // var source   = document.getElementById("Overview-template").innerHTML;
+    // var template = Handlebars.compile(source);
+    // var widget = window.APP.page_data['widgets']['overview'];
+    // var html = template({widget:widget});
+    // console.log(html);
+    // $('a[name=' + widget.menuitem + '] + .widget-grid-header + .widget-grid-container').append(html);
+    // // Fill the template with data from widgets.overview
+
+
     var ctx = document.getElementById('overview-chart-area').getContext('2d');
 	window.APP.charts.overview = new Chart(ctx, overview_chart_config);
 });

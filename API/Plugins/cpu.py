@@ -21,7 +21,7 @@ class CPUAPI(APIPluginInterface):
         "id": "load",
         "icon": "fas fa-weight-hanging",
         "name": "System Load",
-        "order": 1
+        "order": 2
     }]
 
     scripts = [
@@ -32,6 +32,59 @@ class CPUAPI(APIPluginInterface):
             "src": "Javascript/memory.js"
         }
     ]
+
+    widgets = {
+        "cpu": {
+            "type": "LineChart",
+            "size": "w2h1",
+            "id": "cpu",
+            "fa_icon": "fas fa-microchip",
+            "title_label": "CPU History",
+            "menuitem": "load"
+        },
+        "memory": {
+            "type": "LineChart",
+            "size": "w2h1",
+            "id": "memory",
+            "fa_icon": "fas fa-memory",
+            "title_label": "Memory History",
+            "menuitem": "load"
+        },
+        "loadave": {
+            "type": "LineChart",
+            "size": "w1h1",
+            "id": "loadave",
+            "fa_icon": "fas fa-bolt",
+            "title_label": "Load Average",
+            "menuitem": "load"
+        },
+        "sensors": {
+            "type": "Table",
+            "size": "w1h1",
+            "id": "sensors",
+            "fa_icon": "fas fa-thermometer-quarter",
+            "headers": [
+                { "title": "Device"},
+                { "title": "Temperature"},
+                { "title": "", "class": "narrow" }
+            ],
+            "title_label": "Thermal Sensors",
+            "menuitem": "load"
+        },
+        "fans": {
+            "type": "Table",
+            "size": "w1h1",
+            "id": "fans",
+            "fa_icon": "fas fa-wind",
+            "headers": [
+                { "title": "Device"},
+                { "title": "Speed"},
+                { "title": "", "class": "narrow" }
+            ],
+            "title_label": "Fans",
+            "menuitem": "load"
+        }
+    }
 
     def __init__(self, server):
         super(CPUAPI, self).__init__(server)
@@ -67,7 +120,7 @@ class CPUAPI(APIPluginInterface):
                     t[k][i] = dict(x._asdict())
             data['temperatures'] = t
         except:
-            logging.exception("Cannot get temperatures")
+            logging.warning("Cannot get temperatures")
             data['errors'].append({"type": "warning", "message": "cannot get temperatures"})
 
         try:
@@ -77,7 +130,7 @@ class CPUAPI(APIPluginInterface):
                     t[k][i] = dict(x._asdict())
             data['fans'] = t
         except:
-            logging.exception("Cannot get fan speeds")
+            logging.warning("Cannot get fan speeds")
             data['errors'].append({"type": "warning", "message": "cannot get fan speeds"})
 
         return data

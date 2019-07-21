@@ -1,10 +1,6 @@
-import binascii
-import unicodedata
-import base64
 import json
 
 import cherrypy
-from cherrypy._cpcompat import ntou, tonative
 import logging
 
 __version__ = "0.1"
@@ -28,15 +24,13 @@ class JWTAuthTool(cherrypy.Tool):
         cherrypy.Tool._setup(self)
 
     def unauthorized_handler(self, status, message, traceback, version):
-        if type(message) == dict:
+        if issubclass(message.__class__, dict):
             if 'redirect' in message.keys():
                 # Generate redirect html
-                return "<html><head><meta http-equiv=\"refresh\" content=\"0;URL='%s'\" /></head></html>" % message['redirect']
-        else if self.auth_url is not None:
+                return "<html><head><meta http-equiv=\"refresh\" content=\"10;URL='%s'\" /></head></html>" % message['redirect']
+        elif self.auth_url is not None:
             return "<html><head><meta http-equiv=\"refresh\" content=\"0;URL='%s'\" /></head></html>" % self.auth_url
-        charset = 'UTF-8'
-        cherrypy.response.headers['www-authenticate'] = ('Basic %s' % (charset))
-        return "401 " + message
+        raise Exception("Can't handle that")
 
     def on_start_resource(self, **kwargs):
         """
@@ -59,7 +53,11 @@ class JWTAuthTool(cherrypy.Tool):
         try:
             self.auth_mech.checkToken(self.auth_mech.getToken())
         except AuthenticationFailure as e:
+            logging.exception("Authentication Failure")
             if cherrypy.request.headers['Accept'] != 'application/json':
                 if self.auth_url is not None:
                     raise cherrypy.HTTPRedirect(self.auth_url)
+                else:
+                    cherrypy.response.headers['WWW-Authenticate'] = 'Basic'
+
             raise cherrypy.HTTPError(401, 'You are not authorized to access this resource')

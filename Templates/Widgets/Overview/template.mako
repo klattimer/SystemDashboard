@@ -1,32 +1,30 @@
 <script id="Overview-template" type="text/x-handlebars-template">
-<a class="named-anchor" name="overview"></a>
-<div class="widget-grid-header"><i class="fas fa-tachometer-alt"></i>Overview</div>
-<div class="widget-grid-item w4h1">
+<div class="widget-grid-item {{widget.size}}">
     <div class="widget-grid-item-inner">
         <table class="info-table">
             <tr>
                 <th>Operating System</th>
-                <td class="overview-platform">{{overview.osname}}</td>
+                <td class="overview-platform"></td>
             </tr>
             <tr>
                 <th>Uptime</th>
-                <td class="overview-uptime">{{overview.uptime}}</td>
+                <td class="overview-uptime"></td>
             </tr>
             <tr>
                 <th>Hostname</th>
-                <td class="overview-hostname">{{overview,hostname}}</td>
+                <td class="overview-hostname"></td>
             </tr>
             <tr>
                 <th>IP Address</th>
-                <td class="overview-ip">{{overview.primary_ip}}</td>
+                <td class="overview-ip"></td>
             </tr>
             <tr>
                 <th>Kernel</th>
-                <td class="overview-kernel">{{overview.kernel}}</td>
+                <td class="overview-kernel"></td>
             </tr>
             <tr>
                 <th>CPU(s)</th>
-                <td class="overview-cpu">{{overview.cpus.cpus}} x {{overview.cpus.type}}</td>
+                <td class="overview-cpu"></td>
             </tr>
         </table>
         <div id="overview-chart-area-container" class="chart-container noheader cw1h1"><canvas id="overview-chart-area"></canvas></div>

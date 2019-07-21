@@ -2,7 +2,7 @@ import cherrypy
 from API import APIPluginInterface
 import logging
 import os
-__plugin__ = "LogAPI"
+#__plugin__ = "LogAPI"
 __plugin_version__ = "0.1"
 
 

@@ -1,6 +1,8 @@
-<a href="#storage">
+<%page args="menuitem"/>
+$(menuitem)
+<a href="#${menuitem['id']}">
     <div class="menuicon">
-        <i class="far fa-hdd"></i>
+        <i class="${menuitem['icon']}"></i>
     </div>
-    Storage
+    ${menuitem['name']}
 </a>

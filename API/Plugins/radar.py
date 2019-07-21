@@ -50,7 +50,10 @@ class RadarAPI(APIPluginInterface):
 
     def GET(self, **params):
         addresses = psutil.net_if_addrs()
-        ip = get_primary_ip()
+        try:
+            ip = get_primary_ip()
+        except:
+            logging.exception("Error getting primary ip")
         for device in addresses.keys():
             for address in addresses[device]:
                 if address.address == ip:
@@ -60,7 +63,10 @@ class RadarAPI(APIPluginInterface):
         address_list = list(netaddr.IPNetwork(network).iter_hosts())
         ping_results = []
 
-        pool = ThreadPool(processes=1000)
+        try:
+            pool = ThreadPool(processes=1000)
+        except:
+            return []
         async_results = []
         for address in address_list:
             async_results.append(pool.apply_async(lping, (str(address), 0.5)))

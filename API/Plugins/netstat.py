@@ -119,7 +119,11 @@ class NetstatAPI(APIPluginInterface):
         as superuser
         '''
 
-        content=self._load()
+        try:
+            content=self._load()
+        except:
+            logging.exception("Error loading netstat data")
+            return []
         result = []
         for line in content:
             line_array = self._remove_empty(line.split(' '))     # Split lines and remove empty spaces.

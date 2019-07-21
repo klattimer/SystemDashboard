@@ -78,7 +78,8 @@ window.APP = {
     onload: function (event) {
         window.APP._recalc_base_size();
         window.onresize = window.APP._recalc_base_size;
-
+        window.APP.page_data = JSON.parse(document.getElementById('page-data').innerText);
+        window.APP.load_widgets();
         for (var i = 0;i < window.APP.fetch.length; i++) {
             window.APP._get(window.APP.fetch[i], true);
             window.APP._getcount++;
@@ -90,6 +91,24 @@ window.APP = {
                 window.APP._intervals.push(int);
                 console.log("Setting interval: " + window.APP.fetch[index].interval + "ms " + window.APP.fetch[index].url);
             })(i);
+        }
+    },
+    render_widget: function(widget) {
+        var template_id = widget.type + "-template";
+        var source = document.getElementById(template_id).innerHTML;
+        var template = Handlebars.compile(source);
+        var html = template({widget:widget});
+        return html;
+    },
+    insert_widget: function(widget, html) {
+        var container = 'a[name=' + widget.menuitem + '] + .widget-grid-header + .widget-grid-container';
+        $(container).append(html);
+    },
+    load_widgets: function () {
+        var keys = Object.keys(window.APP.page_data.widgets);
+        for (var i = 0; i < keys.length; i++) {
+            var widget = window.APP.page_data.widgets[keys[i]];
+            window.APP.insert_widget(widget, window.APP.render_widget(widget));
         }
     },
 };

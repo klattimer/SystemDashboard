@@ -6,6 +6,8 @@ import platform
 import os
 import multiprocessing
 from Common.tools import get_primary_ip
+from uptime import uptime
+import cpuinfo
 
 __plugin__ = "OverviewAPI"
 __plugin_version__ = "0.1"
@@ -37,7 +39,6 @@ class OverviewAPI(APIPluginInterface):
             "type": "Overview",
             "size": "w4h1",
             "id": "overview",
-            "fa_icon": ""
             "menuitem": "overview"
         }
     }
@@ -71,18 +72,18 @@ class OverviewAPI(APIPluginInterface):
         Get the number of CPUs and model/type
         """
         try:
-            pipe = os.popen("cat /proc/cpuinfo | grep 'model name'")
-            data = pipe.read().strip().split(':')[-1]
-            pipe.close()
+            # pipe = os.popen("cat /proc/cpuinfo | grep 'model name'")
+            # data = pipe.read().strip().split(':')[-1]
+            # pipe.close()
+            #
+            # if not data:
+            #     pipe = os.popen("cat /proc/cpuinfo | grep 'Processor'")
+            #     data = pipe.read().strip().split(':')[-1]
+            #     pipe.close()
+            #
+            # cpus = multiprocessing.cpu_count()
 
-            if not data:
-                pipe = os.popen("cat /proc/cpuinfo | grep 'Processor'")
-                data = pipe.read().strip().split(':')[-1]
-                pipe.close()
-
-            cpus = multiprocessing.cpu_count()
-
-            data = {'cpus': cpus, 'type': data}
+            data = {'cpus': cpuinfo.get_cpu_info()['count'], 'type': cpuinfo.get_cpu_info()['brand']}
 
         except Exception as err:
             data = str(err)
@@ -95,11 +96,14 @@ class OverviewAPI(APIPluginInterface):
         Get uptime
         '''
         try:
-            with open('/proc/uptime', 'r') as f:
-                uptime_seconds = float(f.readline().split()[0])
-                uptime_time = str(timedelta(seconds=uptime_seconds))
-                data = uptime_time.split('.', 1)[0]
+            try:
+                uptime_seconds = uptime()
+            except:
+                with open('/proc/uptime', 'r') as f:
+                    uptime_seconds = float(f.readline().split()[0])
 
+            uptime_time = str(timedelta(seconds=uptime_seconds))
+            data = uptime_time.split('.', 1)[0]
         except:
             logging.exception("Cannot get uptime")
             return

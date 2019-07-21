@@ -111,3 +111,64 @@ window.APP.update_funcs.push({
         }
     }
 });
+
+
+window.APP.update_funcs.push({
+    interval: 10000,
+    func: function () {
+        try {
+            $('#sensors').find('tbody').html('');
+
+            for (var i = 0; i < Object.keys(window.APP.page_data.cpu.temperatures).length; i++) {
+                var k = Object.keys(window.APP.page_data.cpu.temperatures)[i];
+                var v = window.APP.page_data.cpu.temperatures[k];
+                for (var j = 0; j < v.length; j++) {
+                    var t = v[j];
+                    var name = k + " " + j;
+                    if (t.label.length > 0) {
+                        name = t.label;
+                    }
+                    var state = '<i class="fas fa-circle status-blue"></i>';
+                    if (t.current > t.high) {
+                        state = '<i class="fas fa-circle status-orange"></i>';
+                    }
+                    if (t.current > t.critical) {
+                        state = '<i class="fas fa-circle status-red"></i>';
+                    }
+
+                    var row = '<tr><td>'+name+'</td><td>'+t.current+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
+                    $('#sensors').find('tbody').append(row);
+                }
+            }
+        } catch (e) {
+            $('#sensors').remove();
+        }
+    }
+});
+
+
+window.APP.update_funcs.push({
+    interval: 10000,
+    func: function () {
+        try {
+            $('#fans').find('tbody').html('');
+
+            for (var i = 0; i < Object.keys(window.APP.page_data.cpu.fans).length; i++) {
+                var k = Object.keys(window.APP.page_data.cpu.fans)[i];
+                var v = window.APP.page_data.cpu.fans[k];
+                for (var j = 0; j < v.length; j++) {
+                    var t = v[j];
+                    var name = k + " " + j;
+                    if (t.label.length > 0) {
+                        name = t.label;
+                    }
+
+                    var row = '<tr><td>'+name+'</td><td>'+t.current+'&deg;C</td></tr>';
+                    $('#fans').find('tbody').append(row);
+                }
+            }
+        } catch (e) {
+            $('#fans').remove();
+        }
+    }
+});

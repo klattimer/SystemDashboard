@@ -52,7 +52,7 @@ window.APP.load.push(function (event) {
     }
 
     load_config.data.labels = labels;
-    var ctx = document.getElementById('load-chart-area').getContext('2d');
+    var ctx = document.getElementById('loadave-chart-area').getContext('2d');
     window.APP.charts.load = new Chart(ctx, load_config);
 
     window.APP.load_history = [[], [], []];
@@ -105,45 +105,6 @@ window.APP.update_funcs.push({
             }
             window.APP.charts.load.data.datasets = datasets;
             window.APP.charts.load.update();
-
-        } catch (e) {
-
-            $('#sensors').find('tbody').html('<tr><td colspan="3" style="text-align:center;">An Error Occurred!</td></tr>');
-
-            console.log("Error on: load\n", e);
-
-        }
-
-    }
-});
-
-window.APP.update_funcs.push({
-    interval: 10000,
-    func: function () {
-        try {
-            $('#sensors').find('tbody').html('');
-
-            for (var i = 0; i < Object.keys(window.APP.page_data.cpu.temperatures).length; i++) {
-                var k = Object.keys(window.APP.page_data.cpu.temperatures)[i];
-                var v = window.APP.page_data.cpu.temperatures[k];
-                for (var j = 0; j < v.length; j++) {
-                    var t = v[j];
-                    var name = k + " " + j;
-                    if (t.label.length > 0) {
-                        name = t.label;
-                    }
-                    var state = '<i class="fas fa-circle status-blue"></i>';
-                    if (t.current > t.high) {
-                        state = '<i class="fas fa-circle status-orange"></i>';
-                    }
-                    if (t.current > t.critical) {
-                        state = '<i class="fas fa-circle status-red"></i>';
-                    }
-
-                    var row = '<tr><td>'+name+'</td><td>'+t.current+'&deg;C</td><td class="narrow">'+state+'</td></tr>';
-                    $('#sensors').find('tbody').append(row);
-                }
-            }
 
         } catch (e) {
 

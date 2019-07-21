@@ -35,7 +35,7 @@ class UsersAPI(APIPluginInterface):
         "id": "users",
         "icon": "fas fa-users",
         "name": "Users",
-        "order": 3
+        "order": 6
     }]
     widgets = {
         "logged_in": {
@@ -55,7 +55,7 @@ class UsersAPI(APIPluginInterface):
         "lastog": {
             "type": "Table",
             "size": "w2h1",
-            "id": "lastog",
+            "id": "lastlog",
             "fa_icon": "fas fa-history",
             "title_label": "Recent Logins",
             "headers": [
@@ -105,13 +105,14 @@ class UsersAPI(APIPluginInterface):
                 d['process_name'] = process.name()
                 users[i] = d
         except:
-            logging.exception("Cannot get psutil data")
-            self.errors.append({"type": "critical", "message": "psutil exception"})
+            logging.warning("Cannot get psutil data")
+            errors.append({"type": "critical", "message": "psutil exception"})
+        lastlog = None
         try:
             lastlog =  self.lastlog()
         except:
-            logging.exception("Cannot get lastlog data")
-            self.errors.append({"type": "error", "message": "lastlog exception"})
+            logging.warning("Cannot get lastlog data")
+            errors.append({"type": "error", "message": "lastlog exception"})
 
         return {
             "logged_in": users,

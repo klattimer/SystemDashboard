@@ -26,7 +26,7 @@ class TopAPI(APIPluginInterface):
         "id": "processes",
         "icon": "fas fa-rocket",
         "name": "Processes",
-        "order": 4
+        "order": 5
     }]
     widgets = {
         "top_cpu_usage": {
@@ -49,7 +49,7 @@ class TopAPI(APIPluginInterface):
             "size": "w2h2",
             "id": "top_memory_usage",
             "fa_icon": "fas fa-memory",
-            "title_label": "Top CPU Utilisation",
+            "title_label": "Top Memory Utilisation",
             "headers": [
                 {"title": "PID", "class": "small"},
                 {"title": "Process"},

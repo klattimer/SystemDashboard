@@ -50,10 +50,10 @@ window.APP.update_funcs.push({
             $('#top_memory_usage').find('tbody').html('');
             for (var i = 0; i < td.top_memory_usage.length; i++) {
                 var t = td.top_memory_usage[i];
-                if (name === undefined) {
-                    name = t.exe;
+                var name = t.name;
+                if (t.cmdline.length > 0) {
+                    name = t.cmdline[0];
                 }
-                var name = t.cmdline[0];
                 ns = name.split('@');
                 name = ns[0];
                 ns = name.split('/');

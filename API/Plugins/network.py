@@ -27,14 +27,14 @@ class NetworkAPI(APIPluginInterface):
         "id": "network",
         "icon": "fas fa-network-wired",
         "name": "Network",
-        "order": 3
+        "order": 4
     }]
     widgets = {
         "traffic": {
             "type": "LineChart",
             "size": "w2h1",
             "id": "traffic",
-            "fa_icon": "far ",
+            "fa_icon": "fas fa-network-wired",
             "title_label": "Network Traffic",
             "menuitem": "network"
         }

@@ -60,7 +60,10 @@ class DiskIOAPI(APIPluginInterface):
 
     def GET(self, **params):
         partitions = psutil.disk_partitions(all=False)
-        diskrw = psutil.disk_io_counters(perdisk=True)
+        try:
+            diskrw = psutil.disk_io_counters(perdisk=True)
+        except:
+            diskrw = {}
 
         diskrw_data = {
             "read_bytes": 0,
@@ -69,10 +72,14 @@ class DiskIOAPI(APIPluginInterface):
 
         io_disks = [self.resolve_partition(p) for p in partitions if 'loop' not in p.device]
 
-        diskrw = {k: diskrw[k] for k in io_disks}
-        for k in io_disks:
-            diskrw_data['read_bytes'] += diskrw[k].read_bytes
-            diskrw_data['write_bytes'] += diskrw[k].write_bytes
+        try:
+            diskrw = {k: diskrw[k] for k in io_disks}
+
+            for k in io_disks:
+                diskrw_data['read_bytes'] += diskrw[k].read_bytes
+                diskrw_data['write_bytes'] += diskrw[k].write_bytes
+        except:
+            logging.warning("Disk IO issue")
 
         return {
             "io": diskrw,

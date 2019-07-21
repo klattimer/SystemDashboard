@@ -15,17 +15,17 @@
         <div class="power-menu"><div class="power-row"><label for="power-slider">Shutdown</label><input type="range" min="1" max="10000" value="0" class="slider" id="power-slider"></div><div class="power-row"><label for="reboot-slider">Reboot</label><input type="range" min="1" max="10000" value="0" class="slider" id="reboot-slider"></div></div>
         <div class="header-bump"></div>
         <div class="menu">
-            <a href="#overview"><div class="menuicon"><i class="fas fa-tachometer-alt"></i></div>Overview</a>
-            <a href="#load"><div class="menuicon"><i class="fas fa-weight-hanging"></i></div>Load</a>
-            <a href="#network"><div class="menuicon"><i class="fas fa-network-wired"></i></div>Network</a>
-            <a href="#storage"><div class="menuicon"><i class="far fa-hdd"></i></div>Storage</a>
-            <a href="#users"><div class="menuicon"><i class="fas fa-users"></i></div>Users</a>
-            <a href="#processes"><div class="menuicon"><i class="fas fa-rocket"></i></div>Processes</a>
+            % for menuitem in menuitems:
+            <%include file="MenuItem" args="menuitem=menuitem" />
+            % endfor
             <a href="#logs"><div class="menuicon"><i class="fas fa-scroll"></i></div>System Logs</a>
         </div>
         <div class="menu-bump"></div>
         <div class="widget-grid">
-            <a class="named-anchor" name="overview"></a>
+            % for menuitem in menuitems:
+            <%include file="Section" args="menuitem=menuitem" />
+            % endfor
+            <!-- <a class="named-anchor" name="overview"></a>
             <div class="widget-grid-header"><i class="fas fa-tachometer-alt"></i>Overview</div>
             <div class="widget-grid-item w4h1">
                 <div class="widget-grid-item-inner">
@@ -63,9 +63,9 @@
                     <div class="stack-filler">Status OK</div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <a class="named-anchor" name="load"></a>
+            <!-- <a class="named-anchor" name="load"></a>
             <div class="widget-grid-header"><i class="fas fa-weight-hanging"></i>Load</div>
             <div class="widget-grid-container">
                 <div class="widget-grid-item w2h1">
@@ -128,8 +128,8 @@
 
                 <div class="widget-grid-item w1h1">
                     <div class="widget-grid-item-inner">
-                <div id="radar-chart-area-container" class="chart-container"><canvas id="radar-chart-area"></canvas></div>
-                    <h1><i class="fas fa-network-wired"></i>Network Radar</h1>
+                        <div id="radar-chart-area-container" class="chart-container"><canvas id="radar-chart-area"></canvas></div>
+                        <h1><i class="fas fa-network-wired"></i>Network Radar</h1>
                     </div>
                 </div>
                 <div class="widget-grid-item w1h1">
@@ -277,7 +277,7 @@
                     <h1><i class="fas fa-memory"></i>Top Memory Utilisation</h1>
                 </div>
             </div>
-            </div>
+            </div> -->
             <a class="named-anchor" name="logs"></a>
             <div class="widget-grid-header"><i class="fas fa-scroll"></i>Logs</div>
             <div class="widget-grid-item w4h2">

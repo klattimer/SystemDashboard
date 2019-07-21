@@ -3,6 +3,7 @@ import os
 import logging
 import cherrypy
 from mako.template import Template
+from mako.lookup import TemplateLookup
 from mako.lookup import TemplateCollection
 import glob
 
@@ -10,6 +11,7 @@ class WidgetLookup(TemplateCollection):
     def __init__(self, directories):
         # Locate all .mako files in the path, if the file is called template.mako
         # then take the directory name as the template lookup uri
+        self._lookup = TemplateLookup(directories=directories)
         self.__templates = {}
         for path in directories:
             templates = glob.glob(path + '/**', recursive=True)
@@ -25,19 +27,27 @@ class WidgetLookup(TemplateCollection):
 
     def has_template(self, uri):
         if uri in self.__templates.keys(): return True
-        return False
+        return self._lookup.has_template(uri)
 
     def get_template(self, uri, relativeto=None):
-        template_path = self.__templates[uri]
-        return Template(filename=template_path)
+        try:
+            template_path = self.__templates[uri]
+            return Template(filename=template_path, lookup=self)
+        except:
+            return self._lookup.get_template(uri, relativeto)
 
 
 class APIPluginInterface(object):
+    # API stuff
     exposed = True
     api_path = None
     api_config = {}
+
+    # Front end delivery stuff
+    menuitems = []
     scripts = []
     styles = []
+    widgets = {}
     templates = []
 
     def __init__(self, server):

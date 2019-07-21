@@ -69,8 +69,8 @@ class Server(object):
         cherrypy.tools.jwtauth = JWTAuthTool(
             "SystemDashboard",
             "mysupersecretpassphraseformytokens",
-            PAMAuthMech,
-            '/auth'
+            PAMAuthMech
+#            '/signin'
         )
         cherrypy.config.update({
             'server.socket_host': ip,
@@ -104,14 +104,20 @@ class Server(object):
         return "<html><body><h1>%s</h1><body>" % (str(status) + message)
 
     def errorHandler(self, status, message, traceback, version):
+        (code, title) = status.split(' ')
+        code = int(code)
         handler = self.defaultErrorHandler
-        if cherrypy.request.headers['Accept'] == 'application/json':
-            handler = self.JSONErrorHandler
-        if status == 401:
-            handler = self.cherrypy.tools.jwtauth.unauthorized_handler
+        try:
+            if cherrypy.request.headers['Accept'] == 'application/json':
+                handler = self.JSONErrorHandler
+            elif code == 401:
+                handler = cherrypy.tools.jwtauth.unauthorized_handler
 
-        return handler(status, message, traceback, version)
-
+            ret = handler(status, message, traceback, version)
+        except:
+            logging.exception("Failure in handler")
+            ret = self.defaultErrorHandler(status, message, traceback, version)
+        return ret
 
     def JSONErrorHandler(self, status, message, traceback, version):
         response = cherrypy.response
